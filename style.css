@@ -170,11 +170,20 @@
     }
 
     .kpi{
-      padding:22px;
-      min-height:150px;
+      padding:28px;
+      min-height:182px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+    
+      background:linear-gradient(145deg,#ffffff 0%,#f8fafc 100%);
+      border:1px solid rgba(255,255,255,.7);
+      backdrop-filter:blur(10px);
+    
+      transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
     }
 
     .kpi .label{
@@ -186,10 +195,12 @@
     }
 
     .kpi .value{
-      font-size:32px;
-      letter-spacing:-.06em;
-      font-weight:850;
+      font-size:44px;
+      line-height:1;
+      letter-spacing:-.10em;
+      font-weight:900;
       margin-top:18px;
+      color:#020617;
     }
 
     .kpi .delta{
