@@ -4,7 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wealth Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js">const pageConfig = {
+      overview:{ title:'Patrimoine', subtitle:'Vue consolidée de ton patrimoine net, de tes actifs et de ta progression.' },
+      immo:{ title:'Immobilier', subtitle:'Suivi de tes biens, dettes et equity.' },
+      pea:{ title:'PEA', subtitle:'ETF, performances et allocation.' },
+      cash:{ title:'Cash', subtitle:'Liquidités et épargne disponible.' },
+      goals:{ title:'Objectifs', subtitle:'Progression patrimoniale long terme.' }
+    };
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileBtns = document.querySelectorAll('.mobile-btn');
+    const pages = document.querySelectorAll('.page');
+
+    function switchPage(page){
+      pages.forEach(p=>p.classList.remove('active-page'));
+      document.getElementById(page+'Page').classList.add('active-page');
+
+      navLinks.forEach(l=>l.classList.remove('active'));
+      mobileBtns.forEach(b=>b.classList.remove('active'));
+
+      document.querySelectorAll(`[data-page="${page}"]`).forEach(el=>el.classList.add('active'));
+
+      document.getElementById('pageTitle').textContent = pageConfig[page].title;
+      document.getElementById('pageSubtitle').textContent = pageConfig[page].subtitle;
+    }
+
+    [...navLinks,...mobileBtns].forEach(el=>{
+      el.addEventListener('click',(e)=>{
+        e.preventDefault();
+        switchPage(el.dataset.page);
+      });
+    });
+  </script>
   <style>
     *{
       box-sizing:border-box;
@@ -335,6 +366,39 @@
       .title h2{ font-size:28px; }
     }
 
+    .page{ display:none; }
+    .active-page{ display:block; }
+
+    .mobile-nav{
+      position:fixed;
+      bottom:16px;
+      left:50%;
+      transform:translateX(-50%);
+      background:white;
+      border:1px solid #e5e7eb;
+      box-shadow:0 14px 34px rgba(15,23,42,.12);
+      border-radius:999px;
+      padding:8px;
+      display:none;
+      gap:6px;
+      z-index:100;
+    }
+
+    .mobile-btn{
+      border:none;
+      background:transparent;
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      color:#6b7280;
+    }
+
+    .mobile-btn.active{
+      background:#111827;
+      color:white;
+    }
+
     @media(max-width:600px){
       main{ padding:16px; }
       .topbar{ flex-direction:column; }
@@ -342,6 +406,8 @@
       .kpi{ min-height:130px; }
       .kpi .value{ font-size:30px; }
       .chart-box{ height:250px; }
+      .mobile-nav{ display:flex; }
+      body{ padding-bottom:90px; }
     }
   </style>
 </head>
@@ -354,11 +420,11 @@
           <span>Dashboard personnel</span>
         </div>
         <nav class="nav">
-          <a href="#" class="active">Vue globale</a>
-          <a href="#">Immobilier</a>
-          <a href="#">PEA</a>
-          <a href="#">Cash</a>
-          <a href="#">Objectifs</a>
+          <a href="#" class="active nav-link" data-page="overview">Vue globale</a>
+          <a href="#" class="nav-link" data-page="immo">Immobilier</a>
+          <a href="#" class="nav-link" data-page="pea">PEA</a>
+          <a href="#" class="nav-link" data-page="cash">Cash</a>
+          <a href="#" class="nav-link" data-page="goals">Objectifs</a>
         </nav>
       </div>
       <div class="sidebar-footer">
@@ -370,146 +436,148 @@
     <main>
       <header class="topbar">
         <div class="title">
-          <h2>Patrimoine</h2>
-          <p>Vue consolidée de ton patrimoine net, de tes actifs et de ta progression.</p>
+          <h2 id="pageTitle">Patrimoine</h2>
+          <p id="pageSubtitle">Vue consolidée de ton patrimoine net, de tes actifs et de ta progression.</p>
         </div>
         <div class="pill">Dernière mise à jour : 13 mai 2026</div>
       </header>
 
-      <section class="kpi-grid">
-        <article class="card kpi">
-          <div>
-            <div class="label">Patrimoine net</div>
-            <div class="value">62 172 €</div>
-          </div>
-          <div class="delta positive">+2 431 € ce mois</div>
-        </article>
-
-        <article class="card kpi">
-          <div>
-            <div class="label">Patrimoine brut</div>
-            <div class="value">245 234 €</div>
-          </div>
-          <div class="delta">Actifs consolidés</div>
-        </article>
-
-        <article class="card kpi">
-          <div>
-            <div class="label">Dettes restantes</div>
-            <div class="value">183 062 €</div>
-          </div>
-          <div class="delta negative">Crédits immobiliers</div>
-        </article>
-
-        <article class="card kpi">
-          <div>
-            <div class="label">Cash disponible</div>
-            <div class="value">10 330 €</div>
-          </div>
-          <div class="delta">Sécurité & opportunités</div>
-        </article>
-      </section>
-
-      <section class="main-grid">
-        <article class="card panel">
-          <div class="panel-header">
-            <h3>Évolution du patrimoine net</h3>
-            <span>12 derniers mois</span>
-          </div>
-          <div class="chart-box">
-            <canvas id="wealthChart"></canvas>
-          </div>
-        </article>
-
-        <article class="card panel">
-          <div class="panel-header">
-            <h3>Allocation</h3>
-            <span>Actuelle</span>
-          </div>
-          <div class="chart-box" style="height:220px">
-            <canvas id="allocationChart"></canvas>
-          </div>
-          <div class="allocation-list">
-            <div class="allocation-row">
-              <strong>Immobilier</strong><span>74%</span>
-              <div class="bar"><span style="width:74%"></span></div>
+      <div id="overviewPage" class="page active-page">
+        <section class="kpi-grid">
+          <article class="card kpi">
+            <div>
+              <div class="label">Patrimoine net</div>
+              <div class="value">62 172 €</div>
             </div>
-            <div class="allocation-row">
-              <strong>PEA</strong><span>10%</span>
-              <div class="bar"><span style="width:10%"></span></div>
+            <div class="delta positive">+2 431 € ce mois</div>
+          </article>
+
+          <article class="card kpi">
+            <div>
+              <div class="label">Patrimoine brut</div>
+              <div class="value">245 234 €</div>
             </div>
-            <div class="allocation-row">
-              <strong>Cash</strong><span>16%</span>
-              <div class="bar"><span style="width:16%"></span></div>
+            <div class="delta">Actifs consolidés</div>
+          </article>
+
+          <article class="card kpi">
+            <div>
+              <div class="label">Dettes restantes</div>
+              <div class="value">183 062 €</div>
             </div>
-          </div>
-        </article>
-      </section>
+            <div class="delta negative">Crédits immobiliers</div>
+          </article>
 
-      <section class="asset-grid">
-        <article class="card asset-card">
-          <h4>Immobilier</h4>
-          <div class="asset-main">45 919 €</div>
-          <div class="asset-meta">2 biens suivis<br>Dette restante : 183 062 €</div>
-        </article>
+          <article class="card kpi">
+            <div>
+              <div class="label">Cash disponible</div>
+              <div class="value">10 330 €</div>
+            </div>
+            <div class="delta">Sécurité & opportunités</div>
+          </article>
+        </section>
 
-        <article class="card asset-card">
-          <h4>PEA</h4>
-          <div class="asset-main">5 923 €</div>
-          <div class="asset-meta">CW8 · DCAM<br><span class="positive">+14,2% performance</span></div>
-        </article>
+        <section class="main-grid">
+          <article class="card panel">
+            <div class="panel-header">
+              <h3>Évolution du patrimoine net</h3>
+              <span>12 derniers mois</span>
+            </div>
+            <div class="chart-box">
+              <canvas id="wealthChart"></canvas>
+            </div>
+          </article>
 
-        <article class="card asset-card">
-          <h4>Cash</h4>
-          <div class="asset-main">10 330 €</div>
-          <div class="asset-meta">Livrets & comptes<br>Disponible immédiat</div>
-        </article>
-      </section>
+          <article class="card panel">
+            <div class="panel-header">
+              <h3>Allocation</h3>
+              <span>Actuelle</span>
+            </div>
+            <div class="chart-box" style="height:220px">
+              <canvas id="allocationChart"></canvas>
+            </div>
+          </article>
+        </section>
+      </div>
 
-      <section class="bottom-grid">
+      <div id="immoPage" class="page">
+        <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
+          <article class="card asset-card">
+            <h4>Résidence principale</h4>
+            <div class="asset-main">325 000 €</div>
+            <div class="asset-meta">Crédit restant : 178 000 €<br>Valeur nette : 147 000 €</div>
+          </article>
+
+          <article class="card asset-card">
+            <h4>Bien secondaire</h4>
+            <div class="asset-main">98 000 €</div>
+            <div class="asset-meta">Crédit restant : 5 000 €<br>Valeur nette : 93 000 €</div>
+          </article>
+        </section>
+      </div>
+
+      <div id="peaPage" class="page">
         <article class="card panel">
           <div class="panel-header">
-            <h3>Objectifs</h3>
-            <span>Progression</span>
-          </div>
-
-          <div class="goal">
-            <div class="goal-top"><strong>Objectif 100k</strong><span>62%</span></div>
-            <div class="bar"><span style="width:62%"></span></div>
-          </div>
-
-          <div class="goal">
-            <div class="goal-top"><strong>Objectif 250k</strong><span>25%</span></div>
-            <div class="bar"><span style="width:25%"></span></div>
-          </div>
-
-          <div class="goal">
-            <div class="goal-top"><strong>Objectif 500k</strong><span>12%</span></div>
-            <div class="bar"><span style="width:12%"></span></div>
-          </div>
-        </article>
-
-        <article class="card panel">
-          <div class="panel-header">
-            <h3>Répartition détaillée</h3>
-            <span>Valeur nette</span>
+            <h3>Portefeuille PEA</h3>
+            <span>ETF</span>
           </div>
           <table class="table">
             <thead>
               <tr>
-                <th>Classe</th>
-                <th>Valeur</th>
-                <th>%</th>
+                <th>ETF</th>
+                <th>Valorisation</th>
+                <th>Performance</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Immobilier</td><td>45 919 €</td><td>74%</td></tr>
-              <tr><td>PEA</td><td>5 923 €</td><td>10%</td></tr>
-              <tr><td>Cash</td><td>10 330 €</td><td>16%</td></tr>
+              <tr><td>CW8</td><td>4 122 €</td><td class="positive">+12,8%</td></tr>
+              <tr><td>DCAM</td><td>1 801 €</td><td class="positive">+18,4%</td></tr>
             </tbody>
           </table>
         </article>
-      </section>
+      </div>
+
+      <div id="cashPage" class="page">
+        <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
+          <article class="card asset-card">
+            <h4>Livret A</h4>
+            <div class="asset-main">6 500 €</div>
+          </article>
+
+          <article class="card asset-card">
+            <h4>Compte courant</h4>
+            <div class="asset-main">3 830 €</div>
+          </article>
+        </section>
+      </div>
+
+      <div id="goalsPage" class="page">
+        <article class="card panel">
+          <div class="panel-header">
+            <h3>Objectifs patrimoniaux</h3>
+            <span>Long terme</span>
+          </div>
+
+          <div class="goal">
+            <div class="goal-top"><strong>100k</strong><span>62%</span></div>
+            <div class="bar"><span style="width:62%"></span></div>
+          </div>
+
+          <div class="goal">
+            <div class="goal-top"><strong>250k</strong><span>25%</span></div>
+            <div class="bar"><span style="width:25%"></span></div>
+          </div>
+        </article>
+      </div>
+
+      <nav class="mobile-nav">
+        <button class="mobile-btn active" data-page="overview">Accueil</button>
+        <button class="mobile-btn" data-page="immo">Immo</button>
+        <button class="mobile-btn" data-page="pea">PEA</button>
+        <button class="mobile-btn" data-page="cash">Cash</button>
+        <button class="mobile-btn" data-page="goals">Objectifs</button>
+      </nav>
     </main>
   </div>
 
