@@ -18,12 +18,15 @@
       --radius:28px;
     }
 
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      min-height:100vh;
-    }
+   body{
+     font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
+     background:
+       radial-gradient(circle at top right, rgba(37,99,235,.10), transparent 32%),
+       radial-gradient(circle at bottom left, rgba(22,163,74,.08), transparent 34%),
+       linear-gradient(135deg,#f6f7fb 0%,#edf1f6 100%);
+     color:var(--text);
+     min-height:100vh;
+   }
 
     .app{
       display:grid;
