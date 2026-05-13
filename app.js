@@ -166,9 +166,23 @@ const today = new Date().toLocaleDateString("fr-FR", {
 
 setText("lastUpdate", "Dernière mise à jour : " + today);
         
-const allocImmo = parseFloat(data.allocation_immobilier.replace(",", "."));
-const allocPea = parseFloat(data.allocation_pea.replace(",", "."));
-const allocCash = parseFloat(data.allocation_cash.replace(",", "."));
+const allocImmo = parseFloat(
+  data.allocation_immobilier
+    .replace("%", "")
+    .replace(",", ".")
+);
+
+const allocPea = parseFloat(
+  data.allocation_pea
+    .replace("%", "")
+    .replace(",", ".")
+);
+
+const allocCash = parseFloat(
+  data.allocation_cash
+    .replace("%", "")
+    .replace(",", ".")
+);
 
 if (allocationChart) {
   allocationChart.destroy();
