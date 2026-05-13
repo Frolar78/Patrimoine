@@ -139,12 +139,12 @@
       white-space:nowrap;
     }
 
-    .kpi-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-      margin-bottom:18px;
-    }
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  margin-bottom:30px;
+}
 
     .card{
       background:var(--card);
@@ -196,15 +196,15 @@
     .positive{ color:var(--green)!important; }
     .negative{ color:var(--red)!important; }
 
-    .main-grid{
-      display:grid;
-      grid-template-columns:1.6fr .9fr;
-      gap:18px;
-      margin-bottom:18px;
-    }
+.main-grid{
+  display:grid;
+  grid-template-columns:2.1fr .9fr;
+  gap:30px;
+  margin-top:6px;
+}
 
     .panel{
-      padding:24px;
+      padding:30px;
     }
 
     .panel-header{
