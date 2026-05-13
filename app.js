@@ -146,7 +146,15 @@ setText("cash3Nom", data.cash3_nom);
 setText("cash3Valeur", data.cash3_valeur);
 setText("cash4Nom", data.cash4_nom);
 setText("cash4Valeur", data.cash4_valeur);
-      
+        
+const today = new Date().toLocaleDateString("fr-FR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+});
+
+setText("lastUpdate", "Dernière mise à jour : " + today);
+        
 }
 
 loadSheetData();
