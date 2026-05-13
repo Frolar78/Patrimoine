@@ -773,3 +773,8 @@ main {
 .chart-placeholder span { font-size: 36px; }
 .chart-placeholder p { font-size: 14px; font-weight: 600; color: var(--text2); }
 .chart-placeholder small { font-size: 12px; }
+
+@media (max-width: 600px) {
+  .table-total td { font-size: 11px; }
+  .data-table { font-size: 11px; }
+}
