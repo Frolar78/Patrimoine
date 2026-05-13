@@ -459,3 +459,12 @@ loadHistorique().then(() => {
   initWealthChart();
   loadSheetData();
 });
+
+document.querySelectorAll(".range-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".range-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const range = btn.dataset.range === "all" ? "all" : parseInt(btn.dataset.range);
+    renderWealthChart(range);
+  });
+});
