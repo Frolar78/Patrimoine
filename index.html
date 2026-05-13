@@ -521,41 +521,44 @@
 </div>
 
       <div id="peaPage" class="page">
-        <article class="card panel">
-          <div class="panel-header">
-            <h3>Portefeuille PEA</h3>
-            <span>ETF</span>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ETF</th>
-                <th>Valorisation</th>
-                <th>Performance</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>CW8</td><td>4 122 €</td><td class="positive">+12,8%</td></tr>
-              <tr><td>DCAM</td><td>1 801 €</td><td class="positive">+18,4%</td></tr>
-            </tbody>
-          </table>
-        </article>
+
+  <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
+
+    <article class="card asset-card">
+      <h4>Valorisation PEA</h4>
+      <div class="asset-main" id="peaValeur">--</div>
+      <div class="asset-meta">
+        CW8 + DCAM
       </div>
+    </article>
 
-      <div id="cashPage" class="page">
-        <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
-          <article class="card asset-card">
-            <h4>Livret A</h4>
-            <div class="asset-main">6 500 €</div>
-          </article>
-
-          <article class="card asset-card">
-            <h4>Compte courant</h4>
-            <div class="asset-main">3 830 €</div>
-          </article>
-        </section>
+    <article class="card asset-card">
+      <h4>Performance</h4>
+      <div class="asset-main positive" id="peaPerf">--</div>
+      <div class="asset-meta">
+        Performance globale du portefeuille
       </div>
+    </article>
 
+  </section>
+
+</div>
+
+     <div id="cashPage" class="page">
+
+  <section class="asset-grid">
+
+    <article class="card asset-card">
+      <h4>Cash disponible</h4>
+      <div class="asset-main" id="cashDetail">--</div>
+      <div class="asset-meta">
+        Comptes + livrets
+      </div>
+    </article>
+
+  </section>
+
+</div>
       <div id="goalsPage" class="page">
         <article class="card panel">
           <div class="panel-header">
@@ -701,6 +704,9 @@ document.getElementById("dettes").textContent = data.dettes;
 document.getElementById("cash").textContent = data.cash_disponible;
 document.getElementById("immoNet").textContent = data.immobilier_net;
 document.getElementById("immoDette").textContent = data.dettes;
+document.getElementById("peaValeur").textContent = data.pea_valeur;
+document.getElementById("peaPerf").textContent = data.pea_performance + "%";
+document.getElementById("cashDetail").textContent = data.cash_disponible;
       
 }
 
