@@ -447,7 +447,7 @@
           <article class="card kpi">
             <div>
               <div class="label">Patrimoine net</div>
-              <div class="value">62 172 €</div>
+              <div class="value" id="patrimoineNet">--</div>
             </div>
             <div class="delta positive">+2 431 € ce mois</div>
           </article>
@@ -455,7 +455,7 @@
           <article class="card kpi">
             <div>
               <div class="label">Patrimoine brut</div>
-              <div class="value">245 234 €</div>
+              <div class="value" id="patrimoineBrut">--</div>
             </div>
             <div class="delta">Actifs consolidés</div>
           </article>
@@ -463,7 +463,7 @@
           <article class="card kpi">
             <div>
               <div class="label">Dettes restantes</div>
-              <div class="value">183 062 €</div>
+              <div class="value" id="dettes">--</div>
             </div>
             <div class="delta negative">Crédits immobiliers</div>
           </article>
@@ -471,7 +471,7 @@
           <article class="card kpi">
             <div>
               <div class="label">Cash disponible</div>
-              <div class="value">10 330 €</div>
+              <div class="value" id="cash">--</div>
             </div>
             <div class="delta">Sécurité & opportunités</div>
           </article>
@@ -690,6 +690,14 @@ function switchPage(page) {
   });
 
   console.log(data);
+      
+document.getElementById("patrimoineNet").textContent = data.patrimoine_net;
+
+document.getElementById("patrimoineBrut").textContent = data.patrimoine_brut;
+
+document.getElementById("dettes").textContent = data.dettes;
+
+document.getElementById("cash").textContent = data.cash_disponible;
 
 }
 
