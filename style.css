@@ -503,24 +503,42 @@
 }
 
 .hero-card{
-  padding:34px;
-  min-height:210px;
+  position:relative;
+  padding:40px;
+  min-height:240px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+  overflow:hidden;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37,99,235,.12),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f8fbff 100%
+    );
 }
 
 .hero-value{
-  font-size:58px;
-  line-height:1;
-  letter-spacing:-.11em;
+  font-size:72px;
+  line-height:.95;
+  letter-spacing:-.07em;
   font-weight:950;
   color:#020617;
-  margin-top:18px;
+  margin-top:20px;
 }
 
 .hero-delta{
-  font-size:15px;
+  width:fit-content;
+  padding:10px 14px;
+  border-radius:999px;
+  background:
+    rgba(22,163,74,.10);
+  font-size:14px;
   font-weight:800;
 }
 
