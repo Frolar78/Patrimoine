@@ -166,23 +166,24 @@ const today = new Date().toLocaleDateString("fr-FR", {
 
 setText("lastUpdate", "Dernière mise à jour : " + today);
         
-const allocImmo = parseFloat(
-  data.allocation_immobilier
-    .replace("%", "")
-    .replace(",", ".")
-);
+function parsePercent(value) {
+  if (!value) return 0;
 
-const allocPea = parseFloat(
-  data.allocation_pea
-    .replace("%", "")
-    .replace(",", ".")
-);
+  return Number(
+    value
+      .toString()
+      .replaceAll('"', '')
+      .replace('%', '')
+      .replace(',', '.')
+      .trim()
+  );
+}
 
-const allocCash = parseFloat(
-  data.allocation_cash
-    .replace("%", "")
-    .replace(",", ".")
-);
+const allocImmo = parsePercent(data.allocation_immobilier);
+const allocPea = parsePercent(data.allocation_pea);
+const allocCash = parsePercent(data.allocation_cash);
+
+console.log("Allocations :", allocImmo, allocPea, allocCash);
 
 if (allocationChart) {
   allocationChart.destroy();
