@@ -1,29 +1,84 @@
-    const wealthCtx = document.getElementById('wealthChart');
-    new Chart(wealthCtx, {
-      type: 'line',
-      data: {
-        labels: ['Juin','Juil','Août','Sept','Oct','Nov','Déc','Jan','Fév','Mars','Avr','Mai'],
-        datasets: [{
-          label: 'Patrimoine net',
-          data: [44000,45500,47100,48900,50300,52100,53800,55200,57300,59000,59741,62172],
-          borderColor: '#111827',
-          backgroundColor: 'rgba(17,24,39,.08)',
-          tension: .42,
-          fill: true,
-          pointRadius: 0,
-          borderWidth: 3
-        }]
+const wealthCanvas = document.getElementById("wealthChart");
+
+const wealthGradient = wealthCanvas
+  .getContext("2d")
+  .createLinearGradient(0, 0, 0, 300);
+
+wealthGradient.addColorStop(0, "rgba(37,99,235,.22)");
+wealthGradient.addColorStop(1, "rgba(37,99,235,0)");
+
+new Chart(wealthCanvas, {
+
+  type: "line",
+
+  data: {
+    labels: [
+      "Juin","Juil","Août","Sept","Oct","Nov",
+      "Déc","Jan","Fév","Mars","Avr","Mai"
+    ],
+
+    datasets: [{
+
+      label: "Patrimoine net",
+
+      data: [
+        44000,45500,47100,48900,
+        50300,52100,53800,55200,
+        57300,59000,59741,62172
+      ],
+
+      borderColor: "#2563eb",
+
+      backgroundColor: wealthGradient,
+
+      fill: true,
+
+      tension: .42,
+
+      pointRadius: 0,
+
+      borderWidth: 4
+
+    }]
+  },
+
+  options: {
+
+    responsive: true,
+
+    maintainAspectRatio: false,
+
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+
+    scales: {
+
+      x: {
+        grid: {
+          display: false
+        },
+
+        ticks: {
+          color: "#94a3b8"
+        }
       },
-      options: {
-        responsive:true,
-        maintainAspectRatio:false,
-        plugins:{ legend:{ display:false } },
-        scales:{
-          x:{ grid:{ display:false }, ticks:{ color:'#6b7280' } },
-          y:{ grid:{ color:'#f3f4f6' }, ticks:{ color:'#6b7280' } }
+
+      y: {
+
+        grid: {
+          color: "#f1f5f9"
+        },
+
+        ticks: {
+          color: "#94a3b8"
         }
       }
-    });
+    }
+  }
+});
 
 let allocationChart;
 
