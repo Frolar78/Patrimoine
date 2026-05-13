@@ -1,277 +1,396 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
-  <link rel="stylesheet" href="./style.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wealth Dashboard</title>
+  <title>Mon Patrimoine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="./style.css">
 </head>
-  
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div>
-        <div class="brand">
-          <h1>Wealth</h1>
-          <span>Dashboard personnel</span>
+
+<div class="app">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-icon">◈</div>
+        <div>
+          <div class="brand-name">Mon Patrimoine</div>
+          <div class="brand-sub">Tableau de bord</div>
         </div>
-        <nav class="nav">
-          <a href="#" class="active nav-link" data-page="overview">Vue globale</a>
-          <a href="#" class="nav-link" data-page="immo">Immobilier</a>
-          <a href="#" class="nav-link" data-page="pea">PEA</a>
-          <a href="#" class="nav-link" data-page="cash">Cash</a>
-          <a href="#" class="nav-link" data-page="goals">Objectifs</a>
-        </nav>
-      </div>
-    </aside>
-
-    <main>
-      <header class="topbar">
-        <div class="title">
-          <h2 id="pageTitle">Patrimoine</h2>
-          <p id="pageSubtitle">Vue consolidée de ton patrimoine net, de tes actifs et de ta progression.</p>
-        </div>
-       <div class="pill" id="lastUpdate">Dernière mise à jour : --</div>
-      </header>
-
-<div id="overviewPage" class="page active-page">
-
-<section class="overview-layout">
-
-  <article class="card hero-card area-hero">
-    <div class="label">Patrimoine net</div>
-    <div class="hero-value" id="patrimoineNet">--</div>
-    <div class="hero-delta positive" id="variationMensuelle">Progression mensuelle</div>
-  </article>
-
-  <section class="mini-kpi-grid area-kpis">
-    <article class="card mini-kpi">
-      <div class="label">Brut</div>
-      <div class="mini-value" id="patrimoineBrut">--</div>
-    </article>
-
-    <article class="card mini-kpi">
-      <div class="label">Dettes</div>
-      <div class="mini-value" id="dettes">--</div>
-    </article>
-
-    <article class="card mini-kpi">
-      <div class="label">Cash</div>
-      <div class="mini-value" id="cash">--</div>
-    </article>
-
-    <article class="card mini-kpi">
-      <div class="label">PEA</div>
-      <div class="mini-value" id="peaValeurOverview">--</div>
-    </article>
-  </section>
-
-  <article class="card panel wealth-panel area-chart">
-    <div class="panel-header">
-      <h3>Évolution du patrimoine net</h3>
-      <span>12 derniers mois</span>
-    </div>
-    <div class="chart-box">
-      <canvas id="wealthChart"></canvas>
-    </div>
-  </article>
-
-  <article class="card panel allocation-panel area-allocation">
-    <div class="panel-header">
-      <h3>Allocation</h3>
-      <span>Actuelle</span>
-    </div>
-
-    <div class="chart-box allocation-chart-box">
-      <canvas id="allocationChart"></canvas>
-    </div>
-
-    <div class="allocation-list">
-      <div class="allocation-row">
-        <strong>Immobilier</strong>
-        <span id="allocImmoText">--</span>
-        <div class="bar"><span id="allocImmoBar" style="width:0%"></span></div>
       </div>
 
-      <div class="allocation-row">
-        <strong>PEA</strong>
-        <span id="allocPeaText">--</span>
-        <div class="bar"><span id="allocPeaBar" style="width:0%"></span></div>
-      </div>
-
-      <div class="allocation-row">
-        <strong>Cash</strong>
-        <span id="allocCashText">--</span>
-        <div class="bar"><span id="allocCashBar" style="width:0%"></span></div>
-      </div>
-    </div>
-  </article>
-
-  <article class="card asset-card area-immo">
-    <h4>Immobilier</h4>
-    <div class="asset-main" id="immoNet">--</div>
-    <div class="asset-meta">Valeur nette immobilière</div>
-  </article>
-
-  <article class="card asset-card area-pea">
-    <h4>Performance PEA</h4>
-    <div class="asset-main positive" id="peaPerfOverview">--</div>
-    <div class="asset-meta">Performance globale</div>
-  </article>
-
-  <article class="card asset-card area-cash">
-    <h4>Liquidités</h4>
-    <div class="asset-main" id="cashOverview">--</div>
-    <div class="asset-meta">Cash disponible</div>
-  </article>
-
-  <article class="card panel detail-card area-detail">
-    <div class="panel-header">
-      <h3>Détail du patrimoine</h3>
-      <span>Actifs principaux</span>
-    </div>
-
-    <table class="table">
-      <tr>
-        <td>Bien immobilier 1</td>
-        <td id="overviewImmo1">--</td>
-      </tr>
-      <tr>
-        <td>Bien immobilier 2</td>
-        <td id="overviewImmo2">--</td>
-      </tr>
-      <tr>
-        <td>PEA</td>
-        <td id="overviewPea">--</td>
-      </tr>
-      <tr>
-        <td>Cash</td>
-        <td id="overviewCash">--</td>
-      </tr>
-    </table>
-  </article>
-
-  <article class="card panel detail-card area-debt">
-    <div class="panel-header">
-      <h3>Dette</h3>
-      <span>Crédits restants</span>
-    </div>
-
-    <table class="table">
-      <tr>
-        <td>Crédit bien 1</td>
-        <td id="overviewDette1">--</td>
-      </tr>
-      <tr>
-        <td>Crédit bien 2</td>
-        <td id="overviewDette2">--</td>
-      </tr>
-      <tr>
-        <td>Total dettes</td>
-        <td id="overviewDettesTotal">--</td>
-      </tr>
-    </table>
-  </article>
-
-</section>
-</div>
-
-<div id="immoPage" class="page">
-  <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
-    <article class="card asset-card">
-      <h4 id="immoBien1Nom">--</h4>
-      <div class="asset-main" id="immoBien1Net">--</div>
-      <div class="asset-meta">
-        Valeur : <span id="immoBien1Valeur">--</span><br>
-        Crédit restant : <span id="immoBien1Dette">--</span>
-      </div>
-    </article>
-
-    <article class="card asset-card">
-      <h4 id="immoBien2Nom">--</h4>
-      <div class="asset-main" id="immoBien2Net">--</div>
-      <div class="asset-meta">
-        Valeur : <span id="immoBien2Valeur">--</span><br>
-        Crédit restant : <span id="immoBien2Dette">--</span>
-      </div>
-    </article>
-  </section>
-</div>
-
-<div id="peaPage" class="page">
-  <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
-    <article class="card asset-card">
-      <h4>Valorisation PEA</h4>
-      <div class="asset-main" id="peaValeurPage">--</div>
-      <div class="asset-meta">
-        <span id="peaActif1Nom">--</span> : <span id="peaActif1Valeur">--</span><br>
-        <span id="peaActif2Nom">--</span> : <span id="peaActif2Valeur">--</span>
-      </div>
-    </article>
-
-    <article class="card asset-card">
-      <h4>Performance globale</h4>
-      <div class="asset-main positive" id="peaPerfPage">--</div>
-      <div class="asset-meta">Performance totale du portefeuille</div>
-    </article>
-  </section>
-</div>
-
-<div id="cashPage" class="page">
-  <section class="asset-grid" style="grid-template-columns:repeat(4,1fr);">
-    <article class="card asset-card">
-      <h4 id="cash1Nom">--</h4>
-      <div class="asset-main" id="cash1Valeur">--</div>
-    </article>
-
-    <article class="card asset-card">
-      <h4 id="cash2Nom">--</h4>
-      <div class="asset-main" id="cash2Valeur">--</div>
-    </article>
-
-    <article class="card asset-card">
-      <h4 id="cash3Nom">--</h4>
-      <div class="asset-main" id="cash3Valeur">--</div>
-    </article>
-
-    <article class="card asset-card">
-      <h4 id="cash4Nom">--</h4>
-      <div class="asset-main" id="cash4Valeur">--</div>
-    </article>
-  </section>
-</div>
-      
-      <div id="goalsPage" class="page">
-        <article class="card panel">
-          <div class="panel-header">
-            <h3>Objectifs patrimoniaux</h3>
-            <span>Long terme</span>
-          </div>
-
-          <div class="goal">
-            <div class="goal-top"><strong>100k</strong><span>62%</span></div>
-            <div class="bar"><span style="width:62%"></span></div>
-          </div>
-
-          <div class="goal">
-            <div class="goal-top"><strong>250k</strong><span>25%</span></div>
-            <div class="bar"><span style="width:25%"></span></div>
-          </div>
-        </article>
-      </div>
-
-      <nav class="mobile-nav">
-        <button class="mobile-btn active" data-page="overview">Accueil</button>
-        <button class="mobile-btn" data-page="immo">Immo</button>
-        <button class="mobile-btn" data-page="pea">PEA</button>
-        <button class="mobile-btn" data-page="cash">Cash</button>
-        <button class="mobile-btn" data-page="goals">Objectifs</button>
+      <nav class="nav">
+        <a href="#" class="nav-link active" data-page="overview">
+          <span class="nav-icon">⬡</span> Dashboard
+        </a>
+        <a href="#" class="nav-link" data-page="immo">
+          <span class="nav-icon">⌂</span> Immobilier
+        </a>
+        <a href="#" class="nav-link" data-page="pea">
+          <span class="nav-icon">↗</span> Investissements
+        </a>
+        <a href="#" class="nav-link" data-page="cash">
+          <span class="nav-icon">◎</span> Cash & Liquidités
+        </a>
+        <a href="#" class="nav-link" data-page="goals">
+          <span class="nav-icon">◇</span> Objectifs
+        </a>
       </nav>
-    </main>
-  </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="sync-badge" id="syncBadge">
+        <span class="sync-dot"></span>
+        <span id="lastUpdate">Chargement…</span>
+      </div>
+      <div class="theme-toggle-wrap">
+        <span>Sombre</span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="toggle-thumb"></span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main>
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="greeting">
+        <h1 id="greetingText">Bonjour !</h1>
+        <p id="greetingDate">--</p>
+      </div>
+      <div class="topbar-right">
+        <div class="date-pill">
+          <span>📅</span>
+          <span id="topbarDate">--</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══ OVERVIEW PAGE ══ -->
+    <div id="overviewPage" class="page active-page">
+
+      <!-- 6 KPI cards -->
+      <div class="kpi-row">
+        <div class="kpi-card kpi-main">
+          <div class="kpi-icon">◈</div>
+          <div class="kpi-label">Patrimoine net</div>
+          <div class="kpi-value" id="patrimoineNet">--</div>
+          <div class="kpi-sub positive" id="variationMensuelle">--</div>
+          <div class="kpi-hint" id="variationPct">--</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⬡</div>
+          <div class="kpi-label">Patrimoine brut</div>
+          <div class="kpi-value" id="patrimoineBrut">--</div>
+          <div class="kpi-hint">Actifs totaux</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">↙</div>
+          <div class="kpi-label">Dettes restantes</div>
+          <div class="kpi-value negative" id="dettes">--</div>
+          <div class="kpi-hint">Crédits en cours</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">◎</div>
+          <div class="kpi-label">Cash disponible</div>
+          <div class="kpi-value" id="cashKpi">--</div>
+          <div class="kpi-hint">Liquidités disponibles</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">↗</div>
+          <div class="kpi-label">Variation mensuelle</div>
+          <div class="kpi-value positive" id="varMensuelleKpi">--</div>
+          <div class="kpi-hint positive" id="varMensuellePctKpi">--</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">◷</div>
+          <div class="kpi-label">Performance YTD</div>
+          <div class="kpi-value positive" id="perfYtd">--</div>
+          <div class="kpi-hint">Depuis janvier</div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="charts-row">
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3>Évolution du patrimoine net</h3>
+            <span class="badge">12 derniers mois</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="wealthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card alloc-card">
+          <div class="card-header">
+            <h3>Allocation patrimoniale</h3>
+          </div>
+          <div class="donut-wrap">
+            <canvas id="allocationChart"></canvas>
+          </div>
+          <div class="alloc-legend">
+            <div class="alloc-item">
+              <div class="alloc-dot" style="background:#1a1a2e"></div>
+              <div class="alloc-info">
+                <span>Immobilier</span>
+                <strong id="allocImmoVal">--</strong>
+              </div>
+              <div class="alloc-pct" id="allocImmoText">--</div>
+            </div>
+            <div class="alloc-item">
+              <div class="alloc-dot" style="background:#4f6ef7"></div>
+              <div class="alloc-info">
+                <span>Actions (PEA)</span>
+                <strong id="allocPeaVal">--</strong>
+              </div>
+              <div class="alloc-pct" id="allocPeaText">--</div>
+            </div>
+            <div class="alloc-item">
+              <div class="alloc-dot" style="background:#f0a500"></div>
+              <div class="alloc-info">
+                <span>Cash & Liquidités</span>
+                <strong id="allocCashVal">--</strong>
+              </div>
+              <div class="alloc-pct" id="allocCashText">--</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail table + répartition -->
+      <div class="detail-row">
+        <div class="card detail-card">
+          <div class="card-header">
+            <h3>Détail du patrimoine</h3>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Classe d'actifs</th>
+                <th>Valeur</th>
+                <th>% brut</th>
+                <th>% net</th>
+                <th>Évolution mensuelle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="row-icon">⌂</span></td>
+                <td>Immobilier</td>
+                <td id="dtImmoVal">--</td>
+                <td id="dtImmoPctBrut">--</td>
+                <td id="dtImmoPctNet">--</td>
+                <td class="positive" id="dtImmoEvo">--</td>
+              </tr>
+              <tr>
+                <td><span class="row-icon">↗</span></td>
+                <td>Actions (PEA)</td>
+                <td id="dtPeaVal">--</td>
+                <td id="dtPeaPctBrut">--</td>
+                <td id="dtPeaPctNet">--</td>
+                <td class="positive" id="dtPeaEvo">--</td>
+              </tr>
+              <tr>
+                <td><span class="row-icon">◎</span></td>
+                <td>Cash & Liquidités</td>
+                <td id="dtCashVal">--</td>
+                <td id="dtCashPctBrut">--</td>
+                <td id="dtCashPctNet">--</td>
+                <td class="positive" id="dtCashEvo">--</td>
+              </tr>
+              <tr class="table-total">
+                <td></td>
+                <td><strong>TOTAL</strong></td>
+                <td id="dtTotalVal">--</td>
+                <td>100,0%</td>
+                <td id="dtTotalPctNet">--</td>
+                <td class="positive" id="dtTotalEvo">--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card repartition-card">
+          <div class="card-header">
+            <h3>Répartition des actifs</h3>
+          </div>
+          <div class="rep-list">
+            <div class="rep-item">
+              <div class="rep-label">Immobilier</div>
+              <div class="rep-bar-wrap">
+                <div class="rep-bar"><span id="repImmoBar" style="width:0%;background:#1a1a2e"></span></div>
+              </div>
+              <div class="rep-val" id="repImmoVal">--</div>
+            </div>
+            <div class="rep-item">
+              <div class="rep-label">Actions (PEA)</div>
+              <div class="rep-bar-wrap">
+                <div class="rep-bar"><span id="repPeaBar" style="width:0%;background:#4f6ef7"></span></div>
+              </div>
+              <div class="rep-val" id="repPeaVal">--</div>
+            </div>
+            <div class="rep-item">
+              <div class="rep-label">Cash & Liquidités</div>
+              <div class="rep-bar-wrap">
+                <div class="rep-bar"><span id="repCashBar" style="width:0%;background:#f0a500"></span></div>
+              </div>
+              <div class="rep-val" id="repCashVal">--</div>
+            </div>
+          </div>
+          <div class="rep-totals">
+            <div class="rep-total-row"><span>Total actifs</span><span id="repTotalActifs">--</span></div>
+            <div class="rep-total-row negative"><span>Dettes restantes</span><span id="repDettes">--</span></div>
+            <div class="rep-total-row bold"><span>Patrimoine net</span><span id="repPatNet">--</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom panels: Immo / PEA / Cash -->
+      <div class="panels-row">
+        <div class="card mini-panel">
+          <div class="card-header">
+            <div class="panel-title-row">
+              <span class="panel-icon">⌂</span>
+              <h3>Immobilier</h3>
+            </div>
+            <button class="see-more" data-page="immo">Voir le détail →</button>
+          </div>
+          <div class="mini-panel-content">
+            <div class="panel-row"><span id="immoBien1Nom">--</span></div>
+            <div class="panel-row sub">Valeur estimée <span id="immoBien1Valeur">--</span></div>
+            <div class="panel-row sub negative">Crédit restant <span id="immoBien1Dette">--</span></div>
+            <div class="panel-row total">Valeur nette <span id="immoBien1Net">--</span></div>
+          </div>
+        </div>
+
+        <div class="card mini-panel">
+          <div class="card-header">
+            <div class="panel-title-row">
+              <span class="panel-icon">↗</span>
+              <h3>PEA</h3>
+            </div>
+            <button class="see-more" data-page="pea">Voir le détail →</button>
+          </div>
+          <div class="mini-panel-content" id="peaPanelContent">
+            <div class="panel-row"><span id="peaActif1Nom">--</span><span id="peaActif1Valeur">--</span><span class="positive" id="peaActif1Perf">--</span></div>
+            <div class="panel-row"><span id="peaActif2Nom">--</span><span id="peaActif2Valeur">--</span><span class="positive" id="peaActif2Perf">--</span></div>
+            <div class="panel-row total">Total PEA <span id="peaValeurOverview">--</span><span class="positive" id="peaPerfOverview">--</span></div>
+          </div>
+        </div>
+
+        <div class="card mini-panel">
+          <div class="card-header">
+            <div class="panel-title-row">
+              <span class="panel-icon">◎</span>
+              <h3>Cash & Liquidités</h3>
+            </div>
+            <button class="see-more" data-page="cash">Voir le détail →</button>
+          </div>
+          <div class="mini-panel-content">
+            <div class="panel-row"><span id="cash1Nom">--</span><span id="cash1Valeur">--</span></div>
+            <div class="panel-row"><span id="cash2Nom">--</span><span id="cash2Valeur">--</span></div>
+            <div class="panel-row"><span id="cash3Nom">--</span><span id="cash3Valeur">--</span></div>
+            <div class="panel-row"><span id="cash4Nom">--</span><span id="cash4Valeur">--</span></div>
+            <div class="panel-row total">Total <span id="cashTotal">--</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Objectifs -->
+      <div class="card goals-overview">
+        <div class="card-header">
+          <h3>Suivi des objectifs</h3>
+        </div>
+        <div class="goals-grid" id="goalsGrid">
+          <!-- rempli dynamiquement -->
+        </div>
+      </div>
+
+    </div><!-- /overviewPage -->
+
+    <!-- ══ IMMOBILIER PAGE ══ -->
+    <div id="immoPage" class="page">
+      <div class="page-grid-2">
+        <div class="card asset-card">
+          <h4 id="immoP_bien1Nom">--</h4>
+          <div class="asset-value" id="immoP_bien1Net">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien1Valeur">--</span></div>
+            <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien1Dette">--</span></div>
+          </div>
+        </div>
+        <div class="card asset-card">
+          <h4 id="immoP_bien2Nom">--</h4>
+          <div class="asset-value" id="immoP_bien2Net">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien2Valeur">--</span></div>
+            <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien2Dette">--</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PEA PAGE ══ -->
+    <div id="peaPage" class="page">
+      <div class="page-grid-2">
+        <div class="card asset-card">
+          <h4>Valorisation PEA</h4>
+          <div class="asset-value" id="peaP_valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span id="peaP_actif1Nom">--</span><span id="peaP_actif1Valeur">--</span></div>
+            <div class="meta-row"><span id="peaP_actif2Nom">--</span><span id="peaP_actif2Valeur">--</span></div>
+          </div>
+        </div>
+        <div class="card asset-card">
+          <h4>Performance globale</h4>
+          <div class="asset-value positive" id="peaP_perf">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Performance totale du portefeuille</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CASH PAGE ══ -->
+    <div id="cashPage" class="page">
+      <div class="page-grid-4">
+        <div class="card asset-card"><h4 id="cashP_1Nom">--</h4><div class="asset-value" id="cashP_1Valeur">--</div></div>
+        <div class="card asset-card"><h4 id="cashP_2Nom">--</h4><div class="asset-value" id="cashP_2Valeur">--</div></div>
+        <div class="card asset-card"><h4 id="cashP_3Nom">--</h4><div class="asset-value" id="cashP_3Valeur">--</div></div>
+        <div class="card asset-card"><h4 id="cashP_4Nom">--</h4><div class="asset-value" id="cashP_4Valeur">--</div></div>
+      </div>
+    </div>
+
+    <!-- ══ GOALS PAGE ══ -->
+    <div id="goalsPage" class="page">
+      <div class="card" style="padding:28px">
+        <div class="card-header"><h3>Objectifs patrimoniaux</h3><span class="badge">Long terme</span></div>
+        <div class="goals-full" id="goalsFull"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Mobile nav -->
+<nav class="mobile-nav">
+  <button class="mobile-btn active" data-page="overview">⬡ Accueil</button>
+  <button class="mobile-btn" data-page="immo">⌂ Immo</button>
+  <button class="mobile-btn" data-page="pea">↗ PEA</button>
+  <button class="mobile-btn" data-page="cash">◎ Cash</button>
+  <button class="mobile-btn" data-page="goals">◇ Objectifs</button>
+</nav>
 
 <script src="./app.js"></script>
-  
 </body>
 </html>
