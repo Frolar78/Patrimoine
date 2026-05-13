@@ -456,7 +456,17 @@ async function loadSheetData() {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadHistorique().then(() => {
-  initWealthChart();
+  if (wealthData.length < 2) {
+    document.querySelector(".chart-wrap").innerHTML = `
+      <div class="chart-placeholder">
+        <span>📈</span>
+        <p>Historique en cours de construction</p>
+        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+      </div>
+    `;
+  } else {
+    initWealthChart();
+  }
   loadSheetData();
 });
 
