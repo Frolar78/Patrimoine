@@ -398,30 +398,38 @@
       body{ padding-bottom:90px; }
     }
 
-    .sidebar{
-      background:#111318 !important;
-      color:#ffffff !important;
-    }
-    
-    .brand h1{
-      color:#ffffff !important;
-    }
-    
-    .brand span{
-      color:#9ca3af !important;
-    }
-    
-    .nav a{
-      color:#e5e7eb !important;
-    }
-    
-    .nav a.active{
-      background:#ffffff !important;
-      color:#111827 !important;
-    }
-    
-    .sidebar *{
-      opacity:1 !important;
-    }
+.sidebar{
+  background:linear-gradient(180deg,#0f172a 0%,#111827 100%) !important;
+  color:#ffffff !important;
+  border-right:1px solid rgba(255,255,255,.06);
+}
 
+.brand h1{
+  color:#ffffff !important;
+  font-size:28px;
+  letter-spacing:-.08em;
+  font-weight:900;
+}
+
+.brand span{
+  color:#94a3b8 !important;
+  font-size:13px;
+  font-weight:500;
+}
+
+.nav a{
+  color:#e5e7eb !important;
+  font-weight:600;
+}
+
+.nav a.active{
+  background:#ffffff !important;
+  color:#111827 !important;
+  font-weight:800;
+  box-shadow:0 12px 28px rgba(255,255,255,.10);
+}
+
+.sidebar *{
+  opacity:1 !important;
+}
   </style>
