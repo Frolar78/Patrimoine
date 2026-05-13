@@ -193,11 +193,16 @@ setText("immoBien2Valeur", data.immo_bien2_valeur);
 setText("immoBien2Dette", data.immo_bien2_dette);
 setText("immoBien2Net", data.immo_bien2_net);
 
-setText("peaValeur", data.pea_valeur);
-setText(
-  "peaPerf",
-  data.pea_performance?.replaceAll('"', '') + "%"
-);
+setText("peaValeurOverview", data.pea_valeur);
+setText("peaValeurPage", data.pea_valeur);
+
+const peaPerformance =
+  data.pea_performance
+    ? data.pea_performance.replaceAll('"', '') + "%"
+    : "--";
+
+setText("peaPerfOverview", peaPerformance);
+setText("peaPerfPage", peaPerformance);
 
 setText("peaActif1Nom", data.pea_actif1_nom);
 setText("peaActif1Valeur", data.pea_actif1_valeur);
