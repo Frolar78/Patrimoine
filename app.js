@@ -245,6 +245,14 @@ const allocCash = parsePercent(data.allocation_cash);
 
 console.log("Allocations :", allocImmo, allocPea, allocCash);
 
+setText("allocImmoText", allocImmo + "%");
+setText("allocPeaText", allocPea + "%");
+setText("allocCashText", allocCash + "%");
+
+document.getElementById("allocImmoBar").style.width = allocImmo + "%";
+document.getElementById("allocPeaBar").style.width = allocPea + "%";
+document.getElementById("allocCashBar").style.width = allocCash + "%";
+
 if (allocationChart) {
   allocationChart.destroy();
 }
@@ -253,7 +261,7 @@ createAllocationChart(
   allocImmo,
   allocPea,
   allocCash
-);     
+);   
         
 }
 
