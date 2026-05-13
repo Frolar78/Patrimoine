@@ -37,7 +37,7 @@ function createAllocationChart(immo, pea, cash) {
       labels: ["Immobilier", "PEA", "Cash"],
       datasets: [{
         data: [immo, pea, cash],
-        backgroundColor: ["#111827", "#16a34a", "#d1d5db"],
+        backgroundColor: ["#2563eb", "#16a34a", "#f59e0b"],
         borderWidth: 0,
         cutout: "72%"
       }]
