@@ -672,3 +672,62 @@ main {
   .greeting h1 { font-size: 26px; }
   .data-table { font-size: 11px; }
 }
+
+/* ── Skeleton loading ─────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton {
+  display: inline-block;
+  min-width: 80px;
+  min-height: 1em;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--surface2) 25%,
+    var(--border)   50%,
+    var(--surface2) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+/* ── Error banner ─────────────────────────────────────────────────────────── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fff1f1;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+[data-theme="dark"] .error-banner {
+  background: rgba(239,68,68,.1);
+  border-color: rgba(239,68,68,.3);
+  color: #fca5a5;
+}
+
+.error-banner button {
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity .2s;
+}
+
+.error-banner button:hover { opacity: .85; }
