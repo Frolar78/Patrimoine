@@ -35,63 +35,102 @@
        <div class="pill" id="lastUpdate">Dernière mise à jour : --</div>
       </header>
 
-      <div id="overviewPage" class="page active-page">
-        <section class="kpi-grid">
-          <article class="card kpi">
-            <div>
-              <div class="label">Patrimoine net</div>
-              <div class="value" id="patrimoineNet">--</div>
-            </div>
-            <div class="delta positive">+2 431 € ce mois</div>
-          </article>
+<div id="overviewPage" class="page active-page">
 
-          <article class="card kpi">
-            <div>
-              <div class="label">Patrimoine brut</div>
-              <div class="value" id="patrimoineBrut">--</div>
-            </div>
-            <div class="delta">Actifs consolidés</div>
-          </article>
+  <section class="overview-layout">
 
-          <article class="card kpi">
-            <div>
-              <div class="label">Dettes restantes</div>
-              <div class="value" id="dettes">--</div>
-            </div>
-            <div class="delta negative">Crédits immobiliers</div>
-          </article>
-
-          <article class="card kpi">
-            <div>
-              <div class="label">Cash disponible</div>
-              <div class="value" id="cash">--</div>
-            </div>
-            <div class="delta">Sécurité & opportunités</div>
-          </article>
-        </section>
-
-        <section class="main-grid">
-          <article class="card panel">
-            <div class="panel-header">
-              <h3>Évolution du patrimoine net</h3>
-              <span>12 derniers mois</span>
-            </div>
-            <div class="chart-box">
-              <canvas id="wealthChart"></canvas>
-            </div>
-          </article>
-
-          <article class="card panel">
-            <div class="panel-header">
-              <h3>Allocation</h3>
-              <span>Actuelle</span>
-            </div>
-            <div class="chart-box" style="height:220px">
-              <canvas id="allocationChart"></canvas>
-            </div>
-          </article>
-        </section>
+    <article class="card hero-card">
+      <div>
+        <div class="label">Patrimoine net</div>
+        <div class="hero-value" id="patrimoineNet">--</div>
       </div>
+      <div class="hero-delta positive" id="variationMensuelle">--</div>
+    </article>
+
+    <section class="mini-kpi-grid">
+      <article class="card mini-kpi">
+        <div class="label">Patrimoine brut</div>
+        <div class="mini-value" id="patrimoineBrut">--</div>
+      </article>
+
+      <article class="card mini-kpi">
+        <div class="label">Dettes</div>
+        <div class="mini-value" id="dettes">--</div>
+      </article>
+
+      <article class="card mini-kpi">
+        <div class="label">Cash</div>
+        <div class="mini-value" id="cash">--</div>
+      </article>
+
+      <article class="card mini-kpi">
+        <div class="label">PEA</div>
+        <div class="mini-value" id="peaValeur">--</div>
+      </article>
+    </section>
+
+    <article class="card panel wealth-panel">
+      <div class="panel-header">
+        <h3>Évolution du patrimoine net</h3>
+        <span>12 derniers mois</span>
+      </div>
+      <div class="chart-box">
+        <canvas id="wealthChart"></canvas>
+      </div>
+    </article>
+
+    <article class="card panel allocation-panel">
+      <div class="panel-header">
+        <h3>Allocation</h3>
+        <span>Actuelle</span>
+      </div>
+
+      <div class="chart-box allocation-chart-box">
+        <canvas id="allocationChart"></canvas>
+      </div>
+
+      <div class="allocation-list">
+        <div class="allocation-row">
+          <strong>Immobilier</strong>
+          <span id="allocImmoText">--</span>
+          <div class="bar"><span id="allocImmoBar" style="width:0%"></span></div>
+        </div>
+
+        <div class="allocation-row">
+          <strong>PEA</strong>
+          <span id="allocPeaText">--</span>
+          <div class="bar"><span id="allocPeaBar" style="width:0%"></span></div>
+        </div>
+
+        <div class="allocation-row">
+          <strong>Cash</strong>
+          <span id="allocCashText">--</span>
+          <div class="bar"><span id="allocCashBar" style="width:0%"></span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card asset-card overview-asset">
+      <h4>Immobilier</h4>
+      <div class="asset-main" id="immoNet">--</div>
+      <div class="asset-meta">Valeur nette immobilière</div>
+    </article>
+
+    <article class="card asset-card overview-asset">
+      <h4>PEA</h4>
+      <div class="asset-main" id="peaPerf">--</div>
+      <div class="asset-meta">Performance globale</div>
+    </article>
+
+    <article class="card asset-card overview-asset">
+      <h4>Cash</h4>
+      <div class="asset-main" id="cashOverview">--</div>
+      <div class="asset-meta">Liquidités disponibles</div>
+    </article>
+
+  </section>
+
+</div>
 
 <div id="immoPage" class="page">
   <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
