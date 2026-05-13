@@ -399,9 +399,33 @@
     }
 
 .sidebar{
-  background:linear-gradient(180deg,#0f172a 0%,#111827 100%) !important;
+
+  width:250px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37,99,235,.18),
+      transparent 28%
+    ),
+
+    linear-gradient(
+      180deg,
+      #0b1120 0%,
+      #0f172a 100%
+    ) !important;
+
   color:#ffffff !important;
-  border-right:1px solid rgba(255,255,255,.06);
+
+  border-right:
+    1px solid rgba(255,255,255,.04);
+
+  padding:
+    34px 22px;
+
+  position:relative;
+
+  overflow:hidden;
 }
 
 .brand h1{
@@ -418,15 +442,26 @@
 }
 
 .nav a{
-  color:#e5e7eb !important;
+  color:#cbd5e1 !important;
   font-weight:600;
+  border-radius:18px;
+  padding:14px 16px;
+  transition:.18s ease;
+  margin-bottom:6px;
 }
 
 .nav a.active{
-  background:#ffffff !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,1),
+      rgba(248,250,252,1)
+    ) !important;
   color:#111827 !important;
   font-weight:800;
-  box-shadow:0 12px 28px rgba(255,255,255,.10);
+  box-shadow:
+    0 16px 34px rgba(15,23,42,.28);
 }
 
 .sidebar *{
