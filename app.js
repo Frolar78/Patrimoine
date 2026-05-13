@@ -277,9 +277,10 @@ async function loadSheetData() {
   const allocCash = parsePercent(data.allocation_cash);
 
   // ── % net calculés : valeur actif / patrimoine net ────────────────────────
-  const pctNetImmo  = brutNum ? (((v1 + v2) / brutNum) * 100).toFixed(1) + " %" : "--";
-  const pctNetPea   = brutNum ? ((peaNum  / brutNum) * 100).toFixed(1) + " %" : "--";
-  const pctNetCash  = brutNum ? ((cashNum / brutNum) * 100).toFixed(1) + " %" : "--";
+  const immoNetNum  = (v1 + v2) - (d1 + d2);
+  const pctNetImmo  = netNum ? ((immoNetNum / netNum) * 100).toFixed(1) + " %" : "--";
+  const pctNetPea   = netNum ? ((peaNum     / netNum) * 100).toFixed(1) + " %" : "--";
+  const pctNetCash  = netNum ? ((cashNum    / netNum) * 100).toFixed(1) + " %" : "--";
   const pctNetTotal = "100,0 %";
 
   // ── PEA perf ──────────────────────────────────────────────────────────────
