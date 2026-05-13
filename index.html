@@ -39,23 +39,15 @@
 
 <section class="overview-layout">
 
-  <article class="card hero-card">
-    <div>
-      <div class="label">Patrimoine net</div>
-      <div class="hero-value" id="patrimoineNet">--</div>
-    </div>
-
-    <div class="hero-bottom">
-      <div class="hero-delta positive" id="variationMensuelle">
-        +2.4% ce mois
-      </div>
-    </div>
+  <article class="card hero-card area-hero">
+    <div class="label">Patrimoine net</div>
+    <div class="hero-value" id="patrimoineNet">--</div>
+    <div class="hero-delta positive" id="variationMensuelle">Progression mensuelle</div>
   </article>
 
-  <section class="mini-kpi-grid">
-
+  <section class="mini-kpi-grid area-kpis">
     <article class="card mini-kpi">
-      <div class="label">Patrimoine brut</div>
+      <div class="label">Brut</div>
       <div class="mini-value" id="patrimoineBrut">--</div>
     </article>
 
@@ -73,31 +65,22 @@
       <div class="label">PEA</div>
       <div class="mini-value" id="peaValeurOverview">--</div>
     </article>
-
   </section>
 
-  <article class="card panel wealth-panel">
-
+  <article class="card panel wealth-panel area-chart">
     <div class="panel-header">
-      <div>
-        <h3>Évolution du patrimoine net</h3>
-        <span>12 derniers mois</span>
-      </div>
+      <h3>Évolution du patrimoine net</h3>
+      <span>12 derniers mois</span>
     </div>
-
     <div class="chart-box">
       <canvas id="wealthChart"></canvas>
     </div>
-
   </article>
 
-  <article class="card panel allocation-panel">
-
+  <article class="card panel allocation-panel area-allocation">
     <div class="panel-header">
-      <div>
-        <h3>Allocation des actifs</h3>
-        <span>Répartition actuelle</span>
-      </div>
+      <h3>Allocation</h3>
+      <span>Actuelle</span>
     </div>
 
     <div class="chart-box allocation-chart-box">
@@ -105,57 +88,90 @@
     </div>
 
     <div class="allocation-list">
-
       <div class="allocation-row">
         <strong>Immobilier</strong>
         <span id="allocImmoText">--</span>
-        <div class="bar">
-          <span id="allocImmoBar" style="width:0%"></span>
-        </div>
+        <div class="bar"><span id="allocImmoBar" style="width:0%"></span></div>
       </div>
 
       <div class="allocation-row">
         <strong>PEA</strong>
         <span id="allocPeaText">--</span>
-        <div class="bar">
-          <span id="allocPeaBar" style="width:0%"></span>
-        </div>
+        <div class="bar"><span id="allocPeaBar" style="width:0%"></span></div>
       </div>
 
       <div class="allocation-row">
         <strong>Cash</strong>
         <span id="allocCashText">--</span>
-        <div class="bar">
-          <span id="allocCashBar" style="width:0%"></span>
-        </div>
+        <div class="bar"><span id="allocCashBar" style="width:0%"></span></div>
       </div>
-
     </div>
-
   </article>
 
-  <article class="card asset-card overview-asset">
+  <article class="card asset-card area-immo">
     <h4>Immobilier</h4>
     <div class="asset-main" id="immoNet">--</div>
-    <div class="asset-meta">
-      Valeur nette immobilière
-    </div>
+    <div class="asset-meta">Valeur nette immobilière</div>
   </article>
 
-  <article class="card asset-card overview-asset">
-    <h4>PEA</h4>
-    <div class="asset-main" id="peaPerfOverview">--</div>
-    <div class="asset-meta">
-      Performance globale
-    </div>
+  <article class="card asset-card area-pea">
+    <h4>Performance PEA</h4>
+    <div class="asset-main positive" id="peaPerfOverview">--</div>
+    <div class="asset-meta">Performance globale</div>
   </article>
 
-  <article class="card asset-card overview-asset">
-    <h4>Cash</h4>
+  <article class="card asset-card area-cash">
+    <h4>Liquidités</h4>
     <div class="asset-main" id="cashOverview">--</div>
-    <div class="asset-meta">
-      Liquidités disponibles
+    <div class="asset-meta">Cash disponible</div>
+  </article>
+
+  <article class="card panel detail-card area-detail">
+    <div class="panel-header">
+      <h3>Détail du patrimoine</h3>
+      <span>Actifs principaux</span>
     </div>
+
+    <table class="table">
+      <tr>
+        <td>Bien immobilier 1</td>
+        <td id="overviewImmo1">--</td>
+      </tr>
+      <tr>
+        <td>Bien immobilier 2</td>
+        <td id="overviewImmo2">--</td>
+      </tr>
+      <tr>
+        <td>PEA</td>
+        <td id="overviewPea">--</td>
+      </tr>
+      <tr>
+        <td>Cash</td>
+        <td id="overviewCash">--</td>
+      </tr>
+    </table>
+  </article>
+
+  <article class="card panel detail-card area-debt">
+    <div class="panel-header">
+      <h3>Dette</h3>
+      <span>Crédits restants</span>
+    </div>
+
+    <table class="table">
+      <tr>
+        <td>Crédit bien 1</td>
+        <td id="overviewDette1">--</td>
+      </tr>
+      <tr>
+        <td>Crédit bien 2</td>
+        <td id="overviewDette2">--</td>
+      </tr>
+      <tr>
+        <td>Total dettes</td>
+        <td id="overviewDettesTotal">--</td>
+      </tr>
+    </table>
   </article>
 
 </section>
