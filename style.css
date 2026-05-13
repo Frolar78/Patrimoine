@@ -32,7 +32,7 @@
       min-height:100vh;
     }
 
-    .sidebar{
+    .side{
       background:var(--dark);
       color:white;
       padding:32px 24px;
@@ -236,12 +236,23 @@
       overflow:hidden;
     }
 
-    .bar span{
-      display:block;
-      height:100%;
-      background:#111827;
-      border-radius:999px;
-    }
+.bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+}
+
+#allocImmoBar{
+  background:#2563eb;
+}
+
+#allocPeaBar{
+  background:#16a34a;
+}
+
+#allocCashBar{
+  background:#f59e0b;
+}
 
     .asset-grid{
       display:grid;
