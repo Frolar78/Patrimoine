@@ -182,7 +182,7 @@ setText("patrimoineNet", data.patrimoine_net);
 setText("patrimoineBrut", data.patrimoine_brut);
 setText("dettes", data.dettes);
 setText("cash", data.cash_disponible);
-
+setText("cashOverview", data.cash_disponible);
 setText("immoBien1Nom", data.immo_bien1_nom);
 setText("immoBien1Valeur", data.immo_bien1_valeur);
 setText("immoBien1Dette", data.immo_bien1_dette);
