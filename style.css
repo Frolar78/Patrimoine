@@ -100,11 +100,11 @@
       font-size:20px;
     }
 
-    main{
-      padding:34px;
-      padding-left:24px;
-      overflow:hidden;
-    }
+   main{
+     padding:24px;
+     padding-left:22px;
+     overflow:auto;
+   }
 
    .topbar{
      display:flex;
@@ -116,7 +116,7 @@
    }
    
    .title h2{
-     font-size:58px;
+     font-size:42px;
      letter-spacing:-.065em;
      line-height:.92;
      margin-bottom:14px;
@@ -504,8 +504,8 @@
 
 .hero-card{
   position:relative;
-  padding:40px;
-  min-height:240px;
+  padding:26px;
+  min-height:170px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -524,7 +524,7 @@
 }
 
 .hero-value{
-  font-size:72px;
+  font-size:46px;
   line-height:.95;
   letter-spacing:-.07em;
   font-weight:950;
@@ -549,13 +549,13 @@
 }
 
 .mini-kpi{
-  padding:24px;
-  min-height:96px;
+  padding:18px;
+  min-height:82px;
 }
 
 .mini-value{
   margin-top:12px;
-  font-size:28px;
+  font-size:24px;
   line-height:1;
   letter-spacing:-.07em;
   font-weight:900;
