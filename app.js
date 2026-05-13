@@ -116,6 +116,30 @@ document.getElementById("immoDette").textContent = data.dettes;
 document.getElementById("peaValeur").textContent = data.pea_valeur;
 document.getElementById("peaPerf").textContent = data.pea_performance.replaceAll('"', '');
 document.getElementById("cashDetail").textContent = data.cash_disponible;
+        
+document.getElementById("immoBien1Nom").textContent = data.immo_bien1_nom;
+document.getElementById("immoBien1Valeur").textContent = data.immo_bien1_valeur;
+document.getElementById("immoBien1Dette").textContent = data.immo_bien1_dette;
+document.getElementById("immoBien1Net").textContent = data.immo_bien1_net;
+
+document.getElementById("immoBien2Nom").textContent = data.immo_bien2_nom;
+document.getElementById("immoBien2Valeur").textContent = data.immo_bien2_valeur;
+document.getElementById("immoBien2Dette").textContent = data.immo_bien2_dette;
+document.getElementById("immoBien2Net").textContent = data.immo_bien2_net;
+
+document.getElementById("peaActif1Nom").textContent = data.pea_actif1_nom;
+document.getElementById("peaActif1Valeur").textContent = data.pea_actif1_valeur;
+document.getElementById("peaActif2Nom").textContent = data.pea_actif2_nom;
+document.getElementById("peaActif2Valeur").textContent = data.pea_actif2_valeur;
+
+document.getElementById("cash1Nom").textContent = data.cash1_nom;
+document.getElementById("cash1Valeur").textContent = data.cash1_valeur;
+document.getElementById("cash2Nom").textContent = data.cash2_nom;
+document.getElementById("cash2Valeur").textContent = data.cash2_valeur;
+document.getElementById("cash3Nom").textContent = data.cash3_nom;
+document.getElementById("cash3Valeur").textContent = data.cash3_valeur;
+document.getElementById("cash4Nom").textContent = data.cash4_nom;
+document.getElementById("cash4Valeur").textContent = data.cash4_valeur;
       
 }
 
