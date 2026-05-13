@@ -362,7 +362,8 @@ async function loadSheetData() {
   initAllocChart(allocImmo, allocPea, allocCash);
 
   // Tableau détail (% net maintenant calculés)
-  setText("dtImmoVal",     data.immo_bien1_valeur || "--");
+  const immoValTotale = v1 + v2;
+  setText("dtImmoVal", immoValTotale ? fmtEur.format(immoValTotale) : "--");
   setText("dtImmoPctBrut", allocImmo + " %");
   setText("dtImmoPctNet",  pctNetImmo);
   setText("dtImmoEvo",     data.immo_evo_mensuelle || "—");
