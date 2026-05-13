@@ -100,62 +100,68 @@
 <div id="immoPage" class="page">
   <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
     <article class="card asset-card">
-      <h4>Immobilier net</h4>
-      <div class="asset-main" id="immoNet">--</div>
+      <h4 id="immoBien1Nom">--</h4>
+      <div class="asset-main" id="immoBien1Net">--</div>
       <div class="asset-meta">
-        Valeur nette totale de tes biens
+        Valeur : <span id="immoBien1Valeur">--</span><br>
+        Crédit restant : <span id="immoBien1Dette">--</span>
       </div>
     </article>
 
     <article class="card asset-card">
-      <h4>Dettes immobilières</h4>
-      <div class="asset-main" id="immoDette">--</div>
+      <h4 id="immoBien2Nom">--</h4>
+      <div class="asset-main" id="immoBien2Net">--</div>
       <div class="asset-meta">
-        Crédit restant total
+        Valeur : <span id="immoBien2Valeur">--</span><br>
+        Crédit restant : <span id="immoBien2Dette">--</span>
       </div>
     </article>
   </section>
 </div>
 
-      <div id="peaPage" class="page">
-
+<div id="peaPage" class="page">
   <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
-
     <article class="card asset-card">
       <h4>Valorisation PEA</h4>
       <div class="asset-main" id="peaValeur">--</div>
       <div class="asset-meta">
-        CW8 + DCAM
+        <span id="peaActif1Nom">--</span> : <span id="peaActif1Valeur">--</span><br>
+        <span id="peaActif2Nom">--</span> : <span id="peaActif2Valeur">--</span>
       </div>
     </article>
 
     <article class="card asset-card">
-      <h4>Performance</h4>
+      <h4>Performance globale</h4>
       <div class="asset-main positive" id="peaPerf">--</div>
-      <div class="asset-meta">
-        Performance globale du portefeuille
-      </div>
+      <div class="asset-meta">Performance totale du portefeuille</div>
     </article>
-
   </section>
-
 </div>
 
-     <div id="cashPage" class="page">
-
-  <section class="asset-grid">
+<div id="cashPage" class="page">
+  <section class="asset-grid" style="grid-template-columns:repeat(4,1fr);">
+    <article class="card asset-card">
+      <h4 id="cash1Nom">--</h4>
+      <div class="asset-main" id="cash1Valeur">--</div>
+    </article>
 
     <article class="card asset-card">
-      <h4>Cash disponible</h4>
-      <div class="asset-main" id="cashDetail">--</div>
-      <div class="asset-meta">
-        Comptes + livrets
-      </div>
+      <h4 id="cash2Nom">--</h4>
+      <div class="asset-main" id="cash2Valeur">--</div>
     </article>
 
-  </section>
+    <article class="card asset-card">
+      <h4 id="cash3Nom">--</h4>
+      <div class="asset-main" id="cash3Valeur">--</div>
+    </article>
 
+    <article class="card asset-card">
+      <h4 id="cash4Nom">--</h4>
+      <div class="asset-main" id="cash4Valeur">--</div>
+    </article>
+  </section>
 </div>
+      
       <div id="goalsPage" class="page">
         <article class="card panel">
           <div class="panel-header">
