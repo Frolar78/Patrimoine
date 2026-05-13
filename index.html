@@ -125,9 +125,14 @@
             <h3>Évolution du patrimoine net</h3>
             <span class="badge">12 derniers mois</span>
           </div>
-          <div class="chart-wrap">
-            <canvas id="wealthChart"></canvas>
-          </div>
+<div class="range-selector">
+  <button class="range-btn active" data-range="12">12 mois</button>
+  <button class="range-btn" data-range="24">2 ans</button>
+  <button class="range-btn" data-range="all">Tout</button>
+</div>
+<div class="chart-wrap">
+  <canvas id="wealthChart"></canvas>
+</div>
         </div>
 
         <div class="card alloc-card">
