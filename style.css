@@ -105,6 +105,7 @@
 
     main{
       padding:34px;
+      padding-left:24px;
       overflow:hidden;
     }
 
@@ -400,7 +401,7 @@
 
 .sidebar{
 
-  width:250px;
+  width:215px;
 
   background:
     radial-gradient(
