@@ -597,3 +597,98 @@
     grid-template-columns:1fr;
   }
 }
+/* ===== OVERVIEW DASHBOARD DENSE ===== */
+
+.overview-layout{
+  display:grid;
+  grid-template-columns:1.15fr 1fr 1fr;
+  grid-template-areas:
+    "hero kpis kpis"
+    "chart chart allocation"
+    "immo pea cash"
+    "detail detail debt";
+  gap:18px;
+}
+
+.area-hero{ grid-area:hero; }
+.area-kpis{ grid-area:kpis; }
+.area-chart{ grid-area:chart; }
+.area-allocation{ grid-area:allocation; }
+.area-immo{ grid-area:immo; }
+.area-pea{ grid-area:pea; }
+.area-cash{ grid-area:cash; }
+.area-detail{ grid-area:detail; }
+.area-debt{ grid-area:debt; }
+
+.hero-card{
+  min-height:165px !important;
+  padding:24px !important;
+}
+
+.hero-value{
+  font-size:44px !important;
+}
+
+.mini-kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.mini-kpi{
+  min-height:104px !important;
+  padding:18px !important;
+}
+
+.mini-value{
+  font-size:24px !important;
+}
+
+.panel{
+  padding:22px;
+}
+
+.chart-box{
+  height:245px;
+}
+
+.allocation-chart-box{
+  height:150px;
+}
+
+.asset-card{
+  padding:20px;
+  min-height:120px;
+}
+
+.asset-main{
+  font-size:24px;
+}
+
+.detail-card{
+  min-height:210px;
+}
+
+.table td{
+  padding:11px 0;
+}
+
+@media(max-width:1100px){
+  .overview-layout{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "hero"
+      "kpis"
+      "chart"
+      "allocation"
+      "immo"
+      "pea"
+      "cash"
+      "detail"
+      "debt";
+  }
+
+  .mini-kpi-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
