@@ -183,6 +183,16 @@ setText("patrimoineBrut", data.patrimoine_brut);
 setText("dettes", data.dettes);
 setText("cash", data.cash_disponible);
 setText("cashOverview", data.cash_disponible);
+setText("immoNet", data.immo_net || data.immo_bien1_net);
+
+setText("overviewImmo1", data.immo_bien1_net);
+setText("overviewImmo2", data.immo_bien2_net);
+setText("overviewPea", data.pea_valeur);
+setText("overviewCash", data.cash_disponible);
+
+setText("overviewDette1", data.immo_bien1_dette);
+setText("overviewDette2", data.immo_bien2_dette);
+setText("overviewDettesTotal", data.dettes);
 setText("immoBien1Nom", data.immo_bien1_nom);
 setText("immoBien1Valeur", data.immo_bien1_valeur);
 setText("immoBien1Dette", data.immo_bien1_dette);
