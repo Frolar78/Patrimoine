@@ -107,39 +107,42 @@ function switchPage(page) {
 
   console.log(data);
       
-document.getElementById("patrimoineNet").textContent = data.patrimoine_net;
-document.getElementById("patrimoineBrut").textContent = data.patrimoine_brut;
-document.getElementById("dettes").textContent = data.dettes;
-document.getElementById("cash").textContent = data.cash_disponible;
-document.getElementById("immoNet").textContent = data.immobilier_net;
-document.getElementById("immoDette").textContent = data.dettes;
-document.getElementById("peaValeur").textContent = data.pea_valeur;
-document.getElementById("peaPerf").textContent = data.pea_performance.replaceAll('"', '');
-document.getElementById("cashDetail").textContent = data.cash_disponible;
-        
-document.getElementById("immoBien1Nom").textContent = data.immo_bien1_nom;
-document.getElementById("immoBien1Valeur").textContent = data.immo_bien1_valeur;
-document.getElementById("immoBien1Dette").textContent = data.immo_bien1_dette;
-document.getElementById("immoBien1Net").textContent = data.immo_bien1_net;
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value || "--";
+}
 
-document.getElementById("immoBien2Nom").textContent = data.immo_bien2_nom;
-document.getElementById("immoBien2Valeur").textContent = data.immo_bien2_valeur;
-document.getElementById("immoBien2Dette").textContent = data.immo_bien2_dette;
-document.getElementById("immoBien2Net").textContent = data.immo_bien2_net;
+setText("patrimoineNet", data.patrimoine_net);
+setText("patrimoineBrut", data.patrimoine_brut);
+setText("dettes", data.dettes);
+setText("cash", data.cash_disponible);
 
-document.getElementById("peaActif1Nom").textContent = data.pea_actif1_nom;
-document.getElementById("peaActif1Valeur").textContent = data.pea_actif1_valeur;
-document.getElementById("peaActif2Nom").textContent = data.pea_actif2_nom;
-document.getElementById("peaActif2Valeur").textContent = data.pea_actif2_valeur;
+setText("immoBien1Nom", data.immo_bien1_nom);
+setText("immoBien1Valeur", data.immo_bien1_valeur);
+setText("immoBien1Dette", data.immo_bien1_dette);
+setText("immoBien1Net", data.immo_bien1_net);
 
-document.getElementById("cash1Nom").textContent = data.cash1_nom;
-document.getElementById("cash1Valeur").textContent = data.cash1_valeur;
-document.getElementById("cash2Nom").textContent = data.cash2_nom;
-document.getElementById("cash2Valeur").textContent = data.cash2_valeur;
-document.getElementById("cash3Nom").textContent = data.cash3_nom;
-document.getElementById("cash3Valeur").textContent = data.cash3_valeur;
-document.getElementById("cash4Nom").textContent = data.cash4_nom;
-document.getElementById("cash4Valeur").textContent = data.cash4_valeur;
+setText("immoBien2Nom", data.immo_bien2_nom);
+setText("immoBien2Valeur", data.immo_bien2_valeur);
+setText("immoBien2Dette", data.immo_bien2_dette);
+setText("immoBien2Net", data.immo_bien2_net);
+
+setText("peaValeur", data.pea_valeur);
+setText("peaPerf", data.pea_performance?.replaceAll('"', ''));
+
+setText("peaActif1Nom", data.pea_actif1_nom);
+setText("peaActif1Valeur", data.pea_actif1_valeur);
+setText("peaActif2Nom", data.pea_actif2_nom);
+setText("peaActif2Valeur", data.pea_actif2_valeur);
+
+setText("cash1Nom", data.cash1_nom);
+setText("cash1Valeur", data.cash1_valeur);
+setText("cash2Nom", data.cash2_nom);
+setText("cash2Valeur", data.cash2_valeur);
+setText("cash3Nom", data.cash3_nom);
+setText("cash3Valeur", data.cash3_valeur);
+setText("cash4Nom", data.cash4_nom);
+setText("cash4Valeur", data.cash4_valeur);
       
 }
 
