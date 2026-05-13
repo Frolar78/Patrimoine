@@ -500,21 +500,25 @@
         </section>
       </div>
 
-      <div id="immoPage" class="page">
-        <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
-          <article class="card asset-card">
-            <h4>Résidence principale</h4>
-            <div class="asset-main">325 000 €</div>
-            <div class="asset-meta">Crédit restant : 178 000 €<br>Valeur nette : 147 000 €</div>
-          </article>
-
-          <article class="card asset-card">
-            <h4>Bien secondaire</h4>
-            <div class="asset-main">98 000 €</div>
-            <div class="asset-meta">Crédit restant : 5 000 €<br>Valeur nette : 93 000 €</div>
-          </article>
-        </section>
+<div id="immoPage" class="page">
+  <section class="asset-grid" style="grid-template-columns:1fr 1fr;">
+    <article class="card asset-card">
+      <h4>Immobilier net</h4>
+      <div class="asset-main" id="immoNet">--</div>
+      <div class="asset-meta">
+        Valeur nette totale de tes biens
       </div>
+    </article>
+
+    <article class="card asset-card">
+      <h4>Dettes immobilières</h4>
+      <div class="asset-main" id="immoDette">--</div>
+      <div class="asset-meta">
+        Crédit restant total
+      </div>
+    </article>
+  </section>
+</div>
 
       <div id="peaPage" class="page">
         <article class="card panel">
@@ -692,13 +696,12 @@ function switchPage(page) {
   console.log(data);
       
 document.getElementById("patrimoineNet").textContent = data.patrimoine_net;
-
 document.getElementById("patrimoineBrut").textContent = data.patrimoine_brut;
-
 document.getElementById("dettes").textContent = data.dettes;
-
 document.getElementById("cash").textContent = data.cash_disponible;
-
+document.getElementById("immoNet").textContent = data.immobilier_net;
+document.getElementById("immoDette").textContent = data.dettes;
+      
 }
 
 loadSheetData();
