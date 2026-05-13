@@ -76,11 +76,80 @@ function switchPage(page) {
 });
 
 // ── Wealth chart ──────────────────────────────────────────────────────────────
-const wealthData = [
-  44000, 45500, 47100, 48900,
-  50300, 52100, 53800, 55200,
-  57300, 59000, 59741, 62172
-];
+let wealthData = [];
+let wealthLabels = [];
+
+async function loadHistorique() {
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ7tkMrE-yzrCTzOYeDkOdTNU8vHSsCGtVaLUDrv8ZyTtSa44d8cSeLNaTjw6CPdg/pub?gid=1865808494&single=true&output=csv";
+  try {
+    const res = await fetch(url);
+    const csv = await res.text();
+    const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0] && r[3]);
+    wealthData   = rows.map(r => parseNum(r[3].replace(/[^\d.-]/g, "")));
+    wealthLabels = rows.map(r => {
+      const d = new Date(r[0].split("/").reverse().join("-"));
+      return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
+    });
+  } catch(e) {
+    console.warn("Historique indisponible", e);
+    wealthData   = [44000,45500,47100,48900,50300,52100,53800,55200,57300,59000,59741,62172];
+    wealthLabels = ["Juin","Juil","Août","Sept","Oct","Nov","Déc","Jan","Fév","Mars","Avr","Mai"];
+  }
+}
+
+let wealthChart;
+let currentRange = 12;
+
+function renderWealthChart(range) {
+  currentRange = range;
+  const slice  = range === "all" ? wealthData   : wealthData.slice(-range);
+  const labels = range === "all" ? wealthLabels : wealthLabels.slice(-range);
+
+  if (wealthChart) {
+    wealthChart.data.labels = labels;
+    wealthChart.data.datasets[0].data = slice;
+    wealthChart.update();
+    return;
+  }
+
+  const canvas = document.getElementById("wealthChart");
+  const ctx    = canvas.getContext("2d");
+  const grad   = ctx.createLinearGradient(0, 0, 0, 240);
+  grad.addColorStop(0, "rgba(79,110,247,.18)");
+  grad.addColorStop(1, "rgba(79,110,247,0)");
+
+  wealthChart = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Patrimoine net",
+        data: slice,
+        borderColor: "#4f6ef7",
+        backgroundColor: grad,
+        fill: true,
+        tension: .42,
+        pointRadius: 4,
+        pointBackgroundColor: "#4f6ef7",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
+      },
+      scales: {
+        x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
+        y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
+      }
+    }
+  });
+}
 
 function initWealthChart() {
   const canvas = document.getElementById("wealthChart");
