@@ -113,20 +113,24 @@
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
-      margin-bottom:26px;
+      margin-bottom:38px;
       gap:20px;
     }
 
     .title h2{
-      font-size:34px;
-      letter-spacing:-.06em;
-      line-height:1;
+      font-size:46px;
+      letter-spacing:-.10em;
+      line-height:.95;
       margin-bottom:10px;
+      font-weight:900;
+      color:#0f172a;
     }
 
     .title p{
-      color:var(--muted);
-      font-size:14px;
+      color:#64748b;
+      font-size:15px;
+      line-height:1.6;
+      max-width:620px;
     }
 
     .pill{
@@ -140,12 +144,12 @@
       white-space:nowrap;
     }
 
-.kpi-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:24px;
-  margin-bottom:30px;
-}
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:24px;
+      margin-bottom:30px;
+    }
 
     .card{
       background:var(--card);
