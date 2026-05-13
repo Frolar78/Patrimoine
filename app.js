@@ -25,24 +25,35 @@
       }
     });
 
-    const allocationCtx = document.getElementById('allocationChart');
-    new Chart(allocationCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Immobilier','PEA','Cash'],
-        datasets: [{
-          data: [74,10,16],
-          backgroundColor: ['#111827','#16a34a','#d1d5db'],
-          borderWidth: 0,
-          cutout: '72%'
-        }]
-      },
-      options: {
-        responsive:true,
-        maintainAspectRatio:false,
-        plugins:{ legend:{ display:false } }
+let allocationChart;
+
+function createAllocationChart(immo, pea, cash) {
+
+  const allocationCtx = document.getElementById("allocationChart");
+
+  allocationChart = new Chart(allocationCtx, {
+    type: "doughnut",
+    data: {
+      labels: ["Immobilier", "PEA", "Cash"],
+      datasets: [{
+        data: [immo, pea, cash],
+        backgroundColor: ["#111827", "#16a34a", "#d1d5db"],
+        borderWidth: 0,
+        cutout: "72%"
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
       }
-    });
+    }
+  });
+
+}
     const pageConfig = {
   overview: {
     title: "Patrimoine",
@@ -154,6 +165,20 @@ const today = new Date().toLocaleDateString("fr-FR", {
 });
 
 setText("lastUpdate", "Dernière mise à jour : " + today);
+        
+const allocImmo = parseFloat(data.allocation_immobilier.replace(",", "."));
+const allocPea = parseFloat(data.allocation_pea.replace(",", "."));
+const allocCash = parseFloat(data.allocation_cash.replace(",", "."));
+
+if (allocationChart) {
+  allocationChart.destroy();
+}
+
+createAllocationChart(
+  allocImmo,
+  allocPea,
+  allocCash
+);     
         
 }
 
