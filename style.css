@@ -106,29 +106,31 @@
       overflow:hidden;
     }
 
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      margin-bottom:38px;
-      gap:20px;
-    }
+   .topbar{
+     display:flex;
+     justify-content:space-between;
+     align-items:flex-start;
+     margin-bottom:34px;
+     gap:24px;
+     padding:6px 4px;
+   }
+   
+   .title h2{
+     font-size:58px;
+     letter-spacing:-.065em;
+     line-height:.92;
+     margin-bottom:14px;
+     font-weight:950;
+     color:#020617;
+   }
 
-    .title h2{
-      font-size:46px;
-      letter-spacing:-.10em;
-      line-height:.95;
-      margin-bottom:10px;
-      font-weight:900;
-      color:#0f172a;
-    }
-
-    .title p{
-      color:#64748b;
-      font-size:15px;
-      line-height:1.6;
-      max-width:620px;
-    }
+.title p{
+  color:#64748b;
+  font-size:15px;
+  line-height:1.7;
+  max-width:720px;
+  font-weight:500;
+}
 
     .pill{
       background:#fff;
