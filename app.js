@@ -560,6 +560,13 @@ loadHistorique().then(() => {
   loadSheetData();
 });
 
+document.getElementById("refreshBtn")?.addEventListener("click", () => {
+  const btn = document.getElementById("refreshBtn");
+  btn.classList.add("spinning");
+  setTimeout(() => btn.classList.remove("spinning"), 600);
+  loadSheetData();
+});
+
 document.querySelectorAll(".range-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".range-btn").forEach(b => b.classList.remove("active"));
