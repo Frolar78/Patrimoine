@@ -453,13 +453,106 @@
     </div>
 
     <!-- ══ CASH PAGE ══ -->
-    <div id="cashPage" class="page">
-      <div class="page-grid-4">
-        <div class="card asset-card"><h4 id="cashP_1Nom">--</h4><div class="asset-value" id="cashP_1Valeur">--</div></div>
-        <div class="card asset-card"><h4 id="cashP_2Nom">--</h4><div class="asset-value" id="cashP_2Valeur">--</div></div>
-        <div class="card asset-card"><h4 id="cashP_3Nom">--</h4><div class="asset-value" id="cashP_3Valeur">--</div></div>
-        <div class="card asset-card"><h4 id="cashP_4Nom">--</h4><div class="asset-value" id="cashP_4Valeur">--</div></div>
+        <div id="cashPage" class="page">
+
+      <!-- KPIs Cash -->
+      <div class="pea-kpi-row">
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Total livrets</div>
+          <div class="kpi-value" id="cashP_total">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Provision impôts</div>
+          <div class="kpi-value negative">-6 029 €</div>
+          <div class="kpi-hint">Sept · Oct · Nov · Déc</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Cash disponible</div>
+          <div class="kpi-value positive" id="cashP_dispo">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Intérêts annuels estimés</div>
+          <div class="kpi-value positive" id="cashP_interets">--</div>
+        </div>
       </div>
+
+      <!-- Livrets -->
+      <div class="page-grid-2" style="margin-top:18px">
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_1Nom">--</h4>
+            <span class="pea-etf-perf positive">1,5 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_1Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_1Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_2Nom">--</h4>
+            <span class="pea-etf-perf" style="color:var(--gold)">1,05 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_2Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_2Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Compte rémunéré — flat tax 30%</span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_3Nom">--</h4>
+            <span class="pea-etf-perf positive">1,5 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_3Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_3Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_4Nom">--</h4>
+            <span class="pea-etf-perf positive">1,5 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_4Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_4Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Provision impôts -->
+      <div class="card" style="margin-top:18px;padding:24px">
+        <div class="card-header">
+          <h3>Provision impôts 2026</h3>
+          <span class="badge negative">6 029 €</span>
+        </div>
+        <div class="impots-grid">
+          <div class="impot-mois" id="impotSept">
+            <div class="impot-label">Septembre</div>
+            <div class="impot-val">1 507 €</div>
+          </div>
+          <div class="impot-mois" id="impotOct">
+            <div class="impot-label">Octobre</div>
+            <div class="impot-val">1 507 €</div>
+          </div>
+          <div class="impot-mois" id="impotNov">
+            <div class="impot-label">Novembre</div>
+            <div class="impot-val">1 507 €</div>
+          </div>
+          <div class="impot-mois" id="impotDec">
+            <div class="impot-label">Décembre</div>
+            <div class="impot-val">1 508 €</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- ══ GOALS PAGE ══ -->
