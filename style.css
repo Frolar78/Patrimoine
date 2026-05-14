@@ -822,3 +822,30 @@ main {
   font-size: 11px;
   color: var(--text3);
 }
+/* ── PEA page ─────────────────────────────────────────────────────────────── */
+.pea-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.pea-kpi-card {
+  padding: 20px;
+}
+
+.pea-etf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.pea-etf-perf {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .pea-kpi-row { grid-template-columns: repeat(2, 1fr); }
+}
