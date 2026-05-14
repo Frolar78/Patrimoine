@@ -978,7 +978,9 @@ main {
 
 @media (max-width: 600px) {
   .greeting p { display: none; }
-  .greeting h1 { font-size: 22px; }
-  .topbar { align-items: center; }
+  .greeting h1 { font-size: 28px; }
+  .topbar { align-items: center; flex-wrap: nowrap; }
+  .topbar-right { flex-shrink: 0; }
 }
+
 
