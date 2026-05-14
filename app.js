@@ -436,6 +436,29 @@ async function loadSheetData() {
   setText("immoP_bien2Dette",  data.immo_bien2_dette  || "--");
   setText("immoP_bien2Net",    v2 || d2 ? fmtEur.format(v2 - d2) : "--");
 
+  // ── Barres de remboursement ───────────────────────────────────────────────
+  const credits = [
+    { initial: 423000, debut: new Date(2021, 6, 1), mensualites: 300, dette: d1, id: "1" },
+    { initial: 430000, debut: new Date(2026, 5, 1), mensualites: 300, dette: d2, id: "2" }
+  ];
+
+  credits.forEach(c => {
+    const today        = new Date();
+    const moisEcoules  = Math.max(0, (today.getFullYear() - c.debut.getFullYear()) * 12 + (today.getMonth() - c.debut.getMonth()));
+    const moisRestants = Math.max(0, c.mensualites - moisEcoules);
+    const pctRembourse = Math.min(100, Math.round((c.initial - c.dette) / c.initial * 100));
+    const dateEcheance = new Date(c.debut.getFullYear(), c.debut.getMonth() + c.mensualites, 1);
+    const echeanceStr  = dateEcheance.toLocaleDateString("fr-FR", { month:"long", year:"numeric" });
+
+    const el = document.getElementById(`creditBar${c.id}`);
+    if (!el) return;
+    el.style.width = pctRembourse + "%";
+    setText(`creditPct${c.id}`,      pctRembourse + " % remboursé");
+    setText(`creditRestant${c.id}`,  fmtEur.format(c.dette));
+    setText(`creditMois${c.id}`,     moisRestants + " mensualités restantes");
+    setText(`creditEcheance${c.id}`, "Échéance : " + echeanceStr);
+  });
+
   setText("peaP_valeur",       data.pea_valeur        || "--");
   setText("peaP_actif1Nom",    data.pea_actif1_nom    || "--");
   setText("peaP_actif1Valeur", data.pea_actif1_valeur || "--");
