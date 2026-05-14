@@ -15,6 +15,9 @@
   --blue:        #4f6ef7;
   --gold:        #f0a500;
   --dark-nav:    #1a1a2e;
+  --color-immo:   #6366f1;
+  --color-pea:    #10b981;
+  --color-cash:   #f59e0b;
   --shadow-sm:   0 2px 8px rgba(0,0,0,.06);
   --shadow-md:   0 8px 28px rgba(0,0,0,.09);
   --shadow-lg:   0 18px 50px rgba(0,0,0,.12);
@@ -33,6 +36,9 @@
   --text:      #e8ecf4;
   --text2:     #8b95b0;
   --text3:     #4e576e;
+  --color-immo: #a78bfa;
+  --color-pea:  #34d399;
+  --color-cash: #fbbf24;
   --shadow-sm: 0 2px 8px rgba(0,0,0,.3);
   --shadow-md: 0 8px 28px rgba(0,0,0,.4);
   --shadow-lg: 0 18px 50px rgba(0,0,0,.5);
