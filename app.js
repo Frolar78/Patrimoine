@@ -575,3 +575,5 @@ document.querySelectorAll(".range-btn").forEach(btn => {
     renderWealthChart(range);
   });
 });
+
+lucide.createIcons();
