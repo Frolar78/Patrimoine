@@ -978,8 +978,8 @@ main {
 
 @media (max-width: 600px) {
   .greeting p { display: none; }
-  .greeting h1 { font-size: 28px; }
-  .topbar { align-items: center; flex-wrap: nowrap; }
+  .greeting h1 { font-size: 20px; white-space: nowrap; }
+  .topbar { align-items: center; flex-wrap: nowrap; gap: 8px; }
   .topbar-right { flex-shrink: 0; }
 }
 
