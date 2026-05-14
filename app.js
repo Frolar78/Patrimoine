@@ -301,13 +301,13 @@ async function loadSheetData() {
   const cashNum = parseNum((data.cash_disponible  ||"").replace(/[^\d.-]/g,""));
 
   // ── Variation mensuelle ───────────────────────────────────────────────────
-  const last = wealthData[wealthData.length - 1];
-  const prev = wealthData[wealthData.length - 2];
-  const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : last - prev;
-  const pos  = diff >= 0;
-  const diffFmt = (pos ? "+" : "") + fmtEur.format(diff);
-  const pctMens = prev ? (diff / prev * 100) : 0;
-  const pctFmt  = (pos ? "+" : "") + pctMens.toFixed(2) + " %";
+  const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
+  const prev = wealthData.length > 1 ? wealthData[wealthData.length - 2] : null;
+  const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (last && prev ? last - prev : null);
+  const pos     = diff !== null && diff >= 0;
+  const diffFmt = diff !== null ? (pos ? "+" : "") + fmtEur.format(diff) : "--";
+  const pctMens = diff !== null && prev ? (diff / prev * 100) : null;
+  const pctFmt  = pctMens !== null ? (pos ? "+" : "") + pctMens.toFixed(2) + " %" : "--";
 
   // ── Allocation ────────────────────────────────────────────────────────────
   const allocImmo = parsePercent(data.allocation_immobilier);
