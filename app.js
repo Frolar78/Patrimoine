@@ -8,6 +8,14 @@ function toggleTheme() {
   const isDark = html.getAttribute("data-theme") === "dark";
   html.setAttribute("data-theme", isDark ? "light" : "dark");
   localStorage.setItem("theme", isDark ? "light" : "dark");
+  // Recréer le donut avec les nouvelles couleurs
+  if (allocChart) {
+    const immo = getComputedStyle(document.documentElement).getPropertyValue('--color-immo').trim();
+    const pea  = getComputedStyle(document.documentElement).getPropertyValue('--color-pea').trim();
+    const cash = getComputedStyle(document.documentElement).getPropertyValue('--color-cash').trim();
+    allocChart.data.datasets[0].backgroundColor = [immo, pea, cash];
+    allocChart.update();
+  }
 }
 
 themeBtn.addEventListener("click", toggleTheme);
