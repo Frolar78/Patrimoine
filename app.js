@@ -4,11 +4,16 @@ const themeBtn = document.getElementById("themeToggle");
 
 if (localStorage.getItem("theme") === "dark") html.setAttribute("data-theme", "dark");
 
-themeBtn.addEventListener("click", () => {
+function toggleTheme() {
   const isDark = html.getAttribute("data-theme") === "dark";
   html.setAttribute("data-theme", isDark ? "light" : "dark");
   localStorage.setItem("theme", isDark ? "light" : "dark");
-});
+  const mobileBtn = document.getElementById("themeToggleMobile");
+  if (mobileBtn) mobileBtn.textContent = isDark ? "☀" : "☾";
+}
+
+themeBtn.addEventListener("click", toggleTheme);
+document.getElementById("themeToggleMobile")?.addEventListener("click", toggleTheme);
 
 // ── Greeting ──────────────────────────────────────────────────────────────────
 const now   = new Date();
