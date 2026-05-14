@@ -53,7 +53,7 @@ function parseCSV(text) {
 
 function parseNum(val) {
   if (!val) return 0;
-  return parseFloat(val.toString().replace(/"/g,"").replace(/%/g,"").replace(/\s/g,"").replace(",",".").trim()) || 0;
+  return parseFloat(val.toString().replace(/"/g,"").replace(/%/g,"").replace(/[\s\u00a0\u202f]/g,"").replace(",",".").trim()) || 0;
 }
 
 function parsePercent(val) { return parseNum(val); }
