@@ -185,16 +185,16 @@ function initAllocChart(immo, pea, cash) {
 // ── Render goals ──────────────────────────────────────────────────────────────
 function renderGoals(data, currentNet) {
   const defaultGoals = [
-    { label:"Patrimoine net 100 000 €", target:100000 },
-    { label:"Patrimoine net 250 000 €", target:250000 },
-    { label:"Patrimoine net 500 000 €", target:500000 },
-    { label:"Indépendance financière",  target:1000000 }
+    { label:"PEA 10 000 €",            target:10000,  current: peaNum },
+    { label:"PEA 50 000 €",            target:50000,  current: peaNum },
+    { label:"PEA 100 000 €",           target:100000, current: peaNum },
+    { label:"Patrimoine net 100 000 €", target:100000 }
   ];
 
   const goals = defaultGoals.map((g, i) => {
     const label   = data[`goal${i+1}_label`]   || g.label;
     const target  = data[`goal${i+1}_target`]  ? parseNum(data[`goal${i+1}_target`])  : g.target;
-    const current = data[`goal${i+1}_current`] ? parseNum(data[`goal${i+1}_current`]) : currentNet;
+    const current = data[`goal${i+1}_current`] ? parseNum(data[`goal${i+1}_current`]) : (g.current ?? currentNet);
     const pct     = Math.min(100, Math.round(current / target * 100));
     return { label, target, current, pct };
   });
