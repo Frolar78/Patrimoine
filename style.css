@@ -983,4 +983,8 @@ main {
   .topbar-right { flex-shrink: 0; }
 }
 
+/* ── Lucide icons sizing ──────────────────────────────────────────────────── */
+.kpi-icon svg { width: 20px; height: 20px; stroke-width: 1.5; }
+.nav-icon svg { width: 16px; height: 16px; stroke-width: 1.5; }
+.mobile-btn svg { width: 14px; height: 14px; stroke-width: 1.5; vertical-align: middle; }
 
