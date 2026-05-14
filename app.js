@@ -473,8 +473,9 @@ async function loadSheetData() {
   setText("peaP_plusvalue", peaVerse ? (plusValue >= 0 ? "+" : "") + fmtEur.format(plusValue) : "--");
 
   // Perfs par ETF
-  const perf1 = parseNum((data.pea_actif1_perf||"").replace(/[^\d.-]/g,""));
-  const perf2 = parseNum((data.pea_actif2_perf||"").replace(/[^\d.-]/g,""));
+    const perf1 = parsePercent(data.pea_actif1_perf);
+  const perf2 = parsePercent(data.pea_actif2_perf);
+
   setText("peaP_actif1Perf", isNaN(perf1) ? "--" : (perf1 >= 0 ? "+" : "") + perf1.toFixed(1) + " %");
   setText("peaP_actif2Perf", isNaN(perf2) ? "--" : (perf2 >= 0 ? "+" : "") + perf2.toFixed(1) + " %");
 
