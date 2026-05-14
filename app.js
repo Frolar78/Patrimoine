@@ -498,6 +498,35 @@ async function loadSheetData() {
   setText("cashP_3Nom",  data.cash3_nom); setText("cashP_3Valeur", data.cash3_valeur);
   setText("cashP_4Nom",  data.cash4_nom); setText("cashP_4Valeur", data.cash4_valeur);
 
+  // ── Cash page calculs ─────────────────────────────────────────────────────
+  const taux = [0.015, 0.0105, 0.015, 0.015];
+  const cashVals = [c1, c2, c3, c4];
+  const provision = 6029;
+
+  const totalLivrets = c1 + c2 + c3 + c4;
+  const cashDispo    = totalLivrets - provision;
+  const interetsTotal = cashVals.reduce((sum, v, i) => sum + v * taux[i], 0);
+
+  setText("cashP_total",    fmtEur.format(totalLivrets));
+  setText("cashP_dispo",    fmtEur.format(cashDispo));
+  setText("cashP_interets", "+" + fmtEur.format(Math.round(interetsTotal)));
+
+  cashVals.forEach((v, i) => {
+    const interets = Math.round(v * taux[i]);
+    setText(`cashP_${i+1}Interets`, "+" + fmtEur.format(interets));
+  });
+
+  // Highlight mois impôts passés
+  const moisActuel = new Date().getMonth(); // 0=Jan ... 11=Dec
+  ["impotSept","impotOct","impotNov","impotDec"].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const moisImpot = 8 + i; // Sept=8, Oct=9, Nov=10, Dec=11
+    if (moisActuel > moisImpot) el.classList.add("impot-paye");
+    else if (moisActuel === moisImpot) el.classList.add("impot-courant");
+  });
+
+
   // Sync badge
   const upd    = new Date().toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric" });
   const uptime = new Date().toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
