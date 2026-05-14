@@ -976,3 +976,9 @@ main {
   .theme-pill { display: flex; }
 }
 
+@media (max-width: 600px) {
+  .greeting p { display: none; }
+  .greeting h1 { font-size: 22px; }
+  .topbar { align-items: center; }
+}
+
