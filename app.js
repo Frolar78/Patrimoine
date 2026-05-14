@@ -397,7 +397,12 @@ async function loadSheetData() {
   setText("immoBien1Nom",    data.immo_bien1_nom    || "Résidence principale");
   setText("immoBien1Valeur", data.immo_bien1_valeur || "--");
   setText("immoBien1Dette",  data.immo_bien1_dette  || "--");
-  setText("immoBien1Net",    v1 || d1 ? fmtEur.format(v1 - d1) : "--");
+  setText("immoBien1Net", v1 || d1 ? fmtEur.format(v1 - d1) : "--");
+  setText("immoBien2Nom",    data.immo_bien2_nom    || "Bien 2");
+  setText("immoBien2Valeur", data.immo_bien2_valeur || "--");
+  setText("immoBien2Dette",  data.immo_bien2_dette  || "--");
+  setText("immoBien2Net",    v2 || d2 ? fmtEur.format(v2 - d2) : "--");
+
 
   // Mini panel PEA
   setText("peaActif1Nom",     data.pea_actif1_nom    || "--");
