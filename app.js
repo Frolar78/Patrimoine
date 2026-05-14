@@ -356,7 +356,7 @@ async function loadSheetData() {
   setText("allocImmoText", allocImmo + " %");
   setText("allocPeaText",  allocPea  + " %");
   setText("allocCashText", allocCash + " %");
-  setText("allocImmoVal",  data.immo_bien1_valeur || "--");
+  setText("allocImmoVal",  immoValTotale ? fmtEur.format(immoValTotale) : "--");
   setText("allocPeaVal",   data.pea_valeur        || "--");
   setText("allocCashVal",  data.cash_disponible   || "--");
   initAllocChart(allocImmo, allocPea, allocCash);
@@ -386,7 +386,7 @@ async function loadSheetData() {
   document.getElementById("repImmoBar").style.width  = allocImmo + "%";
   document.getElementById("repPeaBar").style.width   = allocPea  + "%";
   document.getElementById("repCashBar").style.width  = allocCash + "%";
-  setText("repImmoVal",     data.immo_bien1_valeur || "--");
+  setText("repImmoVal",     immoValTotale ? fmtEur.format(immoValTotale) : "--");
   setText("repPeaVal",      data.pea_valeur        || "--");
   setText("repCashVal",     data.cash_disponible   || "--");
   setText("repTotalActifs", data.patrimoine_brut   || "--");
