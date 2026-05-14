@@ -778,3 +778,47 @@ main {
   .table-total td { font-size: 11px; }
   .data-table { font-size: 11px; }
 }
+/* ── Credit progress bar ──────────────────────────────────────────────────── */
+.credit-progress {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.credit-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 10px;
+}
+
+.credit-progress-header span:last-child {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.credit-bar {
+  height: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.credit-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), #7c9fff);
+  border-radius: 999px;
+  transition: width 1s ease;
+}
+
+.credit-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text3);
+}
