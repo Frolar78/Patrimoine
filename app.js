@@ -169,7 +169,12 @@ function initAllocChart(immo, pea, cash) {
       labels: ["Immobilier","Actions (PEA)","Cash & Liquidités"],
       datasets: [{
         data: [immo, pea, cash],
-        backgroundColor: ["#1a1a2e","#4f6ef7","#f0a500"],
+        backgroundColor: [
+          getComputedStyle(document.documentElement).getPropertyValue('--color-immo').trim(),
+          getComputedStyle(document.documentElement).getPropertyValue('--color-pea').trim(),
+          getComputedStyle(document.documentElement).getPropertyValue('--color-cash').trim()
+        ],
+
         borderWidth: 0,
         cutout: "74%"
       }]
