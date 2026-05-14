@@ -988,3 +988,54 @@ main {
 .nav-icon svg { width: 16px; height: 16px; stroke-width: 1.5; }
 .mobile-btn svg { width: 14px; height: 14px; stroke-width: 1.5; vertical-align: middle; }
 
+/* ── Super pill ───────────────────────────────────────────────────────────── */
+.super-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 16px;
+  box-shadow: var(--shadow-sm);
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.pill-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.pill-refresh {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text2);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: all var(--transition);
+}
+
+.pill-refresh:hover { color: var(--text); transform: rotate(180deg); }
+.pill-refresh.spinning { animation: spin .6s linear; }
+.pill-refresh svg { width: 14px; height: 14px; stroke-width: 2; }
+
+.pill-theme {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Cacher l'ancienne date-pill et les anciens boutons */
+@media (max-width: 1100px) {
+  .date-pill { display: none; }
+  .refresh-btn { display: none; }
+  .theme-pill { display: none; }
+}
+
