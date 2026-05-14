@@ -565,6 +565,7 @@ document.getElementById("refreshBtn")?.addEventListener("click", () => {
   btn.classList.add("spinning");
   setTimeout(() => btn.classList.remove("spinning"), 600);
   loadSheetData();
+  lucide.createIcons();
 });
 
 document.querySelectorAll(".range-btn").forEach(btn => {
