@@ -459,12 +459,38 @@ async function loadSheetData() {
     setText(`creditEcheance${c.id}`, "Échéance : " + echeanceStr);
   });
 
-  setText("peaP_valeur",       data.pea_valeur        || "--");
+    setText("peaP_valeur",       data.pea_valeur        || "--");
   setText("peaP_actif1Nom",    data.pea_actif1_nom    || "--");
   setText("peaP_actif1Valeur", data.pea_actif1_valeur || "--");
   setText("peaP_actif2Nom",    data.pea_actif2_nom    || "--");
   setText("peaP_actif2Valeur", data.pea_actif2_valeur || "--");
   setText("peaP_perf",         peaPerfText);
+  setText("peaP_verse",        data.pea_verse         || "--");
+
+  // Plus-value
+  const peaVerse = parseNum((data.pea_verse||"").replace(/[^\d.-]/g,""));
+  const plusValue = peaNum - peaVerse;
+  setText("peaP_plusvalue", peaVerse ? (plusValue >= 0 ? "+" : "") + fmtEur.format(plusValue) : "--");
+
+  // Perfs par ETF
+  const perf1 = parseNum((data.pea_actif1_perf||"").replace(/[^\d.-]/g,""));
+  const perf2 = parseNum((data.pea_actif2_perf||"").replace(/[^\d.-]/g,""));
+  setText("peaP_actif1Perf", isNaN(perf1) ? "--" : (perf1 >= 0 ? "+" : "") + perf1.toFixed(1) + " %");
+  setText("peaP_actif2Perf", isNaN(perf2) ? "--" : (perf2 >= 0 ? "+" : "") + perf2.toFixed(1) + " %");
+
+  // Poids dans le portefeuille
+  const etf1Num = parseNum((data.pea_actif1_valeur||"").replace(/[^\d.-]/g,""));
+  const etf2Num = parseNum((data.pea_actif2_valeur||"").replace(/[^\d.-]/g,""));
+  const pct1 = peaNum ? Math.round(etf1Num / peaNum * 100) : 0;
+  const pct2 = peaNum ? Math.round(etf2Num / peaNum * 100) : 0;
+  setText("peaP_actif1Pct",    pct1 + " %");
+  setText("peaP_actif2Pct",    pct2 + " %");
+  setText("peaP_actif1PctBar", pct1 + " %");
+  setText("peaP_actif2PctBar", pct2 + " %");
+  const bar1 = document.getElementById("peaBar1");
+  const bar2 = document.getElementById("peaBar2");
+  if (bar1) bar1.style.width = pct1 + "%";
+  if (bar2) bar2.style.width = pct2 + "%";
 
   setText("cashP_1Nom",  data.cash1_nom); setText("cashP_1Valeur", data.cash1_valeur);
   setText("cashP_2Nom",  data.cash2_nom); setText("cashP_2Valeur", data.cash2_valeur);
