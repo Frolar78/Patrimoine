@@ -374,24 +374,82 @@
     </div>
 
     <!-- ══ PEA PAGE ══ -->
-    <div id="peaPage" class="page">
-      <div class="page-grid-2">
+        <div id="peaPage" class="page">
+
+      <!-- KPIs PEA -->
+      <div class="pea-kpi-row">
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Valorisation totale</div>
+          <div class="kpi-value positive" id="peaP_valeur">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Total versé</div>
+          <div class="kpi-value" id="peaP_verse">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Plus-value</div>
+          <div class="kpi-value positive" id="peaP_plusvalue">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Performance</div>
+          <div class="kpi-value positive" id="peaP_perf">--</div>
+        </div>
+      </div>
+
+      <!-- ETFs -->
+      <div class="page-grid-2" style="margin-top:18px">
         <div class="card asset-card">
-          <h4>Valorisation PEA</h4>
-          <div class="asset-value" id="peaP_valeur">--</div>
+          <div class="pea-etf-header">
+            <h4 id="peaP_actif1Nom">--</h4>
+            <span class="pea-etf-perf positive" id="peaP_actif1Perf">--</span>
+          </div>
+          <div class="asset-value" id="peaP_actif1Valeur">--</div>
           <div class="asset-meta">
-            <div class="meta-row"><span id="peaP_actif1Nom">--</span><span id="peaP_actif1Valeur">--</span></div>
-            <div class="meta-row"><span id="peaP_actif2Nom">--</span><span id="peaP_actif2Valeur">--</span></div>
+            <div class="meta-row"><span>Part du PEA</span><span id="peaP_actif1Pct">--</span></div>
+            <div class="meta-row"><span>Indice répliqué</span><span>MSCI World</span></div>
+          </div>
+          <div class="credit-progress">
+            <div class="credit-progress-header">
+              <span>Poids dans le portefeuille</span>
+              <span id="peaP_actif1PctBar">--</span>
+            </div>
+            <div class="credit-bar"><span id="peaBar1" style="width:0%;background:var(--blue)"></span></div>
           </div>
         </div>
+
         <div class="card asset-card">
-          <h4>Performance globale</h4>
-          <div class="asset-value positive" id="peaP_perf">--</div>
+          <div class="pea-etf-header">
+            <h4 id="peaP_actif2Nom">--</h4>
+            <span class="pea-etf-perf positive" id="peaP_actif2Perf">--</span>
+          </div>
+          <div class="asset-value" id="peaP_actif2Valeur">--</div>
           <div class="asset-meta">
-            <div class="meta-row"><span>Performance totale du portefeuille</span></div>
+            <div class="meta-row"><span>Part du PEA</span><span id="peaP_actif2Pct">--</span></div>
+            <div class="meta-row"><span>Indice répliqué</span><span>MSCI World</span></div>
+          </div>
+          <div class="credit-progress">
+            <div class="credit-progress-header">
+              <span>Poids dans le portefeuille</span>
+              <span id="peaP_actif2PctBar">--</span>
+            </div>
+            <div class="credit-bar"><span id="peaBar2" style="width:0%;background:#f0a500"></span></div>
           </div>
         </div>
       </div>
+
+      <!-- Graphique placeholder -->
+      <div class="card" style="margin-top:18px;padding:24px">
+        <div class="card-header">
+          <h3>Évolution du PEA</h3>
+          <span class="badge">Historique en cours</span>
+        </div>
+        <div class="chart-placeholder">
+          <span>📈</span>
+          <p>Historique en cours de construction</p>
+          <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+        </div>
+      </div>
+
     </div>
 
     <!-- ══ CASH PAGE ══ -->
