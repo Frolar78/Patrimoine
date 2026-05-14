@@ -356,7 +356,7 @@ async function loadSheetData() {
   setText("allocImmoText", allocImmo + " %");
   setText("allocPeaText",  allocPea  + " %");
   setText("allocCashText", allocCash + " %");
-  setText("allocImmoVal",  immoValTotale ? fmtEur.format(immoValTotale) : "--");
+  setText("allocImmoVal",  (v1 + v2) ? fmtEur.format(v1 + v2) : "--");
   setText("allocPeaVal",   data.pea_valeur        || "--");
   setText("allocCashVal",  data.cash_disponible   || "--");
   initAllocChart(allocImmo, allocPea, allocCash);
