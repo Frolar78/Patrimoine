@@ -538,7 +538,7 @@ async function loadSheetData() {
   setText("lastUpdate", upd + " – " + uptime);
 
   // Goals
-  const currentNet = netNum || last;
+  const currentNet = netNum || (last ?? 0);
   renderGoals(data, currentNet);
 
   hideSkeleton();
