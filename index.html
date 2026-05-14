@@ -27,21 +27,22 @@
 
       <nav class="nav">
         <a href="#" class="nav-link active" data-page="overview">
-          <span class="nav-icon">⬡</span> Dashboard
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span> Dashboard
         </a>
         <a href="#" class="nav-link" data-page="immo">
-          <span class="nav-icon">⌂</span> Immobilier
+          <span class="nav-icon"><i data-lucide="home"></i></span> Immobilier
         </a>
         <a href="#" class="nav-link" data-page="pea">
-          <span class="nav-icon">↗</span> Investissements
+          <span class="nav-icon"><i data-lucide="line-chart"></i></span> Investissements
         </a>
         <a href="#" class="nav-link" data-page="cash">
-          <span class="nav-icon">◎</span> Cash & Liquidités
+          <span class="nav-icon"><i data-lucide="piggy-bank"></i></span> Cash & Liquidités
         </a>
         <a href="#" class="nav-link" data-page="goals">
-          <span class="nav-icon">◇</span> Objectifs
+          <span class="nav-icon"><i data-lucide="target"></i></span> Objectifs
         </a>
       </nav>
+
     </div>
 
     <div class="sidebar-bottom">
@@ -98,31 +99,31 @@
           <div class="kpi-hint" id="variationPct">--</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon">⬡</div>
+          <div class="kpi-icon"><i data-lucide="layers"></i></div>
           <div class="kpi-label">Patrimoine brut</div>
           <div class="kpi-value" id="patrimoineBrut">--</div>
           <div class="kpi-hint">Actifs totaux</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon">↙</div>
+          <div class="kpi-icon"><i data-lucide="trending-down"></i></div>
           <div class="kpi-label">Dettes restantes</div>
           <div class="kpi-value negative" id="dettes">--</div>
           <div class="kpi-hint">Crédits en cours</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon">◎</div>
+          <div class="kpi-icon"><i data-lucide="wallet"></i></div>
           <div class="kpi-label">Cash disponible</div>
           <div class="kpi-value" id="cashKpi">--</div>
           <div class="kpi-hint">Liquidités disponibles</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon">↗</div>
+          <div class="kpi-icon"><i data-lucide="trending-up"></i></div>
           <div class="kpi-label">Variation mensuelle</div>
           <div class="kpi-value positive" id="varMensuelleKpi">--</div>
           <div class="kpi-hint positive" id="varMensuellePctKpi">--</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-icon">◷</div>
+          <div class="kpi-icon"><i data-lucide="percent"></i></div>
           <div class="kpi-label">Performance YTD</div>
           <div class="kpi-value positive" id="perfYtd">--</div>
           <div class="kpi-hint">Depuis janvier</div>
@@ -578,11 +579,11 @@
 
 <!-- Mobile nav -->
 <nav class="mobile-nav">
-  <button class="mobile-btn active" data-page="overview">⬡ Accueil</button>
-  <button class="mobile-btn" data-page="immo">⌂ Immo</button>
-  <button class="mobile-btn" data-page="pea">↗ PEA</button>
-  <button class="mobile-btn" data-page="cash">◎ Cash</button>
-  <button class="mobile-btn" data-page="goals">◇ Objectifs</button>
+  <button class="mobile-btn active" data-page="overview"><i data-lucide="layout-dashboard"></i> Accueil</button>
+  <button class="mobile-btn" data-page="immo"><i data-lucide="home"></i> Immo</button>
+  <button class="mobile-btn" data-page="pea"><i data-lucide="line-chart"></i> PEA</button>
+  <button class="mobile-btn" data-page="cash"><i data-lucide="piggy-bank"></i> Cash</button>
+  <button class="mobile-btn" data-page="goals"><i data-lucide="target"></i> Objectifs</button>
 </nav>
 
 <script src="./app.js"></script>
