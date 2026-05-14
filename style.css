@@ -920,3 +920,12 @@ main {
   to   { transform: rotate(360deg); }
 }
 
+/* ── Topbar right ─────────────────────────────────────────────────────────── */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+
