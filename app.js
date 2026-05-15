@@ -266,7 +266,7 @@ function renderGoals(data, currentNet, peaVal) {
 
 // ── Skeleton ──────────────────────────────────────────────────────────────────
 function showSkeleton() {
-  document.querySelectorAll(".kpi-value, .asset-value").forEach(el => {
+  document.querySelectorAll(".kpi-value:not(.kpi-static), .asset-value").forEach(el => {
     el.classList.add("skeleton");
     el.textContent = "";
   });
