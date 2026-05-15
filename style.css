@@ -1064,3 +1064,5 @@ main {
 }
 
 .epargne-bar span.negative { background: var(--red); }
+
+.kpi-static { /* exclut du skeleton */ }
