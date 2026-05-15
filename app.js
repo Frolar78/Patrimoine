@@ -66,11 +66,12 @@ function parseCSV(text) {
 function parseNum(val) {
   if (!val) return 0;
   let s = val.toString().replace(/"/g,"").replace(/%/g,"").replace(/[€]/g,"").trim();
-  // Détecte format européen : 1.234,56 ou 1 234,56
-  if (/\d,\d{2}$/.test(s)) {
+  // Format européen avec séparateur de milliers : 1.234,56 ou 1 234,56
+  if (/^\d{1,3}([.\s\u00a0\u202f]\d{3})+,\d+$/.test(s)) {
     s = s.replace(/[\s\u00a0\u202f.]/g,"").replace(",",".");
   } else {
-    s = s.replace(/[\s\u00a0\u202f,]/g,"");
+    // Simple virgule décimale : 16,1 → 16.1
+    s = s.replace(/[\s\u00a0\u202f]/g,"").replace(",",".");
   }
   return parseFloat(s) || 0;
 }
