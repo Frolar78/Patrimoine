@@ -342,49 +342,130 @@
 
     </div><!-- /overviewPage -->
 
-    <!-- ══ IMMOBILIER PAGE ══ -->
-    <div id="immoPage" class="page">
-      <div class="page-grid-2">
-        <div class="card asset-card">
-          <h4 id="immoP_bien1Nom">--</h4>
-          <div class="asset-value" id="immoP_bien1Net">--</div>
-          <div class="asset-meta">
-            <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien1Valeur">--</span></div>
-            <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien1Dette">--</span></div>
-          </div>
-          <div class="credit-progress">
-            <div class="credit-progress-header">
-              <span>Remboursement</span>
-              <span id="creditPct1">--</span>
-            </div>
-            <div class="credit-bar"><span id="creditBar1" style="width:0%"></span></div>
-            <div class="credit-meta">
-              <span id="creditMois1">--</span>
-              <span id="creditEcheance1">--</span>
-            </div>
+<!-- ══ IMMOBILIER PAGE ══ -->
+<div id="immoPage" class="page">
+
+  <!-- KPIs immo -->
+  <div class="pea-kpi-row" style="margin-bottom:18px">
+    <div class="card pea-kpi-card">
+      <div class="kpi-label">Valeur brute totale</div>
+      <div class="kpi-value" id="immoP_brutTotal">--</div>
+    </div>
+    <div class="card pea-kpi-card">
+      <div class="kpi-label">Dettes totales</div>
+      <div class="kpi-value negative" id="immoP_detteTotal">--</div>
+    </div>
+    <div class="card pea-kpi-card">
+      <div class="kpi-label">Valeur nette totale</div>
+      <div class="kpi-value positive" id="immoP_netTotal">--</div>
+    </div>
+    <div class="card pea-kpi-card">
+      <div class="kpi-label">Cash-flow locatif</div>
+      <div class="kpi-value" id="immoP_cashflowTotal">--</div>
+      <div class="kpi-hint">Mensuel net</div>
+    </div>
+  </div>
+
+  <div class="page-grid-2">
+
+    <!-- Kilford : Locatif -->
+    <div class="card asset-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h4 id="immoP_bien1Nom" style="margin-bottom:0">--</h4>
+        <span style="font-size:11px;font-weight:600;color:var(--color-pea);background:rgba(16,185,129,.1);border:1px solid var(--color-pea);border-radius:999px;padding:3px 10px">Locatif</span>
+      </div>
+      <div class="asset-value" id="immoP_bien1Net">--</div>
+      <div class="asset-meta">
+        <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien1Valeur">--</span></div>
+        <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien1Dette">--</span></div>
+      </div>
+      <div class="credit-progress">
+        <div class="credit-progress-header">
+          <span>Remboursement</span>
+          <span id="creditPct1">--</span>
+        </div>
+        <div class="credit-bar"><span id="creditBar1" style="width:0%"></span></div>
+        <div class="credit-meta">
+          <span id="creditMois1">--</span>
+          <span id="creditEcheance1">--</span>
+        </div>
+      </div>
+      <div class="credit-progress" style="margin-top:20px">
+        <div class="credit-progress-header" style="margin-bottom:14px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">Revenus locatifs</span>
+        </div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Loyer mensuel CC</span><span class="positive" id="immoP_bien1Loyer">--</span></div>
+          <div class="meta-row"><span>Mensualité bancaire</span><span id="immoP_bien1Mensualite">--</span></div>
+          <div class="meta-row"><span>Charges mensuelles</span><span id="immoP_bien1Charges">--</span></div>
+          <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:2px solid var(--border)">
+            <span style="font-weight:700">Cash-flow net</span>
+            <span style="font-weight:700" id="immoP_bien1Cashflow">--</span>
           </div>
         </div>
-        <div class="card asset-card">
-          <h4 id="immoP_bien2Nom">--</h4>
-          <div class="asset-value" id="immoP_bien2Net">--</div>
-          <div class="asset-meta">
-            <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien2Valeur">--</span></div>
-            <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien2Dette">--</span></div>
+      </div>
+      <div class="credit-progress" style="margin-top:4px">
+        <div class="credit-progress-header" style="margin-bottom:14px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">Rendements</span>
+        </div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Rendement brut</span><span class="positive" id="immoP_bien1RendBrut">--</span></div>
+          <div class="meta-row"><span>Rendement net</span><span class="positive" id="immoP_bien1RendNet">--</span></div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="credit-progress-header">
+            <span>Rendement brut</span>
+            <span id="immoP_bien1RendBrutBar">--</span>
           </div>
-          <div class="credit-progress">
-            <div class="credit-progress-header">
-              <span>Remboursement</span>
-              <span id="creditPct2">--</span>
-            </div>
-            <div class="credit-bar"><span id="creditBar2" style="width:0%"></span></div>
-            <div class="credit-meta">
-              <span id="creditMois2">--</span>
-              <span id="creditEcheance2">--</span>
-            </div>
+          <div class="credit-bar"><span id="rendBar1" style="width:0%;background:var(--color-pea)"></span></div>
+          <div class="credit-meta"><span>0 %</span><span>Objectif 6 %</span></div>
+        </div>
+      </div>
+      <div class="credit-progress" style="margin-top:4px">
+        <div class="credit-progress-header" style="margin-bottom:14px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">Détail charges annuelles</span>
+        </div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Taxe foncière</span><span id="immoP_bien1Taxe">--</span></div>
+          <div class="meta-row"><span>Charges copropriété</span><span id="immoP_bien1Copro">--</span></div>
+          <div class="meta-row"><span>Assurance PNO</span><span id="immoP_bien1AssurPno">--</span></div>
+          <div class="meta-row"><span>Assurance crédit</span><span id="immoP_bien1AssurCredit">--</span></div>
+          <div class="meta-row"><span>Gestion locative</span><span id="immoP_bien1Gestion">--</span></div>
+          <div class="meta-row"><span>Comptable LMNP</span><span id="immoP_bien1Comptable">--</span></div>
+          <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:1px solid var(--border)">
+            <span style="font-weight:700">Total annuel</span>
+            <span style="font-weight:700" id="immoP_bien1ChargesTotal">--</span>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- La Turbie : Résidence principale -->
+    <div class="card asset-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h4 id="immoP_bien2Nom" style="margin-bottom:0">--</h4>
+        <span style="font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px">Résidence principale</span>
+      </div>
+      <div class="asset-value" id="immoP_bien2Net">--</div>
+      <div class="asset-meta">
+        <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien2Valeur">--</span></div>
+        <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien2Dette">--</span></div>
+      </div>
+      <div class="credit-progress">
+        <div class="credit-progress-header">
+          <span>Remboursement</span>
+          <span id="creditPct2">--</span>
+        </div>
+        <div class="credit-bar"><span id="creditBar2" style="width:0%"></span></div>
+        <div class="credit-meta">
+          <span id="creditMois2">--</span>
+          <span id="creditEcheance2">--</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
     <!-- ══ PEA PAGE ══ -->
         <div id="peaPage" class="page">
