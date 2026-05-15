@@ -91,21 +91,35 @@ function switchPage(page) {
 let wealthData = [];
 let wealthLabels = [];
 
+let peaData_hist = [];
+let peaLabels_hist = [];
+
 async function loadHistorique() {
-const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=1865808494&single=true&output=csv";
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=1865808494&single=true&output=csv";
   try {
     const res = await fetch(url);
     const csv = await res.text();
     const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0] && r[3]);
+
     wealthData   = rows.map(r => parseNum(r[3].replace(/[^\d.-]/g, "")));
     wealthLabels = rows.map(r => {
       const d = new Date(r[0].split("/").reverse().join("-"));
       return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
     });
+
+    // PEA historique — colonne F (index 5)
+    peaData_hist  = rows.map(r => parseNum((r[5] || "").replace(/[^\d.-]/g, ""))).filter(v => v > 0);
+    peaLabels_hist = rows
+      .filter(r => parseNum((r[5] || "").replace(/[^\d.-]/g, "")) > 0)
+      .map(r => {
+        const d = new Date(r[0].split("/").reverse().join("-"));
+        return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
+      });
+
   } catch(e) {
     console.warn("Historique indisponible", e);
-    wealthData   = [44000,45500,47100,48900,50300,52100,53800,55200,57300,59000,59741,62172];
-    wealthLabels = ["Juin","Juil","Août","Sept","Oct","Nov","Déc","Jan","Fév","Mars","Avr","Mai"];
+    wealthData   = [];
+    wealthLabels = [];
   }
 }
 
