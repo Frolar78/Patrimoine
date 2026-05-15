@@ -572,6 +572,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadHistorique().then(() => {
+  // Graphique patrimoine net
   if (wealthData.length < 2) {
     document.querySelector(".chart-wrap").innerHTML = `
       <div class="chart-placeholder">
@@ -583,6 +584,61 @@ loadHistorique().then(() => {
   } else {
     initWealthChart();
   }
+
+  // Graphique PEA
+  if (peaData_hist.length < 2) {
+    document.getElementById("peaChartWrap").innerHTML = `
+      <div class="chart-placeholder">
+        <span>📈</span>
+        <p>Historique en cours de construction</p>
+        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+      </div>
+    `;
+    const badge = document.getElementById("peaChartBadge");
+    if (badge) badge.textContent = "Historique en cours";
+  } else {
+    const canvas = document.getElementById("peaChart");
+    const ctx    = canvas.getContext("2d");
+    const grad   = ctx.createLinearGradient(0, 0, 0, 240);
+    grad.addColorStop(0, "rgba(52,211,153,.18)");
+    grad.addColorStop(1, "rgba(52,211,153,0)");
+
+    new Chart(canvas, {
+      type: "line",
+      data: {
+        labels: peaLabels_hist,
+        datasets: [{
+          label: "Valeur PEA",
+          data: peaData_hist,
+          borderColor: "#34d399",
+          backgroundColor: grad,
+          fill: true,
+          tension: .42,
+          pointRadius: 4,
+          pointBackgroundColor: "#34d399",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
+        },
+        scales: {
+          x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
+          y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
+        }
+      }
+    });
+
+    const badge = document.getElementById("peaChartBadge");
+    if (badge) badge.textContent = peaData_hist.length + " points";
+  }
+
   loadSheetData();
 });
 
