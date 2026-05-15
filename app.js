@@ -477,7 +477,7 @@ setText("immoP_detteTotal", data.dettes || "--");
 setText("immoP_netTotal",   immoNetNum  ? fmtEur.format(immoNetNum)  : "--");
 const cfKpiEl = document.getElementById("immoP_cashflowTotal");
 if (cfKpiEl) {
-  cfKpiEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) + " €" : "--";
+  cfKpiEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) : "--";
   cfKpiEl.classList.toggle("positive", cashflow >= 0);
   cfKpiEl.classList.toggle("negative", cashflow < 0);
 }
@@ -493,7 +493,7 @@ setText("immoP_bien1Mensualite", mensualite1 ? fmtEur.format(mensualite1) : "--"
 setText("immoP_bien1Charges",    chargesMens ? fmtEur.format(chargesMens) : "--");
 const cfKilfordEl = document.getElementById("immoP_bien1Cashflow");
 if (cfKilfordEl) {
-  cfKilfordEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) + " €/mois" : "--";
+  cfKilfordEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) + "/mois" : "--";
   cfKilfordEl.classList.toggle("positive", cashflow >= 0);
   cfKilfordEl.classList.toggle("negative", cashflow < 0);
 }
