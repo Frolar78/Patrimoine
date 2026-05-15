@@ -11,7 +11,30 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-
+  
+<div id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-brand">
+      <div class="lock-icon">◈</div>
+      <div class="lock-title">Mon Patrimoine</div>
+      <div class="lock-sub">Accès sécurisé — entrez votre code</div>
+    </div>
+    <div class="lock-input-wrap">
+      <input
+        class="lock-input"
+        id="lockInput"
+        type="password"
+        placeholder="••••••••"
+        autocomplete="off"
+        maxlength="20"
+      />
+    </div>
+    <button class="lock-btn" id="lockBtn">Accéder →</button>
+    <div class="lock-error" id="lockError"></div>
+    <div class="lock-footer">Tableau de bord privé</div>
+  </div>
+</div>
+  
 <div class="app">
 
   <!-- ── Sidebar ── -->
