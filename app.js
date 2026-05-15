@@ -471,15 +471,52 @@ const chargesTotal = taxe + copro + assurPno + assurCredit + gestion + comptable
   const totalCash = c1 + c2 + c3 + c4;
   setText("cashTotal", totalCash ? fmtEur.format(totalCash) : (data.cash_disponible || "--"));
 
-  // Pages dédiées Immo
-  setText("immoP_bien1Nom",    data.immo_bien1_nom    || "Résidence principale");
-  setText("immoP_bien1Valeur", data.immo_bien1_valeur || "--");
-  setText("immoP_bien1Dette",  data.immo_bien1_dette  || "--");
-  setText("immoP_bien1Net",    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(v1 - d1) : "--"));
-  setText("immoP_bien2Nom",    data.immo_bien2_nom    || "Bien 2");
-  setText("immoP_bien2Valeur", data.immo_bien2_valeur || "--");
-  setText("immoP_bien2Dette",  data.immo_bien2_dette  || "--");
-  setText("immoP_bien2Net",    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : "--"));
+// Page Immobilier
+setText("immoP_brutTotal",  immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
+setText("immoP_detteTotal", data.dettes || "--");
+setText("immoP_netTotal",   immoNetNum  ? fmtEur.format(immoNetNum)  : "--");
+const cfKpiEl = document.getElementById("immoP_cashflowTotal");
+if (cfKpiEl) {
+  cfKpiEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) + " €" : "--";
+  cfKpiEl.classList.toggle("positive", cashflow >= 0);
+  cfKpiEl.classList.toggle("negative", cashflow < 0);
+}
+
+// Card Kilford
+setText("immoP_bien1Nom",    data.immo_bien1_nom    || "Appartement Kilford");
+setText("immoP_bien1Valeur", data.immo_bien1_valeur || "--");
+setText("immoP_bien1Dette",  data.immo_bien1_dette  || "--");
+setText("immoP_bien1Net",    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(v1 - d1) : "--"));
+
+setText("immoP_bien1Loyer",      loyer       ? fmtEur.format(loyer)       : "--");
+setText("immoP_bien1Mensualite", mensualite1 ? fmtEur.format(mensualite1) : "--");
+setText("immoP_bien1Charges",    chargesMens ? fmtEur.format(chargesMens) : "--");
+const cfKilfordEl = document.getElementById("immoP_bien1Cashflow");
+if (cfKilfordEl) {
+  cfKilfordEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) + " €/mois" : "--";
+  cfKilfordEl.classList.toggle("positive", cashflow >= 0);
+  cfKilfordEl.classList.toggle("negative", cashflow < 0);
+}
+
+setText("immoP_bien1RendBrut",    rendBrut ? rendBrut.toFixed(2) + " %" : "--");
+setText("immoP_bien1RendNet",     rendNet  ? rendNet.toFixed(2)  + " %" : "--");
+setText("immoP_bien1RendBrutBar", rendBrut ? rendBrut.toFixed(2) + " %" : "--");
+const rendBar = document.getElementById("rendBar1");
+if (rendBar) rendBar.style.width = Math.min(100, (rendBrut / 6) * 100) + "%";
+
+setText("immoP_bien1Taxe",        taxe        ? fmtEur.format(taxe)        : "--");
+setText("immoP_bien1Copro",       copro       ? fmtEur.format(copro)       : "--");
+setText("immoP_bien1AssurPno",    assurPno    ? fmtEur.format(assurPno)    : "--");
+setText("immoP_bien1AssurCredit", assurCredit ? fmtEur.format(assurCredit) : "--");
+setText("immoP_bien1Gestion",     gestion     ? fmtEur.format(gestion)     : "--");
+setText("immoP_bien1Comptable",   comptable   ? fmtEur.format(comptable)   : "--");
+setText("immoP_bien1ChargesTotal",chargesTotal ? fmtEur.format(chargesTotal) : "--");
+
+// Card La Turbie
+setText("immoP_bien2Nom",    data.immo_bien2_nom    || "Maison La Turbie");
+setText("immoP_bien2Valeur", data.immo_bien2_valeur || "--");
+setText("immoP_bien2Dette",  data.immo_bien2_dette  || "--");
+setText("immoP_bien2Net",    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : "--"));
 
   // Barres de remboursement
   const credits = [
