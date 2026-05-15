@@ -116,7 +116,7 @@ async function loadHistorique() {
       return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
     });
 
-    // PEA historique — colonne F (index 5)
+    // PEA historique — colonne F ( 5)
     peaData_hist  = rows.map(r => parseNum((r[5] || "").replace(/[^\d.-]/g, ""))).filter(v => v > 0);
     peaLabels_hist = rows
       .filter(r => parseNum((r[5] || "").replace(/[^\d.-]/g, "")) > 0)
@@ -367,10 +367,13 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   if (data.perf_ytd) {
     ytdText = "+" + parseNum(data.perf_ytd).toFixed(1) + " %";
   } else {
-    // Jan = index 7 dans le tableau (Déc=6, Jan=7)
-    const janVal = wealthData[7];
+    // Premier point de l'année en cours comme base YTD
+    const currentYear = new Date().getFullYear();
+    const yearStr = currentYear.toString().slice(-2);
+    const firstOfYearIdx = wealthLabels.findIndex(l => l.includes(yearStr));
+    const janVal = firstOfYearIdx >= 0 ? wealthData[firstOfYearIdx] : wealthData[0];
     const mayVal = wealthData[wealthData.length - 1];
-    if (janVal) {
+    if (janVal && mayVal) {
       const ytdPct = ((mayVal - janVal) / janVal * 100);
       ytdText = (ytdPct >= 0 ? "+" : "") + ytdPct.toFixed(1) + " %";
     }
