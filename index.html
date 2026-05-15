@@ -450,16 +450,14 @@
         </div>
       </div>
 
-      <!-- Graphique placeholder -->
+<!-- Graphique PEA -->
       <div class="card" style="margin-top:18px;padding:24px">
         <div class="card-header">
           <h3>Évolution du PEA</h3>
-          <span class="badge">Historique en cours</span>
+          <span class="badge" id="peaChartBadge">Historique en cours</span>
         </div>
-        <div class="chart-placeholder">
-          <span>📈</span>
-          <p>Historique en cours de construction</p>
-          <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+        <div id="peaChartWrap" class="chart-wrap">
+          <canvas id="peaChart"></canvas>
         </div>
       </div>
 
