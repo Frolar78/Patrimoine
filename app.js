@@ -541,7 +541,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   // ── Cash page calculs ─────────────────────────────────────────────────────
   const taux = [0.015, 0.0105, 0.015, 0.015];
   const cashVals = [c1, c2, c3, c4];
-  const provision = 6029;
+  const provision = 4770;
 
   const totalLivrets = c1 + c2 + c3 + c4;
   const cashDispo    = totalLivrets - provision;
