@@ -330,7 +330,22 @@ async function loadSheetData() {
   const v2 = parseNum(data.immo_bien2_valeur);
   const d2 = parseNum(data.immo_bien2_dette);
   const n2 = parseNum(data.immo_bien2_net);
-
+  
+// ── Données locatives Kilford (bien1) ─────────────────────────────────────
+const loyer        = parseNum(data.immo_bien1_loyer);
+const mensualite1  = parseNum(data.immo_bien1_mensualite);
+const chargesMens  = parseNum(data.immo_bien1_charges);
+const cashflow     = parseNum(data.immo_bien1_cashflow);
+const rendBrut     = parseNum(data.immo_bien1_rendement_brut);
+const rendNet      = parseNum(data.immo_bien1_rendement_net);
+const taxe         = parseNum(data.immo_bien1_taxe_fonciere);
+const copro        = parseNum(data.immo_bien1_charges_copro);
+const assurPno     = parseNum(data.immo_bien1_assurance_pno);
+const assurCredit  = parseNum(data.immo_bien1_assurance_credit);
+const gestion      = parseNum(data.immo_bien1_gestion_locative);
+const comptable    = parseNum(data.immo_bien1_comptable_lmnp);
+const chargesTotal = taxe + copro + assurPno + assurCredit + gestion + comptable;
+  
   // ── Variation mensuelle ───────────────────────────────────────────────────
   const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
   const prev = wealthData.length > 1 ? wealthData[wealthData.length - 2] : null;
