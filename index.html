@@ -92,6 +92,7 @@
       </div>
     </div>
   </div>
+
 </header>
 
 <!-- ══ OVERVIEW PAGE ══ -->
@@ -141,19 +142,22 @@
   <!-- Charts row -->
   <div class="charts-row">
     <div class="card chart-card">
-      <div class="card-header">
+    <div class="card-header">
         <h3>Évolution du patrimoine net</h3>
       </div>
-      <div class="range-selector">
-        <button class="range-btn active" data-range="12">12 mois</button>
-        <button class="range-btn" data-range="24">2 ans</button>
-        <button class="range-btn" data-range="all">Tout</button>
-      </div>
-      <div class="chart-wrap">
-        <canvas id="wealthChart"></canvas>
-      </div>
-    </div>
+```
 
+<div class="range-selector">
+  <button class="range-btn active" data-range="12">12 mois</button>
+  <button class="range-btn" data-range="24">2 ans</button>
+  <button class="range-btn" data-range="all">Tout</button>
+</div>
+<div class="chart-wrap">
+  <canvas id="wealthChart"></canvas>
+</div>
+        </div>
+
+```
     <div class="card alloc-card">
       <div class="card-header">
         <h3>Allocation patrimoniale</h3>
@@ -163,7 +167,7 @@
       </div>
       <div class="alloc-legend">
         <div class="alloc-item">
-          <div class="alloc-dot" style="background:var(--color-immo)"></div>
+        <div class="alloc-dot" style="background:var(--color-immo)"></div>
           <div class="alloc-info">
             <span>Immobilier</span>
             <strong id="allocImmoVal">--</strong>
@@ -171,7 +175,7 @@
           <div class="alloc-pct" id="allocImmoText">--</div>
         </div>
         <div class="alloc-item">
-          <div class="alloc-dot" style="background:var(--color-pea)"></div>
+        <div class="alloc-dot" style="background:var(--color-pea)"></div>
           <div class="alloc-info">
             <span>Actions (PEA)</span>
             <strong id="allocPeaVal">--</strong>
@@ -179,7 +183,7 @@
           <div class="alloc-pct" id="allocPeaText">--</div>
         </div>
         <div class="alloc-item">
-          <div class="alloc-dot" style="background:var(--color-cash)"></div>
+        <div class="alloc-dot" style="background:var(--color-cash)"></div>
           <div class="alloc-info">
             <span>Cash & Liquidités</span>
             <strong id="allocCashVal">--</strong>
@@ -289,17 +293,18 @@
         </div>
         <button class="see-more" data-page="immo">Voir le détail →</button>
       </div>
+              
       <div class="mini-panel-content">
-        <div class="panel-row"><span id="immoBien1Nom">--</span><span class="badge" style="font-size:10px;padding:2px 8px;color:var(--color-pea);border-color:var(--color-pea)">Locatif</span></div>
+        <div class="panel-row"><span id="immoBien1Nom">--</span></div>
         <div class="panel-row sub">Valeur estimée <span id="immoBien1Valeur">--</span></div>
         <div class="panel-row sub negative">Crédit restant <span id="immoBien1Dette">--</span></div>
-        <div class="panel-row sub">Cash-flow <span id="immoBien1Cashflow">--</span></div>
         <div class="panel-row total">Valeur nette <span id="immoBien1Net">--</span></div>
-        <div class="panel-row" style="margin-top:8px"><span id="immoBien2Nom">--</span><span class="badge" style="font-size:10px;padding:2px 8px">Résidence principale</span></div>
+        <div class="panel-row" style="margin-top:8px"><span id="immoBien2Nom">--</span></div>
         <div class="panel-row sub">Valeur estimée <span id="immoBien2Valeur">--</span></div>
         <div class="panel-row sub negative">Crédit restant <span id="immoBien2Dette">--</span></div>
         <div class="panel-row total">Valeur nette <span id="immoBien2Net">--</span></div>
       </div>
+
     </div>
 
     <div class="card mini-panel">
@@ -349,43 +354,14 @@
 
 <!-- ══ IMMOBILIER PAGE ══ -->
 <div id="immoPage" class="page">
-
-  <!-- KPIs immo -->
-  <div class="pea-kpi-row" style="margin-bottom:18px">
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Valeur brute totale</div>
-      <div class="kpi-value" id="immoP_brutTotal">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Dettes totales</div>
-      <div class="kpi-value negative" id="immoP_detteTotal">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Valeur nette totale</div>
-      <div class="kpi-value positive" id="immoP_netTotal">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Cash-flow locatif</div>
-      <div class="kpi-value" id="immoP_cashflowTotal">--</div>
-      <div class="kpi-hint">Mensuel net</div>
-    </div>
-  </div>
-
   <div class="page-grid-2">
-
-    <!-- ── Kilford : Locatif ── -->
     <div class="card asset-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <h4 id="immoP_bien1Nom" style="margin-bottom:0">--</h4>
-        <span style="font-size:11px;font-weight:600;color:var(--color-pea);background:rgba(16,185,129,.1);border:1px solid var(--color-pea);border-radius:999px;padding:3px 10px">Locatif</span>
-      </div>
+      <h4 id="immoP_bien1Nom">--</h4>
       <div class="asset-value" id="immoP_bien1Net">--</div>
       <div class="asset-meta">
         <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien1Valeur">--</span></div>
         <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien1Dette">--</span></div>
       </div>
-
-      <!-- Barre remboursement -->
       <div class="credit-progress">
         <div class="credit-progress-header">
           <span>Remboursement</span>
@@ -397,80 +373,9 @@
           <span id="creditEcheance1">--</span>
         </div>
       </div>
-
-      <!-- Section locative -->
-      <div class="credit-progress" style="margin-top:20px">
-        <div class="credit-progress-header" style="margin-bottom:14px">
-          <span style="font-size:13px;font-weight:600;color:var(--text)">Revenus locatifs</span>
-        </div>
-        <div class="asset-meta">
-          <div class="meta-row"><span>Loyer mensuel</span><span class="positive" id="immoP_bien1Loyer">--</span></div>
-          <div class="meta-row"><span>Mensualité bancaire</span><span id="immoP_bien1Mensualite">--</span></div>
-          <div class="meta-row"><span>Charges mensuelles</span><span id="immoP_bien1Charges">--</span></div>
-          <div class="meta-row" style="border-bottom:none;padding-top:10px;margin-top:4px;border-top:2px solid var(--border)">
-            <span style="font-weight:700">Cash-flow net</span>
-            <span style="font-weight:700" id="immoP_bien1Cashflow">--</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Rendements -->
-      <div class="credit-progress" style="margin-top:4px">
-        <div class="credit-progress-header" style="margin-bottom:14px">
-          <span style="font-size:13px;font-weight:600;color:var(--text)">Rendements</span>
-        </div>
-        <div class="asset-meta">
-          <div class="meta-row">
-            <span>Rendement brut</span>
-            <span class="positive" id="immoP_bien1RendBrut">--</span>
-          </div>
-          <div class="meta-row">
-            <span>Rendement net</span>
-            <span class="positive" id="immoP_bien1RendNet">--</span>
-          </div>
-        </div>
-        <!-- Barre rendement brut -->
-        <div style="margin-top:12px">
-          <div class="credit-progress-header">
-            <span>Rendement brut</span>
-            <span id="immoP_bien1RendBrutBar">--</span>
-          </div>
-          <div class="credit-bar">
-            <span id="rendBar1" style="width:0%;background:var(--color-pea)"></span>
-          </div>
-          <div class="credit-meta">
-            <span>0 %</span>
-            <span>Objectif 6 %</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Détail charges -->
-      <div class="credit-progress" style="margin-top:4px">
-        <div class="credit-progress-header" style="margin-bottom:14px">
-          <span style="font-size:13px;font-weight:600;color:var(--text)">Détail des charges annuelles</span>
-        </div>
-        <div class="asset-meta">
-          <div class="meta-row"><span>Taxe foncière</span><span id="immoP_bien1Taxe">--</span></div>
-          <div class="meta-row"><span>Charges copropriété</span><span id="immoP_bien1Copro">--</span></div>
-          <div class="meta-row"><span>Assurance PNO</span><span id="immoP_bien1AssurPno">--</span></div>
-          <div class="meta-row"><span>Assurance crédit</span><span id="immoP_bien1AssurCredit">--</span></div>
-          <div class="meta-row"><span>Gestion locative</span><span id="immoP_bien1Gestion">--</span></div>
-          <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:1px solid var(--border)">
-            <span style="font-weight:700">Total annuel</span>
-            <span style="font-weight:700" id="immoP_bien1ChargesTotal">--</span>
-          </div>
-        </div>
-      </div>
-
     </div>
-
-    <!-- ── La Turbie : Résidence principale ── -->
     <div class="card asset-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <h4 id="immoP_bien2Nom" style="margin-bottom:0">--</h4>
-        <span style="font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px">Résidence principale</span>
-      </div>
+      <h4 id="immoP_bien2Nom">--</h4>
       <div class="asset-value" id="immoP_bien2Net">--</div>
       <div class="asset-meta">
         <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien2Valeur">--</span></div>
@@ -488,12 +393,11 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- ══ PEA PAGE ══ -->
-<div id="peaPage" class="page">
+    <div id="peaPage" class="page">
 
   <!-- KPIs PEA -->
   <div class="pea-kpi-row">
@@ -555,8 +459,11 @@
       </div>
     </div>
   </div>
+```
 
-  <!-- Graphique PEA -->
+<!-- Graphique PEA -->
+
+```
   <div class="card" style="margin-top:18px;padding:24px">
     <div class="card-header">
       <h3>Évolution du PEA</h3>
@@ -570,7 +477,7 @@
 </div>
 
 <!-- ══ CASH PAGE ══ -->
-<div id="cashPage" class="page">
+    <div id="cashPage" class="page">
 
   <!-- KPIs Cash -->
   <div class="pea-kpi-row">
