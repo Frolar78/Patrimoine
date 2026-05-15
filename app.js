@@ -103,7 +103,8 @@ async function loadHistorique() {
 
     wealthData   = rows.map(r => parseNum(r[3].replace(/[^\d.-]/g, "")));
     wealthLabels = rows.map(r => {
-      const d = new Date(r[0].split("/").reverse().join("-"));
+      const parts = r[0].split(" ")[0].split("/");
+      const d = new Date(parts[2], parts[1]-1, parts[0]);
       return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
     });
 
