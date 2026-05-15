@@ -382,7 +382,10 @@ const gestion      = parseNum(data.immo_bien1_gestion_locative);
 const comptable    = parseNum(data.immo_bien1_comptable_lmnp);
 const chargesTotal = taxe + copro + assurPno + assurCredit + gestion + comptable;
 const capitalMensuel  = parseNum(data.immo_bien1_capital_mensuel);
+const capitalMensuel2 = parseNum(data.immo_bien2_capital_mensuel);
 const creationPatrim  = capitalMensuel - Math.abs(cashflow);
+const creationTotal   = capitalMensuel + capitalMensuel2 - Math.abs(cashflow);
+
   
   // ── Variation mensuelle ───────────────────────────────────────────────────
   const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
@@ -513,11 +516,9 @@ const creationPatrim  = capitalMensuel - Math.abs(cashflow);
 setText("immoP_brutTotal",  immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
 setText("immoP_detteTotal", data.dettes || "--");
 setText("immoP_netTotal",   immoNetNum  ? fmtEur.format(immoNetNum)  : "--");
-const cfKpiEl = document.getElementById("immoP_cashflowTotal");
-if (cfKpiEl) {
-  cfKpiEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) : "--";
-  cfKpiEl.classList.toggle("positive", cashflow >= 0);
-  cfKpiEl.classList.toggle("negative", cashflow < 0);
+const creationTotalEl = document.getElementById("immoP_creationTotal");
+if (creationTotalEl) {
+  creationTotalEl.textContent = creationTotal ? (creationTotal >= 0 ? "+" : "") + fmtEur.format(creationTotal) : "--";
 }
 
 // Card Kilford
