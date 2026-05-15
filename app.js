@@ -35,7 +35,7 @@ document.getElementById("topbarDate").textContent = now.toLocaleDateString("fr-F
 // ── Formatters ────────────────────────────────────────────────────────────────
 const fmtEur = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
-function setText(id, value) {
+function (id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value ?? "--";
 }
@@ -293,7 +293,7 @@ function showError(msg) {
 
   const dot = document.querySelector(".sync-dot");
   if (dot) { dot.style.background = "#e53e3e"; dot.style.boxShadow = "0 0 6px #e53e3e"; }
-  setText("lastUpdate", "Erreur de synchronisation");
+  ("lastUpdate", "Erreur de synchronisation");
 }
 
 function clearError() {
@@ -381,7 +381,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   // ════════════════════════════════════════════════════════════════════════════
 
   // KPIs
-  setText("patrimoineNet",  data.patrimoine_net);
+  ("patrimoineNet",  data.patrimoine_net);
   setText("patrimoineBrut", data.patrimoine_brut);
   setText("dettes",         data.dettes);
   setText("cashKpi",        data.cash_disponible);
@@ -391,6 +391,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   document.getElementById("variationMensuelle")?.classList.toggle("positive",  pos);
   setText("varMensuelleKpi",    diffFmt);
   setText("varMensuellePctKpi", pctFmt);
+  setText("variationPct", pctFmt);
   setText("perfYtd", ytdText);
 
   // Allocation donut + légende
