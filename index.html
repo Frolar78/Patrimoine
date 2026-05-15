@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="fr" data-theme="light">
 <head>
   <meta charset="UTF-8" />
@@ -16,7 +15,6 @@
 <div class="app">
 
   <!-- ── Sidebar ── -->
-
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="brand">
@@ -27,126 +25,119 @@
         </div>
       </div>
 
-```
-  <nav class="nav">
-    <a href="#" class="nav-link active" data-page="overview">
-      <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span> Dashboard
-    </a>
-    <a href="#" class="nav-link" data-page="immo">
-      <span class="nav-icon"><i data-lucide="home"></i></span> Immobilier
-    </a>
-    <a href="#" class="nav-link" data-page="pea">
-      <span class="nav-icon"><i data-lucide="line-chart"></i></span> Investissements
-    </a>
-    <a href="#" class="nav-link" data-page="cash">
-      <span class="nav-icon"><i data-lucide="piggy-bank"></i></span> Cash & Liquidités
-    </a>
-    <a href="#" class="nav-link" data-page="goals">
-      <span class="nav-icon"><i data-lucide="target"></i></span> Objectifs
-    </a>
-  </nav>
+      <nav class="nav">
+        <a href="#" class="nav-link active" data-page="overview">
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span> Dashboard
+        </a>
+        <a href="#" class="nav-link" data-page="immo">
+          <span class="nav-icon"><i data-lucide="home"></i></span> Immobilier
+        </a>
+        <a href="#" class="nav-link" data-page="pea">
+          <span class="nav-icon"><i data-lucide="line-chart"></i></span> Investissements
+        </a>
+        <a href="#" class="nav-link" data-page="cash">
+          <span class="nav-icon"><i data-lucide="piggy-bank"></i></span> Cash & Liquidités
+        </a>
+        <a href="#" class="nav-link" data-page="goals">
+          <span class="nav-icon"><i data-lucide="target"></i></span> Objectifs
+        </a>
+      </nav>
 
-</div>
+    </div>
 
-<div class="sidebar-bottom">
-  <div class="sync-badge" id="syncBadge">
-    <span class="sync-dot"></span>
-    <span id="lastUpdate">Chargement…</span>
-  </div>
-  <div class="theme-toggle-wrap">
-    <span>Sombre</span>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-      <span class="toggle-thumb"></span>
-    </button>
-  </div>
-</div>
-```
-
+    <div class="sidebar-bottom">
+      <div class="sync-badge" id="syncBadge">
+        <span class="sync-dot"></span>
+        <span id="lastUpdate">Chargement…</span>
+      </div>
+      <div class="theme-toggle-wrap">
+        <span>Sombre</span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="toggle-thumb"></span>
+        </button>
+      </div>
+    </div>
   </aside>
 
   <!-- ── Main ── -->
-
   <main>
 
-```
-<!-- Topbar -->
-<header class="topbar">
-  <div class="greeting">
-    <h1 id="greetingText">Bonjour !</h1>
-    <p id="greetingDate">--</p>
-  </div>
-  <div class="topbar-right">
-    <div class="super-pill">
-      <span id="topbarDate">--</span>
-      <span class="pill-sep"></span>
-      <button class="pill-refresh" id="refreshBtn" aria-label="Actualiser">
-        <i data-lucide="refresh-cw"></i>
-      </button>
-      <span class="pill-sep"></span>
-      <div class="pill-theme" id="themePill">
-        <span class="theme-pill-icon">☀</span>
-        <div class="theme-pill-track">
-          <div class="theme-pill-thumb"></div>
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="greeting">
+        <h1 id="greetingText">Bonjour !</h1>
+        <p id="greetingDate">--</p>
+      </div>
+      <div class="topbar-right">
+        <div class="super-pill">
+          <span id="topbarDate">--</span>
+          <span class="pill-sep"></span>
+          <button class="pill-refresh" id="refreshBtn" aria-label="Actualiser">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+          <span class="pill-sep"></span>
+          <div class="pill-theme" id="themePill">
+            <span class="theme-pill-icon">☀</span>
+            <div class="theme-pill-track">
+              <div class="theme-pill-thumb"></div>
+            </div>
+            <span class="theme-pill-icon">🌙</span>
+          </div>
         </div>
-        <span class="theme-pill-icon">🌙</span>
       </div>
-    </div>
-  </div>
 
-</header>
+    </header>
 
-<!-- ══ OVERVIEW PAGE ══ -->
-<div id="overviewPage" class="page active-page">
+    <!-- ══ OVERVIEW PAGE ══ -->
+    <div id="overviewPage" class="page active-page">
 
-  <!-- 6 KPI cards -->
-  <div class="kpi-row">
-    <div class="kpi-card kpi-main">
-      <div class="kpi-icon"><i data-lucide="landmark"></i></div>
-      <div class="kpi-label">Patrimoine net</div>
-      <div class="kpi-value" id="patrimoineNet">--</div>
-      <div class="kpi-sub positive" id="variationMensuelle">--</div>
-      <div class="kpi-hint" id="variationPct">--</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-icon"><i data-lucide="layers"></i></div>
-      <div class="kpi-label">Patrimoine brut</div>
-      <div class="kpi-value" id="patrimoineBrut">--</div>
-      <div class="kpi-hint">Actifs totaux</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-icon"><i data-lucide="trending-down"></i></div>
-      <div class="kpi-label">Dettes restantes</div>
-      <div class="kpi-value negative" id="dettes">--</div>
-      <div class="kpi-hint">Crédits en cours</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-icon"><i data-lucide="wallet"></i></div>
-      <div class="kpi-label">Cash disponible</div>
-      <div class="kpi-value" id="cashKpi">--</div>
-      <div class="kpi-hint">Liquidités disponibles</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-icon"><i data-lucide="trending-up"></i></div>
-      <div class="kpi-label">Variation mensuelle</div>
-      <div class="kpi-value positive" id="varMensuelleKpi">--</div>
-      <div class="kpi-hint positive" id="varMensuellePctKpi">--</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-icon"><i data-lucide="percent"></i></div>
-      <div class="kpi-label">Performance YTD</div>
-      <div class="kpi-value positive" id="perfYtd">--</div>
-      <div class="kpi-hint">Depuis janvier</div>
-    </div>
-  </div>
-
-  <!-- Charts row -->
-  <div class="charts-row">
-    <div class="card chart-card">
-    <div class="card-header">
-        <h3>Évolution du patrimoine net</h3>
+      <!-- 6 KPI cards -->
+      <div class="kpi-row">
+        <div class="kpi-card kpi-main">
+          <div class="kpi-icon"><i data-lucide="landmark"></i></div>
+          <div class="kpi-label">Patrimoine net</div>
+          <div class="kpi-value" id="patrimoineNet">--</div>
+          <div class="kpi-sub positive" id="variationMensuelle">--</div>
+          <div class="kpi-hint" id="variationPct">--</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i data-lucide="layers"></i></div>
+          <div class="kpi-label">Patrimoine brut</div>
+          <div class="kpi-value" id="patrimoineBrut">--</div>
+          <div class="kpi-hint">Actifs totaux</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i data-lucide="trending-down"></i></div>
+          <div class="kpi-label">Dettes restantes</div>
+          <div class="kpi-value negative" id="dettes">--</div>
+          <div class="kpi-hint">Crédits en cours</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i data-lucide="wallet"></i></div>
+          <div class="kpi-label">Cash disponible</div>
+          <div class="kpi-value" id="cashKpi">--</div>
+          <div class="kpi-hint">Liquidités disponibles</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i data-lucide="trending-up"></i></div>
+          <div class="kpi-label">Variation mensuelle</div>
+          <div class="kpi-value positive" id="varMensuelleKpi">--</div>
+          <div class="kpi-hint positive" id="varMensuellePctKpi">--</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon"><i data-lucide="percent"></i></div>
+          <div class="kpi-label">Performance YTD</div>
+          <div class="kpi-value positive" id="perfYtd">--</div>
+          <div class="kpi-hint">Depuis janvier</div>
+        </div>
       </div>
-```
 
+      <!-- Charts row -->
+      <div class="charts-row">
+        <div class="card chart-card">
+        <div class="card-header">
+            <h3>Évolution du patrimoine net</h3>
+          </div>
 <div class="range-selector">
   <button class="range-btn active" data-range="12">12 mois</button>
   <button class="range-btn" data-range="24">2 ans</button>
@@ -157,445 +148,439 @@
 </div>
         </div>
 
-```
-    <div class="card alloc-card">
-      <div class="card-header">
-        <h3>Allocation patrimoniale</h3>
-      </div>
-      <div class="donut-wrap">
-        <canvas id="allocationChart"></canvas>
-      </div>
-      <div class="alloc-legend">
-        <div class="alloc-item">
-        <div class="alloc-dot" style="background:var(--color-immo)"></div>
-          <div class="alloc-info">
-            <span>Immobilier</span>
-            <strong id="allocImmoVal">--</strong>
+        <div class="card alloc-card">
+          <div class="card-header">
+            <h3>Allocation patrimoniale</h3>
           </div>
-          <div class="alloc-pct" id="allocImmoText">--</div>
-        </div>
-        <div class="alloc-item">
-        <div class="alloc-dot" style="background:var(--color-pea)"></div>
-          <div class="alloc-info">
-            <span>Actions (PEA)</span>
-            <strong id="allocPeaVal">--</strong>
+          <div class="donut-wrap">
+            <canvas id="allocationChart"></canvas>
           </div>
-          <div class="alloc-pct" id="allocPeaText">--</div>
-        </div>
-        <div class="alloc-item">
-        <div class="alloc-dot" style="background:var(--color-cash)"></div>
-          <div class="alloc-info">
-            <span>Cash & Liquidités</span>
-            <strong id="allocCashVal">--</strong>
+          <div class="alloc-legend">
+            <div class="alloc-item">
+            <div class="alloc-dot" style="background:var(--color-immo)"></div>
+              <div class="alloc-info">
+                <span>Immobilier</span>
+                <strong id="allocImmoVal">--</strong>
+              </div>
+              <div class="alloc-pct" id="allocImmoText">--</div>
+            </div>
+            <div class="alloc-item">
+            <div class="alloc-dot" style="background:var(--color-pea)"></div>
+              <div class="alloc-info">
+                <span>Actions (PEA)</span>
+                <strong id="allocPeaVal">--</strong>
+              </div>
+              <div class="alloc-pct" id="allocPeaText">--</div>
+            </div>
+            <div class="alloc-item">
+            <div class="alloc-dot" style="background:var(--color-cash)"></div>
+              <div class="alloc-info">
+                <span>Cash & Liquidités</span>
+                <strong id="allocCashVal">--</strong>
+              </div>
+              <div class="alloc-pct" id="allocCashText">--</div>
+            </div>
           </div>
-          <div class="alloc-pct" id="allocCashText">--</div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Detail table + répartition -->
-  <div class="detail-row">
-    <div class="card detail-card">
-      <div class="card-header">
-        <h3>Détail du patrimoine</h3>
-      </div>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Classe d'actifs</th>
-            <th>Valeur</th>
-            <th>% brut</th>
-            <th>% net</th>
-            <th>Évolution mensuelle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="row-icon">⌂</span></td>
-            <td>Immobilier</td>
-            <td id="dtImmoVal">--</td>
-            <td id="dtImmoPctBrut">--</td>
-            <td id="dtImmoPctNet">--</td>
-            <td class="positive" id="dtImmoEvo">--</td>
-          </tr>
-          <tr>
-            <td><span class="row-icon">↗</span></td>
-            <td>Actions (PEA)</td>
-            <td id="dtPeaVal">--</td>
-            <td id="dtPeaPctBrut">--</td>
-            <td id="dtPeaPctNet">--</td>
-            <td class="positive" id="dtPeaEvo">--</td>
-          </tr>
-          <tr>
-            <td><span class="row-icon">◎</span></td>
-            <td>Cash & Liquidités</td>
-            <td id="dtCashVal">--</td>
-            <td id="dtCashPctBrut">--</td>
-            <td id="dtCashPctNet">--</td>
-            <td class="positive" id="dtCashEvo">--</td>
-          </tr>
-          <tr class="table-total">
-            <td></td>
-            <td><strong>TOTAL</strong></td>
-            <td id="dtTotalVal">--</td>
-            <td>100,0%</td>
-            <td id="dtTotalPctNet">--</td>
-            <td class="positive" id="dtTotalEvo">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card repartition-card">
-      <div class="card-header">
-        <h3>Répartition des actifs</h3>
-      </div>
-      <div class="rep-list">
-        <div class="rep-item">
-          <div class="rep-label">Immobilier</div>
-          <div class="rep-bar-wrap">
-            <div class="rep-bar"><span id="repImmoBar" style="width:0%;background:var(--color-immo)"></span></div>
+      <!-- Detail table + répartition -->
+      <div class="detail-row">
+        <div class="card detail-card">
+          <div class="card-header">
+            <h3>Détail du patrimoine</h3>
           </div>
-          <div class="rep-val" id="repImmoVal">--</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Classe d'actifs</th>
+                <th>Valeur</th>
+                <th>% brut</th>
+                <th>% net</th>
+                <th>Évolution mensuelle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="row-icon">⌂</span></td>
+                <td>Immobilier</td>
+                <td id="dtImmoVal">--</td>
+                <td id="dtImmoPctBrut">--</td>
+                <td id="dtImmoPctNet">--</td>
+                <td class="positive" id="dtImmoEvo">--</td>
+              </tr>
+              <tr>
+                <td><span class="row-icon">↗</span></td>
+                <td>Actions (PEA)</td>
+                <td id="dtPeaVal">--</td>
+                <td id="dtPeaPctBrut">--</td>
+                <td id="dtPeaPctNet">--</td>
+                <td class="positive" id="dtPeaEvo">--</td>
+              </tr>
+              <tr>
+                <td><span class="row-icon">◎</span></td>
+                <td>Cash & Liquidités</td>
+                <td id="dtCashVal">--</td>
+                <td id="dtCashPctBrut">--</td>
+                <td id="dtCashPctNet">--</td>
+                <td class="positive" id="dtCashEvo">--</td>
+              </tr>
+              <tr class="table-total">
+                <td></td>
+                <td><strong>TOTAL</strong></td>
+                <td id="dtTotalVal">--</td>
+                <td>100,0%</td>
+                <td id="dtTotalPctNet">--</td>
+                <td class="positive" id="dtTotalEvo">--</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="rep-item">
-          <div class="rep-label">Actions (PEA)</div>
-          <div class="rep-bar-wrap">
-            <div class="rep-bar"><span id="repPeaBar" style="width:0%;background:var(--color-pea)"></span></div>
+
+        <div class="card repartition-card">
+          <div class="card-header">
+            <h3>Répartition des actifs</h3>
           </div>
-          <div class="rep-val" id="repPeaVal">--</div>
-        </div>
-        <div class="rep-item">
-          <div class="rep-label">Cash & Liquidités</div>
-          <div class="rep-bar-wrap">
-            <div class="rep-bar"><span id="repCashBar" style="width:0%;background:var(--color-cash)"></span></div>
+          <div class="rep-list">
+            <div class="rep-item">
+              <div class="rep-label">Immobilier</div>
+              <div class="rep-bar-wrap">
+                <div class="rep-bar"><span id="repImmoBar" style="width:0%;background:var(--color-immo)"></span></div>
+              </div>
+              <div class="rep-val" id="repImmoVal">--</div>
+            </div>
+            <div class="rep-item">
+              <div class="rep-label">Actions (PEA)</div>
+              <div class="rep-bar-wrap">
+                <div class="rep-bar"><span id="repPeaBar" style="width:0%;background:var(--color-pea)"></span></div>
+              </div>
+              <div class="rep-val" id="repPeaVal">--</div>
+            </div>
+            <div class="rep-item">
+              <div class="rep-label">Cash & Liquidités</div>
+              <div class="rep-bar-wrap">
+                <div class="rep-bar"><span id="repCashBar" style="width:0%;background:var(--color-cash)"></span></div>
+              </div>
+              <div class="rep-val" id="repCashVal">--</div>
+            </div>
           </div>
-          <div class="rep-val" id="repCashVal">--</div>
+          <div class="rep-totals">
+            <div class="rep-total-row"><span>Total actifs</span><span id="repTotalActifs">--</span></div>
+            <div class="rep-total-row negative"><span>Dettes restantes</span><span id="repDettes">--</span></div>
+            <div class="rep-total-row bold"><span>Patrimoine net</span><span id="repPatNet">--</span></div>
+          </div>
         </div>
       </div>
-      <div class="rep-totals">
-        <div class="rep-total-row"><span>Total actifs</span><span id="repTotalActifs">--</span></div>
-        <div class="rep-total-row negative"><span>Dettes restantes</span><span id="repDettes">--</span></div>
-        <div class="rep-total-row bold"><span>Patrimoine net</span><span id="repPatNet">--</span></div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Bottom panels: Immo / PEA / Cash -->
-  <div class="panels-row">
-    <div class="card mini-panel">
-      <div class="card-header">
-        <div class="panel-title-row">
-          <span class="panel-icon">⌂</span>
-          <h3>Immobilier</h3>
+      <!-- Bottom panels: Immo / PEA / Cash -->
+      <div class="panels-row">
+        <div class="card mini-panel">
+          <div class="card-header">
+            <div class="panel-title-row">
+              <span class="panel-icon">⌂</span>
+              <h3>Immobilier</h3>
+            </div>
+            <button class="see-more" data-page="immo">Voir le détail →</button>
+          </div>
+                  
+          <div class="mini-panel-content">
+            <div class="panel-row"><span id="immoBien1Nom">--</span></div>
+            <div class="panel-row sub">Valeur estimée <span id="immoBien1Valeur">--</span></div>
+            <div class="panel-row sub negative">Crédit restant <span id="immoBien1Dette">--</span></div>
+            <div class="panel-row total">Valeur nette <span id="immoBien1Net">--</span></div>
+            <div class="panel-row" style="margin-top:8px"><span id="immoBien2Nom">--</span></div>
+            <div class="panel-row sub">Valeur estimée <span id="immoBien2Valeur">--</span></div>
+            <div class="panel-row sub negative">Crédit restant <span id="immoBien2Dette">--</span></div>
+            <div class="panel-row total">Valeur nette <span id="immoBien2Net">--</span></div>
+          </div>
+
         </div>
-        <button class="see-more" data-page="immo">Voir le détail →</button>
-      </div>
-              
-      <div class="mini-panel-content">
-        <div class="panel-row"><span id="immoBien1Nom">--</span></div>
-        <div class="panel-row sub">Valeur estimée <span id="immoBien1Valeur">--</span></div>
-        <div class="panel-row sub negative">Crédit restant <span id="immoBien1Dette">--</span></div>
-        <div class="panel-row total">Valeur nette <span id="immoBien1Net">--</span></div>
-        <div class="panel-row" style="margin-top:8px"><span id="immoBien2Nom">--</span></div>
-        <div class="panel-row sub">Valeur estimée <span id="immoBien2Valeur">--</span></div>
-        <div class="panel-row sub negative">Crédit restant <span id="immoBien2Dette">--</span></div>
-        <div class="panel-row total">Valeur nette <span id="immoBien2Net">--</span></div>
-      </div>
 
-    </div>
-
-    <div class="card mini-panel">
-      <div class="card-header">
-        <div class="panel-title-row">
-          <span class="panel-icon">↗</span>
-          <h3>PEA</h3>
+        <div class="card mini-panel">
+          <div class="card-header">
+            <div class="panel-title-row">
+              <span class="panel-icon">↗</span>
+              <h3>PEA</h3>
+            </div>
+            <button class="see-more" data-page="pea">Voir le détail →</button>
+          </div>
+          <div class="mini-panel-content" id="peaPanelContent">
+            <div class="panel-row"><span id="peaActif1Nom">--</span><span id="peaActif1Valeur">--</span><span class="positive" id="peaActif1Perf">--</span></div>
+            <div class="panel-row"><span id="peaActif2Nom">--</span><span id="peaActif2Valeur">--</span><span class="positive" id="peaActif2Perf">--</span></div>
+            <div class="panel-row total">Total PEA <span id="peaValeurOverview">--</span><span class="positive" id="peaPerfOverview">--</span></div>
+          </div>
         </div>
-        <button class="see-more" data-page="pea">Voir le détail →</button>
-      </div>
-      <div class="mini-panel-content" id="peaPanelContent">
-        <div class="panel-row"><span id="peaActif1Nom">--</span><span id="peaActif1Valeur">--</span><span class="positive" id="peaActif1Perf">--</span></div>
-        <div class="panel-row"><span id="peaActif2Nom">--</span><span id="peaActif2Valeur">--</span><span class="positive" id="peaActif2Perf">--</span></div>
-        <div class="panel-row total">Total PEA <span id="peaValeurOverview">--</span><span class="positive" id="peaPerfOverview">--</span></div>
-      </div>
-    </div>
 
-    <div class="card mini-panel">
-      <div class="card-header">
-        <div class="panel-title-row">
-          <span class="panel-icon">◎</span>
-          <h3>Cash & Liquidités</h3>
-        </div>
-        <button class="see-more" data-page="cash">Voir le détail →</button>
-      </div>
-      <div class="mini-panel-content">
-        <div class="panel-row"><span id="cash1Nom">--</span><span id="cash1Valeur">--</span></div>
-        <div class="panel-row"><span id="cash2Nom">--</span><span id="cash2Valeur">--</span></div>
-        <div class="panel-row"><span id="cash3Nom">--</span><span id="cash3Valeur">--</span></div>
-        <div class="panel-row"><span id="cash4Nom">--</span><span id="cash4Valeur">--</span></div>
-        <div class="panel-row total">Total <span id="cashTotal">--</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Objectifs -->
-  <div class="card goals-overview">
-    <div class="card-header">
-      <h3>Suivi des objectifs</h3>
-    </div>
-    <div class="goals-grid" id="goalsGrid">
-      <!-- rempli dynamiquement -->
-    </div>
-  </div>
-
-</div><!-- /overviewPage -->
-
-<!-- ══ IMMOBILIER PAGE ══ -->
-<div id="immoPage" class="page">
-  <div class="page-grid-2">
-    <div class="card asset-card">
-      <h4 id="immoP_bien1Nom">--</h4>
-      <div class="asset-value" id="immoP_bien1Net">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien1Valeur">--</span></div>
-        <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien1Dette">--</span></div>
-      </div>
-      <div class="credit-progress">
-        <div class="credit-progress-header">
-          <span>Remboursement</span>
-          <span id="creditPct1">--</span>
-        </div>
-        <div class="credit-bar"><span id="creditBar1" style="width:0%"></span></div>
-        <div class="credit-meta">
-          <span id="creditMois1">--</span>
-          <span id="creditEcheance1">--</span>
+        <div class="card mini-panel">
+          <div class="card-header">
+            <div class="panel-title-row">
+              <span class="panel-icon">◎</span>
+              <h3>Cash & Liquidités</h3>
+            </div>
+            <button class="see-more" data-page="cash">Voir le détail →</button>
+          </div>
+          <div class="mini-panel-content">
+            <div class="panel-row"><span id="cash1Nom">--</span><span id="cash1Valeur">--</span></div>
+            <div class="panel-row"><span id="cash2Nom">--</span><span id="cash2Valeur">--</span></div>
+            <div class="panel-row"><span id="cash3Nom">--</span><span id="cash3Valeur">--</span></div>
+            <div class="panel-row"><span id="cash4Nom">--</span><span id="cash4Valeur">--</span></div>
+            <div class="panel-row total">Total <span id="cashTotal">--</span></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="card asset-card">
-      <h4 id="immoP_bien2Nom">--</h4>
-      <div class="asset-value" id="immoP_bien2Net">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien2Valeur">--</span></div>
-        <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien2Dette">--</span></div>
-      </div>
-      <div class="credit-progress">
-        <div class="credit-progress-header">
-          <span>Remboursement</span>
-          <span id="creditPct2">--</span>
+
+      <!-- Objectifs -->
+      <div class="card goals-overview">
+        <div class="card-header">
+          <h3>Suivi des objectifs</h3>
         </div>
-        <div class="credit-bar"><span id="creditBar2" style="width:0%"></span></div>
-        <div class="credit-meta">
-          <span id="creditMois2">--</span>
-          <span id="creditEcheance2">--</span>
+        <div class="goals-grid" id="goalsGrid">
+          <!-- rempli dynamiquement -->
+        </div>
+      </div>
+
+    </div><!-- /overviewPage -->
+
+    <!-- ══ IMMOBILIER PAGE ══ -->
+    <div id="immoPage" class="page">
+      <div class="page-grid-2">
+        <div class="card asset-card">
+          <h4 id="immoP_bien1Nom">--</h4>
+          <div class="asset-value" id="immoP_bien1Net">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien1Valeur">--</span></div>
+            <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien1Dette">--</span></div>
+          </div>
+          <div class="credit-progress">
+            <div class="credit-progress-header">
+              <span>Remboursement</span>
+              <span id="creditPct1">--</span>
+            </div>
+            <div class="credit-bar"><span id="creditBar1" style="width:0%"></span></div>
+            <div class="credit-meta">
+              <span id="creditMois1">--</span>
+              <span id="creditEcheance1">--</span>
+            </div>
+          </div>
+        </div>
+        <div class="card asset-card">
+          <h4 id="immoP_bien2Nom">--</h4>
+          <div class="asset-value" id="immoP_bien2Net">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Valeur estimée</span><span id="immoP_bien2Valeur">--</span></div>
+            <div class="meta-row negative"><span>Crédit restant</span><span id="immoP_bien2Dette">--</span></div>
+          </div>
+          <div class="credit-progress">
+            <div class="credit-progress-header">
+              <span>Remboursement</span>
+              <span id="creditPct2">--</span>
+            </div>
+            <div class="credit-bar"><span id="creditBar2" style="width:0%"></span></div>
+            <div class="credit-meta">
+              <span id="creditMois2">--</span>
+              <span id="creditEcheance2">--</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ══ PEA PAGE ══ -->
-    <div id="peaPage" class="page">
+    <!-- ══ PEA PAGE ══ -->
+        <div id="peaPage" class="page">
 
-  <!-- KPIs PEA -->
-  <div class="pea-kpi-row">
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Valorisation totale</div>
-      <div class="kpi-value positive" id="peaP_valeur">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Total versé</div>
-      <div class="kpi-value" id="peaP_verse">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Plus-value</div>
-      <div class="kpi-value positive" id="peaP_plusvalue">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Performance</div>
-      <div class="kpi-value positive" id="peaP_perf">--</div>
-    </div>
-  </div>
-
-  <!-- ETFs -->
-  <div class="page-grid-2" style="margin-top:18px">
-    <div class="card asset-card">
-      <div class="pea-etf-header">
-        <h4 id="peaP_actif1Nom">--</h4>
-        <span class="pea-etf-perf positive" id="peaP_actif1Perf">--</span>
-      </div>
-      <div class="asset-value" id="peaP_actif1Valeur">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Part du PEA</span><span id="peaP_actif1Pct">--</span></div>
-        <div class="meta-row"><span>Indice répliqué</span><span>MSCI World</span></div>
-      </div>
-      <div class="credit-progress">
-        <div class="credit-progress-header">
-          <span>Poids dans le portefeuille</span>
-          <span id="peaP_actif1PctBar">--</span>
+      <!-- KPIs PEA -->
+      <div class="pea-kpi-row">
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Valorisation totale</div>
+          <div class="kpi-value positive" id="peaP_valeur">--</div>
         </div>
-        <div class="credit-bar"><span id="peaBar1" style="width:0%;background:var(--blue)"></span></div>
-      </div>
-    </div>
-
-    <div class="card asset-card">
-      <div class="pea-etf-header">
-        <h4 id="peaP_actif2Nom">--</h4>
-        <span class="pea-etf-perf positive" id="peaP_actif2Perf">--</span>
-      </div>
-      <div class="asset-value" id="peaP_actif2Valeur">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Part du PEA</span><span id="peaP_actif2Pct">--</span></div>
-        <div class="meta-row"><span>Indice répliqué</span><span>MSCI World</span></div>
-      </div>
-      <div class="credit-progress">
-        <div class="credit-progress-header">
-          <span>Poids dans le portefeuille</span>
-          <span id="peaP_actif2PctBar">--</span>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Total versé</div>
+          <div class="kpi-value" id="peaP_verse">--</div>
         </div>
-        <div class="credit-bar"><span id="peaBar2" style="width:0%;background:#f0a500"></span></div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Plus-value</div>
+          <div class="kpi-value positive" id="peaP_plusvalue">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Performance</div>
+          <div class="kpi-value positive" id="peaP_perf">--</div>
+        </div>
       </div>
-    </div>
-  </div>
-```
+
+      <!-- ETFs -->
+      <div class="page-grid-2" style="margin-top:18px">
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="peaP_actif1Nom">--</h4>
+            <span class="pea-etf-perf positive" id="peaP_actif1Perf">--</span>
+          </div>
+          <div class="asset-value" id="peaP_actif1Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Part du PEA</span><span id="peaP_actif1Pct">--</span></div>
+            <div class="meta-row"><span>Indice répliqué</span><span>MSCI World</span></div>
+          </div>
+          <div class="credit-progress">
+            <div class="credit-progress-header">
+              <span>Poids dans le portefeuille</span>
+              <span id="peaP_actif1PctBar">--</span>
+            </div>
+            <div class="credit-bar"><span id="peaBar1" style="width:0%;background:var(--blue)"></span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="peaP_actif2Nom">--</h4>
+            <span class="pea-etf-perf positive" id="peaP_actif2Perf">--</span>
+          </div>
+          <div class="asset-value" id="peaP_actif2Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Part du PEA</span><span id="peaP_actif2Pct">--</span></div>
+            <div class="meta-row"><span>Indice répliqué</span><span>MSCI World</span></div>
+          </div>
+          <div class="credit-progress">
+            <div class="credit-progress-header">
+              <span>Poids dans le portefeuille</span>
+              <span id="peaP_actif2PctBar">--</span>
+            </div>
+            <div class="credit-bar"><span id="peaBar2" style="width:0%;background:#f0a500"></span></div>
+          </div>
+        </div>
+      </div>
 
 <!-- Graphique PEA -->
-
-```
-  <div class="card" style="margin-top:18px;padding:24px">
-    <div class="card-header">
-      <h3>Évolution du PEA</h3>
-      <span class="badge" id="peaChartBadge">Historique en cours</span>
-    </div>
-    <div id="peaChartWrap" class="chart-wrap">
-      <canvas id="peaChart"></canvas>
-    </div>
-  </div>
-
-</div>
-
-<!-- ══ CASH PAGE ══ -->
-    <div id="cashPage" class="page">
-
-  <!-- KPIs Cash -->
-  <div class="pea-kpi-row">
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Total livrets</div>
-      <div class="kpi-value" id="cashP_total">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Épargne mensuelle</div>
-      <div class="kpi-value kpi-static">2 360 €</div>
-      <div class="epargne-bar-wrap">
-        <div class="epargne-bar"><span id="cashP_epargneBar" style="width:0%"></span></div>
+      <div class="card" style="margin-top:18px;padding:24px">
+        <div class="card-header">
+          <h3>Évolution du PEA</h3>
+          <span class="badge" id="peaChartBadge">Historique en cours</span>
+        </div>
+        <div id="peaChartWrap" class="chart-wrap">
+          <canvas id="peaChart"></canvas>
+        </div>
       </div>
-      <div class="kpi-hint" id="cashP_epargneHint">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Cash disponible</div>
-      <div class="kpi-value positive" id="cashP_dispo">--</div>
-    </div>
-    <div class="card pea-kpi-card">
-      <div class="kpi-label">Intérêts annuels estimés</div>
-      <div class="kpi-value positive" id="cashP_interets">--</div>
-    </div>
-  </div>
 
-  <!-- Livrets -->
-  <div class="page-grid-2" style="margin-top:18px">
-    <div class="card asset-card">
-      <div class="pea-etf-header">
-        <h4 id="cashP_1Nom">--</h4>
-        <span class="pea-etf-perf positive">1,5 % net</span>
-      </div>
-      <div class="asset-value" id="cashP_1Valeur">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_1Interets">--</span></div>
-        <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
-      </div>
     </div>
 
-    <div class="card asset-card">
-      <div class="pea-etf-header">
-        <h4 id="cashP_2Nom">--</h4>
-        <span class="pea-etf-perf" style="color:var(--gold)">1,05 % net</span>
+    <!-- ══ CASH PAGE ══ -->
+        <div id="cashPage" class="page">
+
+      <!-- KPIs Cash -->
+      <div class="pea-kpi-row">
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Total livrets</div>
+          <div class="kpi-value" id="cashP_total">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Épargne mensuelle</div>
+          <div class="kpi-value kpi-static">2 360 €</div>
+          <div class="epargne-bar-wrap">
+            <div class="epargne-bar"><span id="cashP_epargneBar" style="width:0%"></span></div>
+          </div>
+          <div class="kpi-hint" id="cashP_epargneHint">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Cash disponible</div>
+          <div class="kpi-value positive" id="cashP_dispo">--</div>
+        </div>
+        <div class="card pea-kpi-card">
+          <div class="kpi-label">Intérêts annuels estimés</div>
+          <div class="kpi-value positive" id="cashP_interets">--</div>
+        </div>
       </div>
-      <div class="asset-value" id="cashP_2Valeur">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_2Interets">--</span></div>
-        <div class="meta-row"><span>Type</span><span>Compte rémunéré — flat tax 30%</span></div>
+
+      <!-- Livrets -->
+      <div class="page-grid-2" style="margin-top:18px">
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_1Nom">--</h4>
+            <span class="pea-etf-perf positive">1,5 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_1Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_1Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_2Nom">--</h4>
+            <span class="pea-etf-perf" style="color:var(--gold)">1,05 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_2Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_2Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Compte rémunéré — flat tax 30%</span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_3Nom">--</h4>
+            <span class="pea-etf-perf positive">1,5 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_3Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_3Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+          </div>
+        </div>
+
+        <div class="card asset-card">
+          <div class="pea-etf-header">
+            <h4 id="cashP_4Nom">--</h4>
+            <span class="pea-etf-perf positive">1,5 % net</span>
+          </div>
+          <div class="asset-value" id="cashP_4Valeur">--</div>
+          <div class="asset-meta">
+            <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_4Interets">--</span></div>
+            <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+          </div>
+        </div>
       </div>
+
+      <!-- Provision impôts -->
+      <div class="card" style="margin-top:18px;padding:24px">
+        <div class="card-header">
+          <h3>Provision impôts 2026</h3>
+          <span class="badge negative">4 770 €</span>
+        </div>
+        <div class="impots-grid">
+          <div class="impot-mois" id="impotSept">
+            <div class="impot-label">Septembre</div>
+            <div class="impot-val">1 192 €</div>
+          </div>
+          <div class="impot-mois" id="impotOct">
+            <div class="impot-label">Octobre</div>
+            <div class="impot-val">1 192 €</div>
+          </div>
+          <div class="impot-mois" id="impotNov">
+            <div class="impot-label">Novembre</div>
+            <div class="impot-val">1 192 €</div>
+          </div>
+          <div class="impot-mois" id="impotDec">
+            <div class="impot-label">Décembre</div>
+            <div class="impot-val">1 194 €</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="card asset-card">
-      <div class="pea-etf-header">
-        <h4 id="cashP_3Nom">--</h4>
-        <span class="pea-etf-perf positive">1,5 % net</span>
-      </div>
-      <div class="asset-value" id="cashP_3Valeur">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_3Interets">--</span></div>
-        <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
+    <!-- ══ GOALS PAGE ══ -->
+    <div id="goalsPage" class="page">
+      <div class="card" style="padding:28px">
+        <div class="card-header"><h3>Objectifs patrimoniaux</h3><span class="badge">Long terme</span></div>
+        <div class="goals-full" id="goalsFull"></div>
       </div>
     </div>
-
-    <div class="card asset-card">
-      <div class="pea-etf-header">
-        <h4 id="cashP_4Nom">--</h4>
-        <span class="pea-etf-perf positive">1,5 % net</span>
-      </div>
-      <div class="asset-value" id="cashP_4Valeur">--</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Intérêts annuels estimés</span><span class="positive" id="cashP_4Interets">--</span></div>
-        <div class="meta-row"><span>Type</span><span>Livret réglementé</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Provision impôts -->
-  <div class="card" style="margin-top:18px;padding:24px">
-    <div class="card-header">
-      <h3>Provision impôts 2026</h3>
-      <span class="badge negative">4 770 €</span>
-    </div>
-    <div class="impots-grid">
-      <div class="impot-mois" id="impotSept">
-        <div class="impot-label">Septembre</div>
-        <div class="impot-val">1 192 €</div>
-      </div>
-      <div class="impot-mois" id="impotOct">
-        <div class="impot-label">Octobre</div>
-        <div class="impot-val">1 192 €</div>
-      </div>
-      <div class="impot-mois" id="impotNov">
-        <div class="impot-label">Novembre</div>
-        <div class="impot-val">1 192 €</div>
-      </div>
-      <div class="impot-mois" id="impotDec">
-        <div class="impot-label">Décembre</div>
-        <div class="impot-val">1 194 €</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ══ GOALS PAGE ══ -->
-<div id="goalsPage" class="page">
-  <div class="card" style="padding:28px">
-    <div class="card-header"><h3>Objectifs patrimoniaux</h3><span class="badge">Long terme</span></div>
-    <div class="goals-full" id="goalsFull"></div>
-  </div>
-</div>
-```
 
   </main>
 </div>
 
 <!-- Mobile nav -->
-
 <nav class="mobile-nav">
   <button class="mobile-btn active" data-page="overview"><i data-lucide="layout-dashboard"></i> Accueil</button>
   <button class="mobile-btn" data-page="immo"><i data-lucide="home"></i> Immo</button>
@@ -605,6 +590,5 @@
 </nav>
 
 <script src="./app.js"></script>
-
 </body>
 </html>
