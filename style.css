@@ -1045,3 +1045,22 @@ main {
   .theme-pill { display: none; }
 }
 
+/* ── Épargne bar ──────────────────────────────────────────────────────────── */
+.epargne-bar-wrap { margin: 8px 0 4px; }
+
+.epargne-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.epargne-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width .8s ease;
+  background: var(--green);
+}
+
+.epargne-bar span.negative { background: var(--red); }
