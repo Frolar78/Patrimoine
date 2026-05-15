@@ -312,20 +312,6 @@ const v2 = parseNum(data.immo_bien2_valeur);
 const d2 = parseNum(data.immo_bien2_dette);
 const n2 = parseNum(data.immo_bien2_net);
 
-// ── Données locatives Kilford (bien1) ─────────────────────────────────────
-const loyer       = parseNum(data.immo_bien1_loyer);
-const mensualite1 = parseNum(data.immo_bien1_mensualite);
-const chargesMens = parseNum(data.immo_bien1_charges);
-const cashflow    = parseNum(data.immo_bien1_cashflow);
-const rendBrut    = parseNum(data.immo_bien1_rendement_brut);
-const rendNet     = parseNum(data.immo_bien1_rendement_net);
-const taxe        = parseNum(data.immo_bien1_taxe_fonciere);
-const copro       = parseNum(data.immo_bien1_charges_copro);
-const assurPno    = parseNum(data.immo_bien1_assurance_pno);
-const assurCredit = parseNum(data.immo_bien1_assurance_credit);
-const gestion     = parseNum(data.immo_bien1_gestion_locative);
-const chargesTotal = taxe + copro + assurPno + assurCredit + gestion;
-
 // ── Variation mensuelle ───────────────────────────────────────────────────
 const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
 const prev = wealthData.length > 1 ? wealthData[wealthData.length - 2] : null;
@@ -419,18 +405,12 @@ setText(“repTotalActifs”, data.patrimoine_brut || “–”);
 setText(“repDettes”,      data.dettes          || “–”);
 setText(“repPatNet”,      data.patrimoine_net  || “–”);
 
-// Mini panel Immo (overview)
-setText(“immoBien1Nom”,    data.immo_bien1_nom || “Appartement Kilford”);
+// Mini panel Immo
+setText(“immoBien1Nom”,    data.immo_bien1_nom    || “Résidence principale”);
 setText(“immoBien1Valeur”, data.immo_bien1_valeur || “–”);
 setText(“immoBien1Dette”,  data.immo_bien1_dette  || “–”);
-const cfOverviewEl = document.getElementById(“immoBien1Cashflow”);
-if (cfOverviewEl) {
-cfOverviewEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? “+” : “”) + fmtEur.format(cashflow) + “/mois” : “–”;
-cfOverviewEl.classList.toggle(“positive”, cashflow >= 0);
-cfOverviewEl.classList.toggle(“negative”,  cashflow < 0);
-}
 setText(“immoBien1Net”,    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(v1 - d1) : “–”));
-setText(“immoBien2Nom”,    data.immo_bien2_nom || “Maison La Turbie”);
+setText(“immoBien2Nom”,    data.immo_bien2_nom    || “Bien 2”);
 setText(“immoBien2Valeur”, data.immo_bien2_valeur || “–”);
 setText(“immoBien2Dette”,  data.immo_bien2_dette  || “–”);
 setText(“immoBien2Net”,    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : “–”));
@@ -457,57 +437,17 @@ const c4 = parseNum(data.cash4_valeur);
 const totalCash = c1 + c2 + c3 + c4;
 setText(“cashTotal”, totalCash ? fmtEur.format(totalCash) : (data.cash_disponible || “–”));
 
-// ── Page Immobilier ───────────────────────────────────────────────────────
-
-// KPIs immo
-setText(“immoP_brutTotal”,  immoBrutNum ? fmtEur.format(immoBrutNum) : “–”);
-setText(“immoP_detteTotal”, data.dettes || “–”);
-setText(“immoP_netTotal”,   immoNetNum  ? fmtEur.format(immoNetNum)  : “–”);
-const cfKpiEl = document.getElementById(“immoP_cashflowTotal”);
-if (cfKpiEl) {
-cfKpiEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? “+” : “”) + fmtEur.format(cashflow) + “ €” : “–”;
-cfKpiEl.classList.toggle(“positive”, cashflow >= 0);
-cfKpiEl.classList.toggle(“negative”,  cashflow < 0);
-}
-
-// Card Kilford
-setText(“immoP_bien1Nom”,    data.immo_bien1_nom    || “Appartement Kilford”);
+// Pages dédiées Immo
+setText(“immoP_bien1Nom”,    data.immo_bien1_nom    || “Résidence principale”);
 setText(“immoP_bien1Valeur”, data.immo_bien1_valeur || “–”);
 setText(“immoP_bien1Dette”,  data.immo_bien1_dette  || “–”);
 setText(“immoP_bien1Net”,    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(v1 - d1) : “–”));
-
-setText(“immoP_bien1Loyer”,      loyer       ? fmtEur.format(loyer)       : “–”);
-setText(“immoP_bien1Mensualite”, mensualite1 ? fmtEur.format(mensualite1) : “–”);
-setText(“immoP_bien1Charges”,    chargesMens ? fmtEur.format(chargesMens) : “–”);
-const cfKilfordEl = document.getElementById(“immoP_bien1Cashflow”);
-if (cfKilfordEl) {
-cfKilfordEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? “+” : “”) + fmtEur.format(cashflow) + “ €/mois” : “–”;
-cfKilfordEl.classList.toggle(“positive”, cashflow >= 0);
-cfKilfordEl.classList.toggle(“negative”,  cashflow < 0);
-}
-
-// Rendements
-setText(“immoP_bien1RendBrut”,    rendBrut ? rendBrut.toFixed(2) + “ %” : “–”);
-setText(“immoP_bien1RendNet”,     rendNet  ? rendNet.toFixed(2)  + “ %” : “–”);
-setText(“immoP_bien1RendBrutBar”, rendBrut ? rendBrut.toFixed(2) + “ %” : “–”);
-const rendBar = document.getElementById(“rendBar1”);
-if (rendBar) rendBar.style.width = Math.min(100, (rendBrut / 6) * 100) + “%”;
-
-// Détail charges annuelles
-setText(“immoP_bien1Taxe”,        taxe        ? fmtEur.format(taxe)         : “–”);
-setText(“immoP_bien1Copro”,       copro       ? fmtEur.format(copro)        : “–”);
-setText(“immoP_bien1AssurPno”,    assurPno    ? fmtEur.format(assurPno)     : “–”);
-setText(“immoP_bien1AssurCredit”, assurCredit ? fmtEur.format(assurCredit)  : “–”);
-setText(“immoP_bien1Gestion”,     gestion     ? fmtEur.format(gestion)      : “–”);
-setText(“immoP_bien1ChargesTotal”,chargesTotal ? fmtEur.format(chargesTotal) : “–”);
-
-// Card La Turbie
-setText(“immoP_bien2Nom”,    data.immo_bien2_nom    || “Maison La Turbie”);
+setText(“immoP_bien2Nom”,    data.immo_bien2_nom    || “Bien 2”);
 setText(“immoP_bien2Valeur”, data.immo_bien2_valeur || “–”);
 setText(“immoP_bien2Dette”,  data.immo_bien2_dette  || “–”);
 setText(“immoP_bien2Net”,    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : “–”));
 
-// ── Barres de remboursement ───────────────────────────────────────────────
+// Barres de remboursement
 const credits = [
 { initial: 423000, debut: new Date(2021, 6, 1), mensualites: 300, dette: d1, id: “1” },
 { initial: 430000, debut: new Date(2026, 5, 1), mensualites: 300, dette: d2, id: “2” }
@@ -528,7 +468,7 @@ setText(`creditMois${c.id}`,     moisRestants + “ mensualités restantes”);
 setText(`creditEcheance${c.id}`, “Échéance : “ + echeanceStr);
 });
 
-// ── Page PEA ──────────────────────────────────────────────────────────────
+// Page PEA
 setText(“peaP_valeur”,       data.pea_valeur        || “–”);
 setText(“peaP_actif1Nom”,    data.pea_actif1_nom    || “–”);
 setText(“peaP_actif1Valeur”, data.pea_actif1_valeur || “–”);
@@ -559,7 +499,7 @@ const bar2 = document.getElementById(“peaBar2”);
 if (bar1) bar1.style.width = pct1 + “%”;
 if (bar2) bar2.style.width = pct2 + “%”;
 
-// ── Page Cash ─────────────────────────────────────────────────────────────
+// Page Cash
 setText(“cashP_1Nom”,  data.cash1_nom); setText(“cashP_1Valeur”, data.cash1_valeur);
 setText(“cashP_2Nom”,  data.cash2_nom); setText(“cashP_2Valeur”, data.cash2_valeur);
 setText(“cashP_3Nom”,  data.cash3_nom); setText(“cashP_3Valeur”, data.cash3_valeur);
