@@ -1066,3 +1066,32 @@ main {
 .epargne-bar span.negative { background: var(--red); }
 
 .kpi-static { /* exclut du skeleton */ }
+
+/* ── Lock screen ──────────────────────────────────────────────────────────── */
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0d0f16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+
+.lock-box {
+  background: #161b27;
+  border: 1px solid #272f45;
+  border-radius: 28px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.lock-brand
