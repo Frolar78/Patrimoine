@@ -555,7 +555,29 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
     const interets = Math.round(v * taux[i]);
     setText(`cashP_${i+1}Interets`, "+" + fmtEur.format(interets));
   });
+// ── Épargne mensuelle ─────────────────────────────────────────────────────
+  const objectifEpargne = 2360;
+  const epargneReelle   = parseNum((data.epargne_reelle_mensuelle || "").replace(/[^\d.-]/g, ""));
+  const epargneBar      = document.getElementById("cashP_epargneBar");
+  const epargneHint     = document.getElementById("cashP_epargneHint");
 
+  if (epargneReelle > 0) {
+    const pctEpargne = Math.min(120, Math.round(epargneReelle / objectifEpargne * 100));
+    const diff       = epargneReelle - objectifEpargne;
+    if (epargneBar) {
+      epargneBar.style.width = Math.min(100, pctEpargne) + "%";
+      epargneBar.className   = diff >= 0 ? "" : "negative";
+    }
+    if (epargneHint) {
+      epargneHint.textContent = diff >= 0
+        ? "+" + fmtEur.format(diff) + " au-dessus de l'objectif"
+        : fmtEur.format(Math.abs(diff)) + " sous l'objectif";
+      epargneHint.className = "kpi-hint " + (diff >= 0 ? "positive" : "negative");
+    }
+  } else {
+    if (epargneHint) epargneHint.textContent = "Renseigner epargne_reelle_mensuelle";
+  }
+  
   // Highlight mois impôts passés
   const moisActuel = new Date().getMonth(); // 0=Jan ... 11=Dec
   ["impotSept","impotOct","impotNov","impotDec"].forEach((id, i) => {
