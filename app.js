@@ -112,8 +112,9 @@ async function loadHistorique() {
     peaLabels_hist = rows
       .filter(r => parseNum((r[5] || "").replace(/[^\d.-]/g, "")) > 0)
       .map(r => {
-        const d = new Date(r[0].split("/").reverse().join("-"));
-        return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
+    const parts = r[0].split(" ")[0].split("/");
+    const d = new Date(parts[2], parts[1]-1, parts[0]);
+    return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
       });
 
   } catch(e) {
