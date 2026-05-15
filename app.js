@@ -1,3 +1,39 @@
+// ── Lock screen ───────────────────────────────────────────────────────────────
+(function() {
+  const PASSWORD = "Ell@30092021"; // ← changez ici
+  const SESSION_KEY = "mp_unlocked";
+
+  const lockScreen = document.getElementById("lockScreen");
+  const lockInput  = document.getElementById("lockInput");
+  const lockBtn    = document.getElementById("lockBtn");
+  const lockError  = document.getElementById("lockError");
+
+  // Déjà déverrouillé dans cette session
+  if (sessionStorage.getItem(SESSION_KEY) === "1") {
+    lockScreen.style.display = "none";
+    return;
+  }
+
+  function tryUnlock() {
+    if (lockInput.value === PASSWORD) {
+      sessionStorage.setItem(SESSION_KEY, "1");
+      lockScreen.classList.add("lock-fadeout");
+      setTimeout(() => lockScreen.style.display = "none", 500);
+    } else {
+      lockError.textContent = "Code incorrect, réessayez.";
+      lockInput.classList.add("error");
+      lockInput.value = "";
+      setTimeout(() => {
+        lockInput.classList.remove("error");
+        lockError.textContent = "";
+      }, 1000);
+    }
+  }
+
+  lockBtn.addEventListener("click", tryUnlock);
+  lockInput.addEventListener("keydown", e => { if (e.key === "Enter") tryUnlock(); });
+})();
+
 // ── Theme toggle ──────────────────────────────────────────────────────────────
 const html = document.documentElement;
 const themeBtn = document.getElementById("themeToggle");
