@@ -8,7 +8,6 @@ function toggleTheme() {
   const isDark = html.getAttribute("data-theme") === "dark";
   html.setAttribute("data-theme", isDark ? "light" : "dark");
   localStorage.setItem("theme", isDark ? "light" : "dark");
-  // Recréer le donut avec les nouvelles couleurs
   if (allocChart) {
     const immo = getComputedStyle(document.documentElement).getPropertyValue('--color-immo').trim();
     const pea  = getComputedStyle(document.documentElement).getPropertyValue('--color-pea').trim();
@@ -109,21 +108,21 @@ async function loadHistorique() {
     const csv = await res.text();
     const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0] && r[3]);
 
-    wealthData   = rows.map(r => parseNum(r[3].replace(/[^\d.-]/g, "")));
+    wealthData   = rows.map(r => parseNum(r[3]));
     wealthLabels = rows.map(r => {
       const parts = r[0].split(" ")[0].split("/");
       const d = new Date(parts[2], parts[1]-1, parts[0]);
       return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
     });
 
-    // PEA historique — colonne F ( 5)
-    peaData_hist  = rows.map(r => parseNum((r[5] || "").replace(/[^\d.-]/g, ""))).filter(v => v > 0);
+    // PEA historique — colonne F (index 5)
+    peaData_hist   = rows.map(r => parseNum(r[5] || "")).filter(v => v > 0);
     peaLabels_hist = rows
-      .filter(r => parseNum((r[5] || "").replace(/[^\d.-]/g, "")) > 0)
+      .filter(r => parseNum(r[5] || "") > 0)
       .map(r => {
-    const parts = r[0].split(" ")[0].split("/");
-    const d = new Date(parts[2], parts[1]-1, parts[0]);
-    return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
+        const parts = r[0].split(" ")[0].split("/");
+        const d = new Date(parts[2], parts[1]-1, parts[0]);
+        return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
       });
 
   } catch(e) {
@@ -206,7 +205,6 @@ function initAllocChart(immo, pea, cash) {
           getComputedStyle(document.documentElement).getPropertyValue('--color-pea').trim(),
           getComputedStyle(document.documentElement).getPropertyValue('--color-cash').trim()
         ],
-
         borderWidth: 0,
         cutout: "74%"
       }]
@@ -222,18 +220,20 @@ function initAllocChart(immo, pea, cash) {
 // ── Render goals ──────────────────────────────────────────────────────────────
 function renderGoals(data, currentNet, peaVal) {
   const defaultGoals = [
-    { label:"PEA 10 000 €",            target:10000  },
-    { label:"PEA 50 000 €",            target:50000  },
-    { label:"PEA 100 000 €",           target:100000 },
-    { label:"Patrimoine net 100 000 €", target:100000 }
+    { label:"PEA 10 000 €",             target:10000,  type:"pea"  },
+    { label:"PEA 50 000 €",             target:50000,  type:"pea"  },
+    { label:"PEA 100 000 €",            target:100000, type:"pea"  },
+    { label:"Patrimoine net 100 000 €", target:100000, type:"net"  }
   ];
 
   const goals = defaultGoals.map((g, i) => {
-    const label   = data[`goal${i+1}_label`]   || g.label;
-    const target  = data[`goal${i+1}_target`]  ? parseNum(data[`goal${i+1}_target`])  : g.target;
-    const isPea   = g.label.startsWith("PEA");
-    const current = data[`goal${i+1}_current`] ? parseNum(data[`goal${i+1}_current`]) : (isPea ? peaVal : currentNet);
-    const pct     = Math.min(100, Math.round(current / target * 100));
+    const label   = data[`goal${i+1}_label`]  || g.label;
+    const target  = data[`goal${i+1}_target`] ? parseNum(data[`goal${i+1}_target`]) : g.target;
+    // FIX : on utilise le type hardcodé, pas le label potentiellement overridé
+    const current = data[`goal${i+1}_current`]
+      ? parseNum(data[`goal${i+1}_current`])
+      : (g.type === "pea" ? peaVal : currentNet);
+    const pct = Math.min(100, Math.round(current / target * 100));
     return { label, target, current, pct };
   });
 
@@ -307,7 +307,7 @@ function clearError() {
 async function loadSheetData() {
   showSkeleton();
 
-const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=512150963&single=true&output=csv";
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=512150963&single=true&output=csv";
   let csv;
   try {
     const res = await fetch(url);
@@ -323,18 +323,25 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
 
   const rows = parseCSV(csv.trim());
   const data = {};
-  rows.slice(1).forEach(r => { if (r[0]) data[r[0]] = r[1] ?? ""; });
+  rows.slice(1).forEach(r => { if (r[0]) data[r[0].trim()] = r[1] ?? ""; });
   console.log("Sheet:", data);
 
-  // ── Valeurs numériques de base ────────────────────────────────────────────
-  const brutNum = parseNum((data.patrimoine_brut || "").replace(/[^\d.-]/g,""));
-  const netNum  = parseNum((data.patrimoine_net  || "").replace(/[^\d.-]/g,""));
-  const v1 = parseNum((data.immo_bien1_valeur||"").replace(/[^\d.-]/g,""));
-  const d1 = parseNum((data.immo_bien1_dette ||"").replace(/[^\d.-]/g,""));
-  const v2 = parseNum((data.immo_bien2_valeur||"").replace(/[^\d.-]/g,""));
-  const d2 = parseNum((data.immo_bien2_dette ||"").replace(/[^\d.-]/g,""));
-  const peaNum  = parseNum((data.pea_valeur       ||"").replace(/[^\d.-]/g,""));
-  const cashNum = parseNum((data.cash_disponible  ||"").replace(/[^\d.-]/g,""));
+  // ── Valeurs numériques de base — on lit directement les clés du sheet ──────
+  const brutNum     = parseNum(data.patrimoine_brut);
+  const netNum      = parseNum(data.patrimoine_net);
+  const detteNum    = parseNum(data.dettes);
+  const immoNetNum  = parseNum(data.immobilier_net);   // FIX : lu depuis le sheet
+  const immoBrutNum = parseNum(data.immobilier_brut);  // FIX : lu depuis le sheet
+  const peaNum      = parseNum(data.pea_valeur);
+  const cashNum     = parseNum(data.cash_disponible);
+
+  // Biens immo individuels (pour les barres de crédit)
+  const v1 = parseNum(data.immo_bien1_valeur);
+  const d1 = parseNum(data.immo_bien1_dette);
+  const n1 = parseNum(data.immo_bien1_net);  // FIX : lu depuis le sheet
+  const v2 = parseNum(data.immo_bien2_valeur);
+  const d2 = parseNum(data.immo_bien2_dette);
+  const n2 = parseNum(data.immo_bien2_net);  // FIX : lu depuis le sheet
 
   // ── Variation mensuelle ───────────────────────────────────────────────────
   const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
@@ -351,7 +358,6 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   const allocCash = parsePercent(data.allocation_cash);
 
   // ── % net calculés : valeur actif / patrimoine net ────────────────────────
-  const immoNetNum  = (v1 + v2) - (d1 + d2);
   const pctNetImmo  = netNum ? ((immoNetNum / netNum) * 100).toFixed(1) + " %" : "--";
   const pctNetPea   = netNum ? ((peaNum     / netNum) * 100).toFixed(1) + " %" : "--";
   const pctNetCash  = netNum ? ((cashNum    / netNum) * 100).toFixed(1) + " %" : "--";
@@ -359,22 +365,22 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
 
   // ── PEA perf ──────────────────────────────────────────────────────────────
   const peaPerf = parsePercent(data.pea_performance);
-  const peaPerfText = isNaN(peaPerf) || peaPerf === 0 ? "--" : peaPerf.toFixed(1) + " %";
+  const peaPerfText = isNaN(peaPerf) || peaPerf === 0 ? "--" : (peaPerf >= 0 ? "+" : "") + peaPerf.toFixed(1) + " %";
 
-  // ── YTD ───────────────────────────────────────────────────────────────────
-  // Priorité : clé perf_ytd dédiée, sinon calculé sur wealthData jan→mai
+  // ── YTD ─────────────────────────────────────────────────────────────────
+  // FIX : le signe + n'est plus forcé si la valeur est négative
   let ytdText = "--";
   if (data.perf_ytd) {
-    ytdText = "+" + parseNum(data.perf_ytd).toFixed(1) + " %";
+    const ytdVal = parseNum(data.perf_ytd);
+    ytdText = (ytdVal >= 0 ? "+" : "") + ytdVal.toFixed(1) + " %";
   } else {
-    // Premier point de l'année en cours comme base YTD
     const currentYear = new Date().getFullYear();
     const yearStr = currentYear.toString().slice(-2);
     const firstOfYearIdx = wealthLabels.findIndex(l => l.includes(yearStr));
     const janVal = firstOfYearIdx >= 0 ? wealthData[firstOfYearIdx] : wealthData[0];
-    const mayVal = wealthData[wealthData.length - 1];
-    if (janVal && mayVal) {
-      const ytdPct = ((mayVal - janVal) / janVal * 100);
+    const lastVal = wealthData[wealthData.length - 1];
+    if (janVal && lastVal) {
+      const ytdPct = ((lastVal - janVal) / janVal * 100);
       ytdText = (ytdPct >= 0 ? "+" : "") + ytdPct.toFixed(1) + " %";
     }
   }
@@ -394,21 +400,20 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   document.getElementById("variationMensuelle")?.classList.toggle("positive",  pos);
   setText("varMensuelleKpi",    diffFmt);
   setText("varMensuellePctKpi", pctFmt);
-  setText("variationPct", pctFmt);
+  setText("variationPct",       pctFmt);
   setText("perfYtd", ytdText);
 
-  // Allocation donut + légende
+  // Allocation donut + légende — FIX : on utilise immobilier_brut depuis le sheet
   setText("allocImmoText", allocImmo + " %");
   setText("allocPeaText",  allocPea  + " %");
   setText("allocCashText", allocCash + " %");
-  setText("allocImmoVal",  (v1 + v2) ? fmtEur.format(v1 + v2) : "--");
-  setText("allocPeaVal",   data.pea_valeur        || "--");
-  setText("allocCashVal",  data.cash_disponible   || "--");
+  setText("allocImmoVal",  immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
+  setText("allocPeaVal",   data.pea_valeur      || "--");
+  setText("allocCashVal",  data.cash_disponible || "--");
   initAllocChart(allocImmo, allocPea, allocCash);
 
-  // Tableau détail (% net maintenant calculés)
-  const immoValTotale = v1 + v2;
-  setText("dtImmoVal", immoValTotale ? fmtEur.format(immoValTotale) : "--");
+  // Tableau détail — FIX : on utilise immobilier_brut et immobilier_net depuis le sheet
+  setText("dtImmoVal",     immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
   setText("dtImmoPctBrut", allocImmo + " %");
   setText("dtImmoPctNet",  pctNetImmo);
   setText("dtImmoEvo",     data.immo_evo_mensuelle || "—");
@@ -431,23 +436,22 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   document.getElementById("repImmoBar").style.width  = allocImmo + "%";
   document.getElementById("repPeaBar").style.width   = allocPea  + "%";
   document.getElementById("repCashBar").style.width  = allocCash + "%";
-  setText("repImmoVal",     immoValTotale ? fmtEur.format(immoValTotale) : "--");
-  setText("repPeaVal",      data.pea_valeur        || "--");
-  setText("repCashVal",     data.cash_disponible   || "--");
-  setText("repTotalActifs", data.patrimoine_brut   || "--");
-  setText("repDettes",      data.dettes            || "--");
-  setText("repPatNet",      data.patrimoine_net    || "--");
+  setText("repImmoVal",     immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
+  setText("repPeaVal",      data.pea_valeur      || "--");
+  setText("repCashVal",     data.cash_disponible || "--");
+  setText("repTotalActifs", data.patrimoine_brut || "--");
+  setText("repDettes",      data.dettes          || "--");
+  setText("repPatNet",      data.patrimoine_net  || "--");
 
-  // Mini panel Immo
-  setText("immoBien1Nom",    data.immo_bien1_nom    || "Résidence principale");
+  // Mini panel Immo — FIX : on utilise immo_bien1_net / immo_bien2_net depuis le sheet
+  setText("immoBien1Nom",    data.immo_bien1_nom || "Résidence principale");
   setText("immoBien1Valeur", data.immo_bien1_valeur || "--");
   setText("immoBien1Dette",  data.immo_bien1_dette  || "--");
-  setText("immoBien1Net", v1 || d1 ? fmtEur.format(v1 - d1) : "--");
-  setText("immoBien2Nom",    data.immo_bien2_nom    || "Bien 2");
+  setText("immoBien1Net",    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(v1 - d1) : "--"));
+  setText("immoBien2Nom",    data.immo_bien2_nom || "Bien 2");
   setText("immoBien2Valeur", data.immo_bien2_valeur || "--");
   setText("immoBien2Dette",  data.immo_bien2_dette  || "--");
-  setText("immoBien2Net",    v2 || d2 ? fmtEur.format(v2 - d2) : "--");
-
+  setText("immoBien2Net",    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : "--"));
 
   // Mini panel PEA
   setText("peaActif1Nom",     data.pea_actif1_nom    || "--");
@@ -464,22 +468,22 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   setText("cash2Nom",   data.cash2_nom);   setText("cash2Valeur", data.cash2_valeur);
   setText("cash3Nom",   data.cash3_nom);   setText("cash3Valeur", data.cash3_valeur);
   setText("cash4Nom",   data.cash4_nom);   setText("cash4Valeur", data.cash4_valeur);
-  const c1 = parseNum((data.cash1_valeur||"").replace(/[^\d.-]/g,""));
-  const c2 = parseNum((data.cash2_valeur||"").replace(/[^\d.-]/g,""));
-  const c3 = parseNum((data.cash3_valeur||"").replace(/[^\d.-]/g,""));
-  const c4 = parseNum((data.cash4_valeur||"").replace(/[^\d.-]/g,""));
+  const c1 = parseNum(data.cash1_valeur);
+  const c2 = parseNum(data.cash2_valeur);
+  const c3 = parseNum(data.cash3_valeur);
+  const c4 = parseNum(data.cash4_valeur);
   const totalCash = c1 + c2 + c3 + c4;
   setText("cashTotal", totalCash ? fmtEur.format(totalCash) : (data.cash_disponible || "--"));
 
-  // Pages dédiées
+  // Pages dédiées Immo — FIX : immo_bien1_net / immo_bien2_net depuis le sheet
   setText("immoP_bien1Nom",    data.immo_bien1_nom    || "Résidence principale");
   setText("immoP_bien1Valeur", data.immo_bien1_valeur || "--");
   setText("immoP_bien1Dette",  data.immo_bien1_dette  || "--");
-  setText("immoP_bien1Net",    v1 || d1 ? fmtEur.format(v1 - d1) : "--");
+  setText("immoP_bien1Net",    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(v1 - d1) : "--"));
   setText("immoP_bien2Nom",    data.immo_bien2_nom    || "Bien 2");
   setText("immoP_bien2Valeur", data.immo_bien2_valeur || "--");
   setText("immoP_bien2Dette",  data.immo_bien2_dette  || "--");
-  setText("immoP_bien2Net",    v2 || d2 ? fmtEur.format(v2 - d2) : "--");
+  setText("immoP_bien2Net",    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : "--"));
 
   // ── Barres de remboursement ───────────────────────────────────────────────
   const credits = [
@@ -504,7 +508,8 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
     setText(`creditEcheance${c.id}`, "Échéance : " + echeanceStr);
   });
 
-    setText("peaP_valeur",       data.pea_valeur        || "--");
+  // Page PEA
+  setText("peaP_valeur",       data.pea_valeur        || "--");
   setText("peaP_actif1Nom",    data.pea_actif1_nom    || "--");
   setText("peaP_actif1Valeur", data.pea_actif1_valeur || "--");
   setText("peaP_actif2Nom",    data.pea_actif2_nom    || "--");
@@ -513,20 +518,19 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   setText("peaP_verse",        data.pea_verse         || "--");
 
   // Plus-value
-  const peaVerse = parseNum((data.pea_verse||"").replace(/[^\d.-]/g,""));
+  const peaVerse = parseNum(data.pea_verse);
   const plusValue = peaNum - peaVerse;
   setText("peaP_plusvalue", peaVerse ? (plusValue >= 0 ? "+" : "") + fmtEur.format(plusValue) : "--");
 
   // Perfs par ETF
-    const perf1 = parsePercent(data.pea_actif1_perf);
+  const perf1 = parsePercent(data.pea_actif1_perf);
   const perf2 = parsePercent(data.pea_actif2_perf);
-
   setText("peaP_actif1Perf", isNaN(perf1) ? "--" : (perf1 >= 0 ? "+" : "") + perf1.toFixed(1) + " %");
   setText("peaP_actif2Perf", isNaN(perf2) ? "--" : (perf2 >= 0 ? "+" : "") + perf2.toFixed(1) + " %");
 
   // Poids dans le portefeuille
-  const etf1Num = parseNum((data.pea_actif1_valeur||"").replace(/[^\d.-]/g,""));
-  const etf2Num = parseNum((data.pea_actif2_valeur||"").replace(/[^\d.-]/g,""));
+  const etf1Num = parseNum(data.pea_actif1_valeur);
+  const etf2Num = parseNum(data.pea_actif2_valeur);
   const pct1 = peaNum ? Math.round(etf1Num / peaNum * 100) : 0;
   const pct2 = peaNum ? Math.round(etf2Num / peaNum * 100) : 0;
   setText("peaP_actif1Pct",    pct1 + " %");
@@ -538,6 +542,7 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   if (bar1) bar1.style.width = pct1 + "%";
   if (bar2) bar2.style.width = pct2 + "%";
 
+  // Page Cash
   setText("cashP_1Nom",  data.cash1_nom); setText("cashP_1Valeur", data.cash1_valeur);
   setText("cashP_2Nom",  data.cash2_nom); setText("cashP_2Valeur", data.cash2_valeur);
   setText("cashP_3Nom",  data.cash3_nom); setText("cashP_3Valeur", data.cash3_valeur);
@@ -548,43 +553,50 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
   const cashVals = [c1, c2, c3, c4];
   const provision = 4770;
 
-  const totalLivrets = c1 + c2 + c3 + c4;
-  const cashDispo    = totalLivrets - provision;
+  const totalLivrets  = c1 + c2 + c3 + c4;
+  const cashDispo     = totalLivrets - provision;
   const interetsTotal = cashVals.reduce((sum, v, i) => sum + v * taux[i], 0);
 
   setText("cashP_total",    fmtEur.format(totalLivrets));
-  setText("cashP_dispo",    fmtEur.format(cashDispo));
+  // FIX : couleur négative si cashDispo < 0
+  const cashDispoEl = document.getElementById("cashP_dispo");
+  if (cashDispoEl) {
+    cashDispoEl.textContent = fmtEur.format(cashDispo);
+    cashDispoEl.classList.toggle("negative", cashDispo < 0);
+    cashDispoEl.classList.toggle("positive",  cashDispo >= 0);
+  }
   setText("cashP_interets", "+" + fmtEur.format(Math.round(interetsTotal)));
 
   cashVals.forEach((v, i) => {
     const interets = Math.round(v * taux[i]);
     setText(`cashP_${i+1}Interets`, "+" + fmtEur.format(interets));
   });
-// ── Épargne mensuelle ─────────────────────────────────────────────────────
+
+  // ── Épargne mensuelle ─────────────────────────────────────────────────────
   const objectifEpargne = 2360;
-  const epargneReelle   = parseNum((data.epargne_reelle_mensuelle || "").replace(/[^\d.-]/g, ""));
+  const epargneReelle   = parseNum(data.epargne_reelle_mensuelle);
   const epargneBar      = document.getElementById("cashP_epargneBar");
   const epargneHint     = document.getElementById("cashP_epargneHint");
 
   if (epargneReelle > 0) {
     const pctEpargne = Math.min(120, Math.round(epargneReelle / objectifEpargne * 100));
-    const diff       = epargneReelle - objectifEpargne;
+    const diffEpargne = epargneReelle - objectifEpargne;
     if (epargneBar) {
       epargneBar.style.width = Math.min(100, pctEpargne) + "%";
-      epargneBar.className   = diff >= 0 ? "" : "negative";
+      epargneBar.className   = diffEpargne >= 0 ? "" : "negative";
     }
     if (epargneHint) {
-      epargneHint.textContent = diff >= 0
-        ? "+" + fmtEur.format(diff) + " au-dessus de l'objectif"
-        : fmtEur.format(Math.abs(diff)) + " sous l'objectif";
-      epargneHint.className = "kpi-hint " + (diff >= 0 ? "positive" : "negative");
+      epargneHint.textContent = diffEpargne >= 0
+        ? "+" + fmtEur.format(diffEpargne) + " au-dessus de l'objectif"
+        : fmtEur.format(Math.abs(diffEpargne)) + " sous l'objectif";
+      epargneHint.className = "kpi-hint " + (diffEpargne >= 0 ? "positive" : "negative");
     }
   } else {
     if (epargneHint) epargneHint.textContent = "Renseigner epargne_reelle_mensuelle";
   }
-  
-  // Highlight mois impôts passés
-  const moisActuel = new Date().getMonth(); // 0=Jan ... 11=Dec
+
+  // ── Highlight mois impôts passés ──────────────────────────────────────────
+  const moisActuel = new Date().getMonth(); // 0=Jan … 11=Dec
   ["impotSept","impotOct","impotNov","impotDec"].forEach((id, i) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -592,7 +604,6 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
     if (moisActuel > moisImpot) el.classList.add("impot-paye");
     else if (moisActuel === moisImpot) el.classList.add("impot-courant");
   });
-
 
   // Sync badge
   const upd    = new Date().toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric" });
@@ -607,7 +618,9 @@ const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdK
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-loadHistorique().then(() => {
+async function init() {
+  await loadHistorique();
+
   // Graphique patrimoine net
   if (wealthData.length < 2) {
     document.querySelector(".chart-wrap").innerHTML = `
@@ -676,14 +689,17 @@ loadHistorique().then(() => {
   }
 
   loadSheetData();
-});
+}
 
-document.getElementById("refreshBtn")?.addEventListener("click", () => {
+init();
+
+// ── Refresh — FIX : recharge aussi l'historique ───────────────────────────────
+document.getElementById("refreshBtn")?.addEventListener("click", async () => {
   const btn = document.getElementById("refreshBtn");
   btn.classList.add("spinning");
+  await loadHistorique();
+  await loadSheetData();
   setTimeout(() => btn.classList.remove("spinning"), 600);
-  loadSheetData();
-  lucide.createIcons();
 });
 
 document.querySelectorAll(".range-btn").forEach(btn => {
