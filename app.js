@@ -65,7 +65,14 @@ function parseCSV(text) {
 
 function parseNum(val) {
   if (!val) return 0;
-  return parseFloat(val.toString().replace(/"/g,"").replace(/%/g,"").replace(/[\s\u00a0\u202f]/g,"").replace(",",".").trim()) || 0;
+  let s = val.toString().replace(/"/g,"").replace(/%/g,"").replace(/[€]/g,"").trim();
+  // Détecte format européen : 1.234,56 ou 1 234,56
+  if (/\d,\d{2}$/.test(s)) {
+    s = s.replace(/[\s\u00a0\u202f.]/g,"").replace(",",".");
+  } else {
+    s = s.replace(/[\s\u00a0\u202f,]/g,"");
+  }
+  return parseFloat(s) || 0;
 }
 
 function parsePercent(val) { return parseNum(val); }
