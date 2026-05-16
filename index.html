@@ -675,11 +675,44 @@
 
     <!-- ══ GOALS PAGE ══ -->
     <div id="goalsPage" class="page">
-      <div class="card" style="padding:28px">
-        <div class="card-header"><h3>Objectifs patrimoniaux</h3><span class="badge">Long terme</span></div>
-        <div class="goals-full" id="goalsFull"></div>
+  <div class="card" style="padding:28px;margin-bottom:18px">
+    <div class="card-header"><h3>Objectifs patrimoniaux</h3><span class="badge">Long terme</span></div>
+    <div class="goals-full" id="goalsFull"></div>
+  </div>
+
+  <div class="card" style="padding:28px">
+    <div class="card-header">
+      <h3>Projection patrimoniale</h3>
+      <div class="range-selector" style="margin-bottom:0">
+        <button class="range-btn active" data-horizon="10">10 ans</button>
+        <button class="range-btn" data-horizon="15">15 ans</button>
+        <button class="range-btn" data-horizon="20">20 ans</button>
       </div>
     </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px">Pessimiste</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--red)" id="projPessimiste">--</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">Immo +1%/an • PEA +5%/an</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--blue);border-radius:var(--radius-md);padding:16px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px">Neutre</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue)" id="projNeutre">--</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">Immo +2%/an • PEA +7%/an</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--green);border-radius:var(--radius-md);padding:16px">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px">Optimiste</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--green)" id="projOptimiste">--</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">Immo +3%/an • PEA +9%/an</div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="projChart"></canvas>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px" id="projMilestones"></div>
+  </div>
+</div>
+
 
   </main>
 </div>
