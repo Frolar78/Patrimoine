@@ -390,6 +390,10 @@ const moisT = Math.round((today2 - debutTurbie)  / (1000 * 60 * 60 * 24 * 30.44)
 
 const capitalMensuel  = moisK > 0 && moisK <= 300 ? Math.round(getKilfordCapital(moisK))  : 0;
 const capitalMensuel2 = moisT > 0 && moisT <= 300 ? Math.round(getTurbieCapital(moisT)) : 0;
+const interetsMensuel  = capitalMensuel  > 0 ? Math.round(mensualite1 - capitalMensuel)  : 0;
+const interetsMensuel2 = capitalMensuel2 > 0 ? Math.round(2082.46 - capitalMensuel2) : 0;
+const pctCapital1  = mensualite1  > 0 ? Math.round(capitalMensuel  / mensualite1  * 100) : 0;
+const pctCapital2  = capitalMensuel2 > 0 ? Math.round(capitalMensuel2 / 2082.46 * 100) : 0;
 
 const creationPatrim  = capitalMensuel - Math.abs(cashflow);
 const creationTotal   = capitalMensuel + capitalMensuel2 - Math.abs(cashflow);
@@ -560,6 +564,11 @@ if (cfKilfordEl) {
 }
   
 setText("immoP_bien1CapitalMensuel", capitalMensuel ? fmtEur.format(capitalMensuel) + "/mois" : "--");
+setText("immoP_bien1Interets", interetsMensuel ? fmtEur.format(interetsMensuel) + "/mois" : "--");
+const bar1K = document.getElementById("immoP_bien1CapitalBar");
+if (bar1K) bar1K.style.width = pctCapital1 + "%";
+setText("immoP_bien1CapitalPct", pctCapital1 + "% capital · " + (100 - pctCapital1) + "% intérêts");
+
 const creationEl = document.getElementById("immoP_bien1CreationPatrim");
 if (creationEl) {
   creationEl.textContent = creationPatrim ? (creationPatrim >= 0 ? "+" : "") + fmtEur.format(creationPatrim) + "/mois" : "--";
@@ -582,6 +591,11 @@ setText("immoP_bien2Valeur", data.immo_bien2_valeur || "--");
 setText("immoP_bien2Dette",  data.immo_bien2_dette  || "--");
 setText("immoP_bien2Net",    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : "--"));
 setText("immoP_bien2CapitalMensuel", capitalMensuel2 ? fmtEur.format(capitalMensuel2) + "/mois" : "0 €/mois");
+setText("immoP_bien2Interets", interetsMensuel2 ? fmtEur.format(interetsMensuel2) + "/mois" : "--");
+const bar2T = document.getElementById("immoP_bien2CapitalBar");
+if (bar2T) bar2T.style.width = pctCapital2 + "%";
+setText("immoP_bien2CapitalPct", pctCapital2 + "% capital · " + (100 - pctCapital2) + "% intérêts");
+
 setText("immoP_maj",  data.immo_derniere_maj || "--");
 setText("immoP_maj2", data.immo_derniere_maj || "--");
 
