@@ -388,9 +388,23 @@ const creationTotal   = capitalMensuel + capitalMensuel2 - Math.abs(cashflow);
 
   
   // ── Variation mensuelle ───────────────────────────────────────────────────
-  const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
-  const prev = wealthData.length > 1 ? wealthData[wealthData.length - 2] : null;
-  const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (last && prev ? last - prev : null);
+const last = wealthData.length > 0 ? wealthData[wealthData.length - 1] : null;
+
+// Trouver le dernier point du mois précédent
+const currentMonth = new Date().getMonth();
+const currentYear  = new Date().getFullYear();
+const prevMonthIdx = wealthLabels.reduce((found, label, i) => {
+  const parts = label.split(" ");
+  const labelMonth = new Date(Date.parse(parts[0] + " 1 20" + parts[1])).getMonth();
+  const labelYear  = new Date(Date.parse(parts[0] + " 1 20" + parts[1])).getFullYear();
+  const isPrevMonth = (labelMonth === (currentMonth === 0 ? 11 : currentMonth - 1)) &&
+    (labelYear === (currentMonth === 0 ? currentYear - 1 : currentYear));
+  return isPrevMonth ? i : found;
+}, -1);
+
+const prev = prevMonthIdx >= 0 ? wealthData[prevMonthIdx] : (wealthData.length > 1 ? wealthData[wealthData.length - 2] : null);
+const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (last && prev ? last - prev : null);
+
   const pos     = diff !== null && diff >= 0;
   const diffFmt = diff !== null ? (pos ? "+" : "") + fmtEur.format(diff) : "--";
   const pctMens = diff !== null && prev ? (diff / prev * 100) : null;
