@@ -693,6 +693,10 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
 
   // Goals
   renderGoals(data, netNum || (last ?? 0), peaNum);
+  
+// Projection
+window._projArgs = [netNum, peaNum, v1, v2, d1, d2];
+renderProjection(netNum, peaNum, v1, v2, d1, d2);
 
   hideSkeleton();
 }
@@ -785,6 +789,190 @@ document.querySelectorAll(".range-btn").forEach(btn => {
     btn.classList.add("active");
     const range = btn.dataset.range === "all" ? "all" : parseInt(btn.dataset.range);
     renderWealthChart(range);
+  });
+});
+
+// ── Tableaux d'amortissement ──────────────────────────────────────────────────
+// Kilford : taux 1.14%, 300 mois, départ sept 2021, capital initial 423451.52
+function getKilfordCapital(moisDepuisDebut) {
+  if (moisDepuisDebut < 1 || moisDepuisDebut > 300) return 0;
+  const tauxMensuel = 0.0114 / 12;
+  const n = 300;
+  const mensualite = 1623.24;
+  const capitalInitial = 423451.52;
+  // Capital restant avant l'échéance N
+  const capitalRestant = capitalInitial * Math.pow(1 + tauxMensuel, moisDepuisDebut - 1) -
+    mensualite * (Math.pow(1 + tauxMensuel, moisDepuisDebut - 1) - 1) / tauxMensuel;
+  return capitalRestant * tauxMensuel;
+}
+
+// La Turbie : taux 3.15%, 300 mois, départ juin 2026, capital initial 432000
+function getTurbieCapital(moisDepuisDebut) {
+  if (moisDepuisDebut < 1 || moisDepuisDebut > 300) return 0;
+  const tauxMensuel = 0.0315 / 12;
+  const mensualite = 2082.46;
+  const capitalInitial = 432000;
+  const capitalRestant = capitalInitial * Math.pow(1 + tauxMensuel, moisDepuisDebut - 1) -
+    mensualite * (Math.pow(1 + tauxMensuel, moisDepuisDebut - 1) - 1) / tauxMensuel;
+  return capitalRestant * tauxMensuel;
+}
+
+// ── Moteur de projection ──────────────────────────────────────────────────────
+let projChart;
+let currentHorizon = 10;
+
+function computeProjection(netActuel, peaActuel, immo1Actuel, immo2Actuel, dettes1Actuel, dettes2Actuel, horizon) {
+  const scenarios = [
+    { immo1: 0.00, immo2: 0.01, pea: 0.05 }, // pessimiste
+    { immo1: 0.015, immo2: 0.02, pea: 0.07 }, // neutre
+    { immo1: 0.03, immo2: 0.03, pea: 0.09 }  // optimiste
+  ];
+
+  const debutKilford  = new Date(2021, 8, 1); // sept 2021
+  const debutTurbie   = new Date(2026, 5, 1); // juin 2026
+  const today         = new Date();
+  const cashflowMens  = -521;
+  const epargneMens   = 1000;
+  const peaDCA        = 200;
+  const moisTotal     = horizon * 12;
+
+  return scenarios.map(sc => {
+    let pea   = peaActuel;
+    let immo1 = immo1Actuel;
+    let immo2 = immo2Actuel;
+    let dette1 = dettes1Actuel;
+    let dette2 = dettes2Actuel;
+    let cash  = 0;
+
+    const points = [];
+
+    for (let m = 0; m < moisTotal; m++) {
+      const dateCourante = new Date(today.getFullYear(), today.getMonth() + m, 1);
+
+      // Capital remboursé Kilford
+      const moisK = Math.round((dateCourante - debutKilford) / (1000 * 60 * 60 * 24 * 30.44));
+      const capK  = moisK > 0 && moisK <= 300 ? getKilfordCapital(moisK) : 0;
+      dette1 = Math.max(0, dette1 - capK);
+
+      // Capital remboursé La Turbie
+      const moisT = Math.round((dateCourante - debutTurbie) / (1000 * 60 * 60 * 24 * 30.44));
+      const capT  = moisT > 0 && moisT <= 300 ? getTurbieCapital(moisT) : 0;
+      dette2 = Math.max(0, dette2 - capT);
+
+      // Revalorisation immo mensuelle
+      immo1 *= (1 + sc.immo1 / 12);
+      immo2 *= (1 + sc.immo2 / 12);
+
+      // PEA : DCA + performance
+      pea = pea * (1 + sc.pea / 12) + peaDCA;
+
+      // Cash : épargne + cashflow Kilford
+      cash += epargneMens + cashflowMens;
+
+      // Patrimoine net
+      const net = (immo1 - dette1) + (immo2 - dette2) + pea + cash;
+
+      if (m % 12 === 11 || m === moisTotal - 1) {
+        points.push({ annee: Math.ceil((m + 1) / 12), net: Math.round(net) });
+      }
+    }
+    return points;
+  });
+}
+
+function renderProjection(netActuel, peaActuel, immo1Actuel, immo2Actuel, dettes1Actuel, dettes2Actuel) {
+  const horizon   = currentHorizon;
+  const scenarios = computeProjection(netActuel, peaActuel, immo1Actuel, immo2Actuel, dettes1Actuel, dettes2Actuel, horizon);
+
+  const labels = scenarios[0].map(p => "An " + p.annee);
+
+  // Valeurs finales
+  setText("projPessimiste", fmtEur.format(scenarios[0][scenarios[0].length - 1].net));
+  setText("projNeutre",     fmtEur.format(scenarios[1][scenarios[1].length - 1].net));
+  setText("projOptimiste",  fmtEur.format(scenarios[2][scenarios[2].length - 1].net));
+
+  // Milestones
+  const milestones = [Math.floor(horizon * 0.25), Math.floor(horizon * 0.5), Math.floor(horizon * 0.75), horizon - 1];
+  const milestonesEl = document.getElementById("projMilestones");
+  if (milestonesEl) {
+    milestonesEl.innerHTML = milestones.map(idx => {
+      const annee = scenarios[0][idx]?.annee || "";
+      return `
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;text-align:center">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Dans ${annee} ans</div>
+          <div style="font-size:12px;color:var(--red);font-weight:600">${fmtEur.format(scenarios[0][idx]?.net || 0)}</div>
+          <div style="font-size:12px;color:var(--blue);font-weight:600">${fmtEur.format(scenarios[1][idx]?.net || 0)}</div>
+          <div style="font-size:12px;color:var(--green);font-weight:600">${fmtEur.format(scenarios[2][idx]?.net || 0)}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // Graphique
+  if (projChart) projChart.destroy();
+  const canvas = document.getElementById("projChart");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+
+  projChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Pessimiste",
+          data: scenarios[0].map(p => p.net),
+          borderColor: "#e53e3e",
+          backgroundColor: "rgba(229,62,62,.06)",
+          fill: true,
+          tension: .42,
+          pointRadius: 3,
+          borderWidth: 2
+        },
+        {
+          label: "Neutre",
+          data: scenarios[1].map(p => p.net),
+          borderColor: "#4f6ef7",
+          backgroundColor: "rgba(79,110,247,.06)",
+          fill: true,
+          tension: .42,
+          pointRadius: 3,
+          borderWidth: 2.5
+        },
+        {
+          label: "Optimiste",
+          data: scenarios[2].map(p => p.net),
+          borderColor: "#0e9f6e",
+          backgroundColor: "rgba(14,159,110,.06)",
+          fill: true,
+          tension: .42,
+          pointRadius: 3,
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: "top", labels: { font: { size: 11 }, color: "#9aa0b4" } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + " : " + fmtEur.format(ctx.parsed.y) } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: "#9aa0b4", font: { size: 11 } } },
+        y: { grid: { color: "rgba(0,0,0,.04)" }, ticks: { color: "#9aa0b4", font: { size: 11 }, callback: v => fmtEur.format(v) } }
+      }
+    }
+  });
+}
+
+// Boutons horizon
+document.querySelectorAll("[data-horizon]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-horizon]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentHorizon = parseInt(btn.dataset.horizon);
+    if (window._projArgs) renderProjection(...window._projArgs);
   });
 });
 
