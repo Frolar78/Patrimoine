@@ -560,6 +560,8 @@ setText("immoP_bien2Valeur", data.immo_bien2_valeur || "--");
 setText("immoP_bien2Dette",  data.immo_bien2_dette  || "--");
 setText("immoP_bien2Net",    n2 ? fmtEur.format(n2) : (v2 || d2 ? fmtEur.format(v2 - d2) : "--"));
 setText("immoP_bien2CapitalMensuel", capitalMensuel2 ? fmtEur.format(capitalMensuel2) + "/mois" : "0 €/mois");
+setText("immoP_maj",  data.immo_derniere_maj || "--");
+setText("immoP_maj2", data.immo_derniere_maj || "--");
 
   // Barres de remboursement
   const credits = [
