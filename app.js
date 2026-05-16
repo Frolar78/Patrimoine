@@ -837,7 +837,8 @@ function getTurbieCapital(moisDepuisDebut) {
   const capitalInitial = 432000;
   const capitalRestant = capitalInitial * Math.pow(1 + tauxMensuel, moisDepuisDebut - 1) -
     mensualite * (Math.pow(1 + tauxMensuel, moisDepuisDebut - 1) - 1) / tauxMensuel;
-  return capitalRestant * tauxMensuel;
+    const interets = capitalRestant * tauxMensuel;
+  return mensualite - interets;
 }
 
 // ── Moteur de projection ──────────────────────────────────────────────────────
