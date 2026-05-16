@@ -721,8 +721,9 @@ async function init() {
         <small>Le graphique s'affichera dès le deuxième point enregistré</small>
       </div>
     `;
-    const badge = document.getElementById("peaChartBadge");
-    if (badge) badge.textContent = "Historique en cours";
+  const badge = document.getElementById("peaChartBadge");
+  if (badge) badge.style.display = "none";
+  
   } else {
     const canvas = document.getElementById("peaChart");
     const ctx    = canvas.getContext("2d");
