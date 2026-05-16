@@ -385,8 +385,8 @@ const debutKilford = new Date(2021, 8, 1); // sept 2021
 const debutTurbie  = new Date(2026, 5, 1); // juin 2026
 const today2       = new Date();
 
-const moisK = Math.round((today2 - debutKilford) / (1000 * 60 * 60 * 24 * 30.44));
-const moisT = Math.round((today2 - debutTurbie)  / (1000 * 60 * 60 * 24 * 30.44));
+const moisK = (today2.getFullYear() - debutKilford.getFullYear()) * 12 + (today2.getMonth() - debutKilford.getMonth()) + 1;
+const moisT = (today2.getFullYear() - debutTurbie.getFullYear()) * 12 + (today2.getMonth() - debutTurbie.getMonth()) + 1;
 
 const capitalMensuel  = moisK > 0 && moisK <= 300 ? Math.round(getKilfordCapital(moisK))  : 0;
 const capitalMensuel2 = moisT > 0 && moisT <= 300 ? Math.round(getTurbieCapital(moisT)) : 0;
@@ -555,7 +555,7 @@ setText("immoP_bien1Net",    n1 ? fmtEur.format(n1) : (v1 || d1 ? fmtEur.format(
 
 setText("immoP_bien1Loyer",      loyer       ? fmtEur.format(loyer)       : "--");
 setText("immoP_bien1Mensualite", mensualite1 ? fmtEur.format(mensualite1) : "--");
-setText("immoP_bien1Charges",    chargesMens ? fmtEur.format(chargesMens) : "--");
+setText("immoP_bien1Charges", chargesMens ? fmtEur.format(Math.round(chargesMens / 12)) + "/mois" : "--");
 const cfKilfordEl = document.getElementById("immoP_bien1Cashflow");
 if (cfKilfordEl) {
   cfKilfordEl.textContent = cashflow !== 0 ? (cashflow >= 0 ? "+" : "") + fmtEur.format(cashflow) + "/mois" : "--";
