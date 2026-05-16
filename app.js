@@ -546,10 +546,6 @@ if (creationEl) {
 }
 setText("immoP_bien1RendBrut",    rendBrut ? rendBrut.toFixed(2) + " %" : "--");
 setText("immoP_bien1RendNet",     rendNet  ? rendNet.toFixed(2)  + " %" : "--");
-setText("immoP_bien1RendBrutBar", rendBrut ? rendBrut.toFixed(2) + " %" : "--");
-const rendBar = document.getElementById("rendBar1");
-if (rendBar) rendBar.style.width = Math.min(100, (rendBrut / 6) * 100) + "%";
-
 setText("immoP_bien1Taxe",        taxe        ? fmtEur.format(taxe)        : "--");
 setText("immoP_bien1Copro",       copro       ? fmtEur.format(copro)       : "--");
 setText("immoP_bien1AssurPno",    assurPno    ? fmtEur.format(assurPno)    : "--");
