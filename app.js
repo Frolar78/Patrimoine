@@ -381,8 +381,16 @@ const assurCredit  = parseNum(data.immo_bien1_assurance_credit);
 const gestion      = parseNum(data.immo_bien1_gestion_locative);
 const comptable    = parseNum(data.immo_bien1_comptable_lmnp);
 const chargesTotal = taxe + copro + assurPno + assurCredit + gestion + comptable;
-const capitalMensuel  = parseNum(data.immo_bien1_capital_mensuel);
-const capitalMensuel2 = parseNum(data.immo_bien2_capital_mensuel);
+const debutKilford = new Date(2021, 8, 1); // sept 2021
+const debutTurbie  = new Date(2026, 5, 1); // juin 2026
+const today2       = new Date();
+
+const moisK = Math.round((today2 - debutKilford) / (1000 * 60 * 60 * 24 * 30.44));
+const moisT = Math.round((today2 - debutTurbie)  / (1000 * 60 * 60 * 24 * 30.44));
+
+const capitalMensuel  = moisK > 0 && moisK <= 300 ? Math.round(getKilfordCapital(moisK))  : 0;
+const capitalMensuel2 = moisT > 0 && moisT <= 300 ? Math.round(getTurbieCapital(moisT)) : 0;
+
 const creationPatrim  = capitalMensuel - Math.abs(cashflow);
 const creationTotal   = capitalMensuel + capitalMensuel2 - Math.abs(cashflow);
 
