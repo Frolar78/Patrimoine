@@ -788,7 +788,7 @@ async function init() {
       }
     });
     const badge = document.getElementById("peaChartBadge");
-    if (badge) badge.textContent = peaData_hist.length + " points";
+    if (badge) badge.style.display = "none";
   }
 
   loadSheetData();
