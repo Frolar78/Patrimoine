@@ -686,7 +686,38 @@
           </div>
         </div>
       </div>
+</div><!-- fin impots -->
 
+    <!-- Simulateur salaire -->
+    <div class="card" style="margin-top:18px;padding:24px">
+      <div class="card-header">
+        <h3>Simulateur de salaire</h3>
+        <span class="badge">Monaco</span>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:13px;color:var(--text2)">Nombre de gardes ce mois</span>
+          <span style="font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--text)" id="simNbGardes">0</span>
+        </div>
+        <input type="range" min="0" max="15" value="0" step="1" id="simGardesSlider" style="width:100%;accent-color:var(--blue);cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:4px">
+          <span>0 garde</span>
+          <span>15 gardes</span>
+        </div>
+      </div>
+      <div class="asset-meta">
+        <div class="meta-row"><span>Salaire brut</span><span id="simBrut">--</span></div>
+        <div class="meta-row"><span>Salaire net (×92%)</span><span class="positive" id="simNet">--</span></div>
+        <div class="meta-row"><span>Provision Bourso+ (15%)</span><span class="negative" id="simProvision">--</span></div>
+        <div class="meta-row"><span>Mensualités crédits</span><span class="negative">-3 623 €</span></div>
+        <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:2px solid var(--border)">
+          <span style="font-weight:700">Reste disponible</span>
+          <span style="font-weight:700" id="simReste">--</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin cashPage -->
     </div>
 
     <!-- ══ GOALS PAGE ══ -->
