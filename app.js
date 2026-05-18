@@ -1116,7 +1116,7 @@ const virBourso   = Math.abs(soldeBourso); // montant à virer vers Bourso
 const totalCCF    = Math.abs(soldeCCF) + virCE + virBourso;
 const totalPerso  = TRESO.Perso.sorties.reduce((s, r) => s + r.val, 0);
 
-const SALAIRE_HARMONIE = 2400;
+const SALAIRE_HARMONIE = 2500;
 
 function renderCompte(containerId, entrees, sorties, solde, virInterne) {
   const el = document.getElementById(containerId);
