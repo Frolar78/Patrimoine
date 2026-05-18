@@ -1071,7 +1071,8 @@ function updateTresorerie(nbGardes) {
   const nbGardesEl = document.getElementById("tresoNbGardes");
   if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
   setText("tresoSalaireVous",  "+" + fmtT.format(netVous));
-  setText("tresoTotalRevenus", fmtT.format(netVous + SALAIRE_HARMONIE + 513 + 1419));
+  setText("tresoProvision",    "-" + fmtT.format(provision));
+  setText("tresoTotalRevenus", fmtT.format(netVous + SALAIRE_HARMONIE + 513 + 1419 - provision));
   setText("tresoTotalFoyer",   Math.round(ratioVous * 100) + "% vous · " + Math.round(ratioHarmonie * 100) + "% Harmonie");
   setText("tresoTotalCCF",     fmtT.format(TOTAL_CHARGES));
 
