@@ -1000,4 +1000,33 @@ document.querySelectorAll("[data-horizon]").forEach(btn => {
   });
 });
 
+// ── Simulateur salaire ────────────────────────────────────────────────────────
+function updateSimulateur(nbGardes) {
+  const brut      = 7443 + nbGardes * 461;
+  const net       = Math.round(brut * 0.92);
+  const provision = Math.round(net * 0.15);
+  const credits   = 3623;
+  const reste     = net - provision - credits;
+
+  const fmtS = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+
+  document.getElementById("simNbGardes").textContent  = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
+  document.getElementById("simBrut").textContent      = fmtS.format(brut);
+  document.getElementById("simNet").textContent       = fmtS.format(net);
+  document.getElementById("simProvision").textContent = "-" + fmtS.format(provision);
+
+  const resteEl = document.getElementById("simReste");
+  if (resteEl) {
+    resteEl.textContent = (reste >= 0 ? "+" : "") + fmtS.format(reste);
+    resteEl.classList.toggle("positive", reste >= 0);
+    resteEl.classList.toggle("negative", reste < 0);
+  }
+}
+
+const slider = document.getElementById("simGardesSlider");
+if (slider) {
+  slider.addEventListener("input", () => updateSimulateur(parseInt(slider.value)));
+  updateSimulateur(0);
+}
+
 lucide.createIcons();
