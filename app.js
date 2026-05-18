@@ -118,7 +118,8 @@ const pages      = document.querySelectorAll(".page");
 
 function switchPage(page) {
   pages.forEach(p => p.classList.remove("active-page"));
-  document.getElementById(page + "Page").classList.add("active-page");
+  const pageEl = document.getElementById(page + "Page") || document.getElementById(page + "ePage");
+  if (pageEl) pageEl.classList.add("active-page");
   navLinks.forEach(l => l.classList.remove("active"));
   mobileBtns.forEach(b => b.classList.remove("active"));
   document.querySelectorAll(`[data-page="${page}"]`).forEach(el => el.classList.add("active"));
@@ -1044,6 +1045,73 @@ const slider = document.getElementById("simGardesSlider");
 if (slider) {
   slider.addEventListener("input", () => updateSimulateur(parseInt(slider.value)));
   updateSimulateur(0);
+}
+
+// ── Trésorerie ────────────────────────────────────────────────────────────────
+const CHARGES = {
+  CE:     226,   // CJ Caisse d'Épargne (après loyer Kilford)
+  CCF:    3007,  // CJ CCF
+  Bourso: 1161   // CJ BoursoBank (après allocations)
+};
+const SALAIRE_FEMME   = 2400;
+const PROVISION_TAUX  = 0.15;
+
+function updateTresorerie(nbGardes) {
+  const brut     = 7443 + nbGardes * 461;
+  const netVous  = Math.round(brut * 0.92);
+  const provision = Math.round(netVous * PROVISION_TAUX);
+  const totalFoyer = netVous + SALAIRE_FEMME;
+
+  const ratioVous  = netVous / totalFoyer;
+  const ratioFemme = SALAIRE_FEMME / totalFoyer;
+
+  const totalCharges = CHARGES.CE + CHARGES.CCF + CHARGES.Bourso;
+
+  // Virements par compte
+  const virVousCE     = Math.round(CHARGES.CE     * ratioVous);
+  const virFemmeCE    = Math.round(CHARGES.CE     * ratioFemme);
+  const virVousCCF    = Math.round(CHARGES.CCF    * ratioVous);
+  const virFemmeCCF   = Math.round(CHARGES.CCF    * ratioFemme);
+  const virVousBourso = Math.round(CHARGES.Bourso * ratioVous);
+  const virFemmeBourso= Math.round(CHARGES.Bourso * ratioFemme);
+
+  const totalVousVirements = virVousCE + virVousCCF + virVousBourso + provision;
+  const totalFemmeVirements = virFemmeCE + virFemmeCCF + virFemmeBourso;
+
+  const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+
+  // Simulateur
+  const nbGardesEl = document.getElementById("tresoNbGardes");
+  if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
+  setText("tresoSalaireVous",   fmtT.format(netVous));
+  setText("tresoTotalRevenus",  fmtT.format(netVous + SALAIRE_FEMME + 513 + 1419));
+  setText("tresoTotalFoyer",    Math.round(ratioVous * 100) + "% vous · " + Math.round(ratioFemme * 100) + "% femme");
+
+  // Cartes comptes
+  setText("tresoVirVousCE",      "+" + fmtT.format(virVousCE));
+  setText("tresoVirFemmeCE",     "+" + fmtT.format(virFemmeCE));
+  setText("tresoVirVousCCF",     "+" + fmtT.format(virVousCCF));
+  setText("tresoVirFemmeCCF",    "+" + fmtT.format(virFemmeCCF));
+  setText("tresoVirVousBourso",  "+" + fmtT.format(virVousBourso));
+  setText("tresoVirFemmeBourso", "+" + fmtT.format(virFemmeBourso));
+  setText("tresoVirVousBoursoPlus", "+" + fmtT.format(provision));
+
+  // Récap
+  setText("recapVousCE",         fmtT.format(virVousCE));
+  setText("recapVousCCF",        fmtT.format(virVousCCF));
+  setText("recapVousBourso",     fmtT.format(virVousBourso));
+  setText("recapVousBoursoPlus", fmtT.format(provision));
+  setText("recapVousTotal",      fmtT.format(totalVousVirements));
+  setText("recapFemmeCE",        fmtT.format(virFemmeCE));
+  setText("recapFemmeCCF",       fmtT.format(virFemmeCCF));
+  setText("recapFemmeBourso",    fmtT.format(virFemmeBourso));
+  setText("recapFemmeTotal",     fmtT.format(totalFemmeVirements));
+}
+
+const tresoSlider = document.getElementById("tresoGardesSlider");
+if (tresoSlider) {
+  tresoSlider.addEventListener("input", () => updateTresorerie(parseInt(tresoSlider.value)));
+  updateTresorerie(0);
 }
 
 lucide.createIcons();
