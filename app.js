@@ -1063,7 +1063,7 @@ function updateTresorerie(nbGardes) {
   const partVous    = Math.round(TOTAL_CHARGES * ratioVous);
   const partHarmonie = Math.round(TOTAL_CHARGES * ratioHarmonie);
 
-  const totalVousVirement = partVous + provision;
+  const totalVousVirement = partVous;
 
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
