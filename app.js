@@ -482,15 +482,33 @@ const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (la
   setText("dtImmoVal",     immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
   setText("dtImmoPctBrut", allocImmo + " %");
   setText("dtImmoPctNet",  pctNetImmo);
-  setText("dtImmoEvo",     data.immo_evo_mensuelle || "—");
+  const immoEvo = parseNum(data.immo_evo_mensuelle);
+const immoEvoEl = document.getElementById("dtImmoEvo");
+if (immoEvoEl) {
+  immoEvoEl.textContent = immoEvo ? (immoEvo >= 0 ? "+" : "") + fmtEur.format(immoEvo) : "—";
+  immoEvoEl.classList.toggle("positive", immoEvo >= 0);
+  immoEvoEl.classList.toggle("negative", immoEvo < 0);
+}
   setText("dtPeaVal",      data.pea_valeur || "--");
   setText("dtPeaPctBrut",  allocPea  + " %");
   setText("dtPeaPctNet",   pctNetPea);
-  setText("dtPeaEvo",      data.pea_evo_mensuelle || "—");
+  const peaEvo = parseNum(data.pea_evo_mensuelle);
+const peaEvoEl = document.getElementById("dtPeaEvo");
+if (peaEvoEl) {
+  peaEvoEl.textContent = peaEvo ? (peaEvo >= 0 ? "+" : "") + fmtEur.format(peaEvo) : "—";
+  peaEvoEl.classList.toggle("positive", peaEvo >= 0);
+  peaEvoEl.classList.toggle("negative", peaEvo < 0);
+}
   setText("dtCashVal",     data.cash_disponible || "--");
   setText("dtCashPctBrut", allocCash + " %");
   setText("dtCashPctNet",  pctNetCash);
-  setText("dtCashEvo",     data.cash_evo_mensuelle || "—");
+  const cashEvo = parseNum(data.cash_evo_mensuelle);
+const cashEvoEl = document.getElementById("dtCashEvo");
+if (cashEvoEl) {
+  cashEvoEl.textContent = cashEvo ? (cashEvo >= 0 ? "+" : "") + fmtEur.format(cashEvo) : "—";
+  cashEvoEl.classList.toggle("positive", cashEvo >= 0);
+  cashEvoEl.classList.toggle("negative", cashEvo < 0);
+}
   setText("dtTotalVal",    data.patrimoine_brut || "--");
   setText("dtTotalPctNet", "100,0 %");
   setText("dtTotalEvo",    diffFmt);
