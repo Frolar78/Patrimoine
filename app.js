@@ -1048,7 +1048,7 @@ if (slider) {
 }
 
 // ── Trésorerie ────────────────────────────────────────────────────────────────
-const TOTAL_CHARGES = 2857 + 226 + 1311; // CCF + CE + Bourso
+const TOTAL_CHARGES = 2857 + 226 + 1711; // CCF + CE + Bourso
 const SALAIRE_HARMONIE = 2400;
 
 function updateTresorerie(nbGardes) {
