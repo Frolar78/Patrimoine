@@ -61,6 +61,9 @@
         <a href="#" class="nav-link" data-page="cash">
           <span class="nav-icon"><i data-lucide="piggy-bank"></i></span> Cash & Liquidités
         </a>
+        <a href="#" class="nav-link" data-page="tresorerie">
+          <span class="nav-icon"><i data-lucide="arrow-left-right"></i></span> Trésorerie
+        </a>
         <a href="#" class="nav-link" data-page="goals">
           <span class="nav-icon"><i data-lucide="target"></i></span> Objectifs
         </a>
@@ -716,7 +719,190 @@
     </div>
 
     </div>
+<!-- ══ TRESORERIE PAGE ══ -->
+<div id="tresorerieePage" class="page">
 
+  <!-- Simulateur gardes -->
+  <div class="card" style="padding:24px;margin-bottom:18px">
+    <div class="card-header">
+      <h3>Votre salaire ce mois</h3>
+      <span class="badge" id="tresoTotalFoyer">--</span>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:13px;color:var(--text2)">Nombre de gardes</span>
+        <span style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text)" id="tresoNbGardes">0 garde</span>
+      </div>
+      <input type="range" min="0" max="15" value="0" step="1" id="tresoGardesSlider" style="width:100%;accent-color:var(--blue);cursor:pointer">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:4px">
+        <span>0 garde</span><span>15 gardes</span>
+      </div>
+    </div>
+    <div class="asset-meta">
+      <div class="meta-row"><span>Votre salaire net</span><span class="positive" id="tresoSalaireVous">--</span></div>
+      <div class="meta-row"><span>Salaire femme net</span><span class="positive" id="tresoSalaireFemme">2 400 €</span></div>
+      <div class="meta-row"><span>Allocations (le 15)</span><span class="positive">+513 €</span></div>
+      <div class="meta-row"><span>Loyer Kilford (le 20)</span><span class="positive">+1 419 €</span></div>
+      <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:2px solid var(--border)">
+        <span style="font-weight:700">Total revenus foyer</span>
+        <span style="font-weight:700" id="tresoTotalRevenus">--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 comptes joints -->
+  <div class="page-grid-2" style="margin-bottom:18px">
+
+    <!-- CJ Caisse d'Épargne -->
+    <div class="card asset-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h4 style="margin-bottom:0">CJ Caisse d'Épargne</h4>
+        <span style="font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px">Kilford</span>
+      </div>
+      <div class="asset-meta">
+        <div class="meta-row"><span>Loyer reçu (le 20)</span><span class="positive">+1 419 €</span></div>
+        <div class="meta-row negative"><span>Crédit Kilford (le 5)</span><span>-1 623 €</span></div>
+        <div class="meta-row negative"><span>Assurance PNO</span><span>-22 €</span></div>
+        <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:1px solid var(--border)">
+          <span style="font-weight:600">Solde hors virements</span>
+          <span class="negative" style="font-weight:600">-226 €</span>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Virements à programmer le 2</div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Vous → CJ CE</span><span class="positive" id="tresoVirVousCE">--</span></div>
+          <div class="meta-row"><span>Femme → CJ CE</span><span class="positive" id="tresoVirFemmeCE">--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CJ CCF -->
+    <div class="card asset-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h4 style="margin-bottom:0">CJ CCF</h4>
+        <span style="font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px">La Turbie</span>
+      </div>
+      <div class="asset-meta">
+        <div class="meta-row negative"><span>Crédit La Turbie (le 5)</span><span>-2 082 €</span></div>
+        <div class="meta-row negative"><span>Charges Kilford</span><span>-136 €</span></div>
+        <div class="meta-row negative"><span>Metlife</span><span>-57 €</span></div>
+        <div class="meta-row negative"><span>Assurance crédit La Turbie</span><span>-80 €</span></div>
+        <div class="meta-row negative"><span>Assurance habitation La Turbie</span><span>-57 €</span></div>
+        <div class="meta-row negative"><span>École enfants</span><span>-150 €</span></div>
+        <div class="meta-row negative"><span>Orange</span><span>-25 €</span></div>
+        <div class="meta-row negative"><span>Nespresso</span><span>-63 €</span></div>
+        <div class="meta-row negative"><span>Engie</span><span>-29 €</span></div>
+        <div class="meta-row negative"><span>Netflix</span><span>-22 €</span></div>
+        <div class="meta-row negative"><span>Amazon</span><span>-6 €</span></div>
+        <div class="meta-row negative"><span>BourseDirecte enfants</span><span>-300 €</span></div>
+        <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:1px solid var(--border)">
+          <span style="font-weight:600">Solde hors virements</span>
+          <span class="negative" style="font-weight:600">-3 007 €</span>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Virements à programmer le 2</div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Vous → CJ CCF</span><span class="positive" id="tresoVirVousCCF">--</span></div>
+          <div class="meta-row"><span>Femme → CJ CCF</span><span class="positive" id="tresoVirFemmeCCF">--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CJ BoursoBank -->
+    <div class="card asset-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h4 style="margin-bottom:0">CJ BoursoBank</h4>
+        <span style="font-size:11px;font-weight:600;color:var(--color-pea);background:rgba(16,185,129,.1);border:1px solid var(--color-pea);border-radius:999px;padding:3px 10px">Vie courante</span>
+      </div>
+      <div class="asset-meta">
+        <div class="meta-row"><span>Allocations (le 15)</span><span class="positive">+513 €</span></div>
+        <div class="meta-row negative"><span>Leasing auto</span><span>-579 €</span></div>
+        <div class="meta-row negative"><span>Assurance voiture</span><span>-195 €</span></div>
+        <div class="meta-row negative"><span>Nourriture</span><span>-900 €</span></div>
+        <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:1px solid var(--border)">
+          <span style="font-weight:600">Solde hors virements</span>
+          <span class="negative" style="font-weight:600">-1 161 €</span>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Virements à programmer le 2</div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Vous → CJ Bourso</span><span class="positive" id="tresoVirVousBourso">--</span></div>
+          <div class="meta-row"><span>Femme → CJ Bourso</span><span class="positive" id="tresoVirFemmeBourso">--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Récap perso vous -->
+    <div class="card asset-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h4 style="margin-bottom:0">Compte perso vous</h4>
+        <span style="font-size:11px;font-weight:600;color:var(--blue);background:rgba(79,110,247,.1);border:1px solid var(--blue);border-radius:999px;padding:3px 10px">Perso</span>
+      </div>
+      <div class="asset-meta">
+        <div class="meta-row negative"><span>Disney+</span><span>-7 €</span></div>
+        <div class="meta-row negative"><span>Apple TV</span><span>-10 €</span></div>
+        <div class="meta-row negative"><span>Deezer</span><span>-12 €</span></div>
+        <div class="meta-row negative"><span>Parking</span><span>-46 €</span></div>
+        <div class="meta-row negative"><span>PEA (DCA)</span><span>-200 €</span></div>
+        <div class="meta-row negative"><span>Essence</span><span>-100 €</span></div>
+        <div class="meta-row negative"><span>Assurance pro</span><span>-48 €</span></div>
+        <div class="meta-row negative"><span>Sosh</span><span>-9 €</span></div>
+        <div class="meta-row negative"><span>Mutuelle famille</span><span>-156 €</span></div>
+        <div class="meta-row negative"><span>Transport</span><span>-18 €</span></div>
+        <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:1px solid var(--border)">
+          <span style="font-weight:600">Total dépenses fixes</span>
+          <span class="negative" style="font-weight:600">-606 €</span>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Virements à programmer le 2</div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>Vous → Bourso+</span><span class="positive" id="tresoVirVousBoursoPlus">--</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Récap virements -->
+  <div class="card" style="padding:24px">
+    <div class="card-header">
+      <h3>Récap virements du mois</h3>
+      <span class="badge">Le 2 du mois</span>
+    </div>
+    <div class="page-grid-2">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Vous</div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>→ CJ Caisse d'Épargne</span><span id="recapVousCE">--</span></div>
+          <div class="meta-row"><span>→ CJ CCF</span><span id="recapVousCCF">--</span></div>
+          <div class="meta-row"><span>→ CJ BoursoBank</span><span id="recapVousBourso">--</span></div>
+          <div class="meta-row"><span>→ Bourso+ (provision)</span><span id="recapVousBoursoPlus">--</span></div>
+          <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:2px solid var(--border)">
+            <span style="font-weight:700">Total à virer</span>
+            <span style="font-weight:700" id="recapVousTotal">--</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--color-pea);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Femme</div>
+        <div class="asset-meta">
+          <div class="meta-row"><span>→ CJ Caisse d'Épargne</span><span id="recapFemmeCE">--</span></div>
+          <div class="meta-row"><span>→ CJ CCF</span><span id="recapFemmeCCF">--</span></div>
+          <div class="meta-row"><span>→ CJ BoursoBank</span><span id="recapFemmeBourso">--</span></div>
+          <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:2px solid var(--border)">
+            <span style="font-weight:700">Total à virer</span>
+            <span style="font-weight:700" id="recapFemmeTotal">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
     <!-- ══ GOALS PAGE ══ -->
     <div id="goalsPage" class="page">
   <div class="card" style="padding:28px;margin-bottom:18px">
@@ -767,6 +953,7 @@
   <button class="mobile-btn" data-page="immo"><i data-lucide="home"></i> Immo</button>
   <button class="mobile-btn" data-page="pea"><i data-lucide="line-chart"></i> PEA</button>
   <button class="mobile-btn" data-page="cash"><i data-lucide="piggy-bank"></i> Cash</button>
+  <button class="mobile-btn" data-page="tresorerie"><i data-lucide="arrow-left-right"></i> Tréso</button>
   <button class="mobile-btn" data-page="goals"><i data-lucide="target"></i> Objectifs</button>
 </nav>
 
