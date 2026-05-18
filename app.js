@@ -1048,8 +1048,94 @@ if (slider) {
 }
 
 // ── Trésorerie ────────────────────────────────────────────────────────────────
-const TOTAL_CHARGES = 2857 + 226 + 1711; // CCF + CE + Bourso
+const TRESO = {
+  // CJ Caisse d'Épargne
+  CE: {
+    entrees: [
+      { label: "Loyer reçu (le 20)",          val: 1419,  pos: true  },
+      { label: "Virement depuis CJ CCF (le 2)", val: null, id: "virCE", pos: true }
+    ],
+    sorties: [
+      { label: "Crédit Kilford (le 5)",  val: -1623 },
+      { label: "Assurance PNO",          val: -22   }
+    ]
+  },
+  // CJ CCF
+  CCF: {
+    sorties: [
+      { label: "Crédit La Turbie (le 5)",          val: -2082 },
+      { label: "Charges Kilford",                   val: -136  },
+      { label: "Metlife",                           val: -57   },
+      { label: "Assurance crédit La Turbie",        val: -90   },
+      { label: "Assurance habitation La Turbie",    val: -57   },
+      { label: "Orange",                            val: -25   },
+      { label: "Nespresso",                         val: -63   },
+      { label: "Engie",                             val: -29   },
+      { label: "Netflix",                           val: -22   },
+      { label: "Amazon",                            val: -6    },
+      { label: "CTO (DCA)",                         val: -300  }
+    ]
+  },
+  // CJ BoursoBank
+  Bourso: {
+    entrees: [
+      { label: "Allocations (le 15)",               val: 513,  pos: true },
+      { label: "Virement depuis CJ CCF (le 2)",     val: null, id: "virBourso", pos: true }
+    ],
+    sorties: [
+      { label: "Leasing auto",          val: -579  },
+      { label: "Assurance voiture",     val: -195  },
+      { label: "Nourriture",            val: -1000 },
+      { label: "École enfants",         val: -150  },
+      { label: "Dépenses variables",    val: -300  }
+    ]
+  },
+  // Perso vous
+  Perso: {
+    sorties: [
+      { label: "Disney+",         val: -7   },
+      { label: "Apple TV",        val: -10  },
+      { label: "Deezer",          val: -12  },
+      { label: "Parking",         val: -46  },
+      { label: "PEA (DCA)",       val: -200 },
+      { label: "Essence",         val: -100 },
+      { label: "Assurance pro",   val: -48  },
+      { label: "Sosh",            val: -9   },
+      { label: "Mutuelle famille",val: -156 },
+      { label: "Transport",       val: -18  }
+    ]
+  }
+};
+
+// Calcul des soldes
+const soldeCE     = TRESO.CE.sorties.reduce((s, r) => s + r.val, 0) + 1419; // hors virement interne
+const soldeCCF    = TRESO.CCF.sorties.reduce((s, r) => s + r.val, 0);
+const soldeBourso = TRESO.Bourso.sorties.reduce((s, r) => s + r.val, 0) + 513;
+const virCE       = Math.abs(soldeCE);     // montant à virer vers CE
+const virBourso   = Math.abs(soldeBourso); // montant à virer vers Bourso
+const totalCCF    = Math.abs(soldeCCF) + virCE + virBourso;
+const totalPerso  = TRESO.Perso.sorties.reduce((s, r) => s + r.val, 0);
+
 const SALAIRE_HARMONIE = 2400;
+
+function renderCompte(containerId, entrees, sorties, solde, virInterne) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+  let html = "";
+  (entrees || []).forEach(r => {
+    const v = r.val !== null ? fmtT.format(r.val) : (virInterne ? fmtT.format(virInterne) : "--");
+    html += `<div class="meta-row"><span>${r.label}</span><span class="positive">+${v}</span></div>`;
+  });
+  sorties.forEach(r => {
+    html += `<div class="meta-row negative"><span>${r.label}</span><span>${fmtT.format(r.val)}</span></div>`;
+  });
+  html += `<div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:1px solid var(--border)">
+    <span style="font-weight:600">Solde</span>
+    <span class="positive" style="font-weight:600">0 €</span>
+  </div>`;
+  el.innerHTML = html;
+}
 
 function updateTresorerie(nbGardes) {
   const brut      = 7443 + nbGardes * 461;
@@ -1057,34 +1143,42 @@ function updateTresorerie(nbGardes) {
   const provision = Math.round(netVous * 0.15);
   const totalFoyer = netVous + SALAIRE_HARMONIE;
 
-  const ratioVous    = netVous / totalFoyer;
+  const ratioVous     = netVous / totalFoyer;
   const ratioHarmonie = SALAIRE_HARMONIE / totalFoyer;
 
-  const partVous    = Math.round(TOTAL_CHARGES * ratioVous);
-  const partHarmonie = Math.round(TOTAL_CHARGES * ratioHarmonie);
-
-  const totalVousVirement = partVous;
+  const partVous     = Math.round(totalCCF * ratioVous);
+  const partHarmonie = Math.round(totalCCF * ratioHarmonie);
 
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
-  // Simulateur
+  // Simulateur haut
   const nbGardesEl = document.getElementById("tresoNbGardes");
   if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
   setText("tresoSalaireVous",  "+" + fmtT.format(netVous));
   setText("tresoProvision",    "-" + fmtT.format(provision));
   setText("tresoTotalRevenus", fmtT.format(netVous + SALAIRE_HARMONIE + 513 + 1419 - provision));
   setText("tresoTotalFoyer",   Math.round(ratioVous * 100) + "% vous · " + Math.round(ratioHarmonie * 100) + "% Harmonie");
-  setText("tresoTotalCCF",     fmtT.format(TOTAL_CHARGES));
 
-  // Provision Bourso+
-  setText("tresoVirBoursoPlus", "+" + fmtT.format(provision));
+  // Rendu comptes
+  renderCompte("detailCCF",   null,              TRESO.CCF.sorties,    soldeCCF,    null);
+  renderCompte("detailCE",    TRESO.CE.entrees,  TRESO.CE.sorties,     soldeCE,     virCE);
+  renderCompte("detailBourso",TRESO.Bourso.entrees, TRESO.Bourso.sorties, soldeBourso, virBourso);
+  renderCompte("detailPerso", null,              TRESO.Perso.sorties,  totalPerso,  null);
 
-  // Récap virements
-  setText("recapVousCCF",        fmtT.format(partVous));
-  setText("recapVousBoursoPlus", fmtT.format(provision));
-  setText("recapVousTotal",      fmtT.format(totalVousVirement));
-  setText("recapHarmonieCCF",    fmtT.format(partHarmonie));
-  setText("recapHarmonieTotal",  fmtT.format(partHarmonie));
+  // Virements internes CJ CCF
+  setText("tresoVirInterneCE",     "-" + fmtT.format(virCE));
+  setText("tresoVirInterneBourso", "-" + fmtT.format(virBourso));
+  setText("tresoTotalCCF",         "+" + fmtT.format(totalCCF));
+
+  // Récap
+  setText("recapVousCCF",       fmtT.format(partVous));
+  setText("recapVousTotal",     fmtT.format(partVous));
+  setText("recapHarmonieCCF",   fmtT.format(partHarmonie));
+  setText("recapHarmonieTotal", fmtT.format(partHarmonie));
+  setText("recapInterneCE",     fmtT.format(virCE));
+  setText("recapInterneBourso", fmtT.format(virBourso));
+  setText("recapVousBoursoPlus",  fmtT.format(provision));
+  setText("recapVousBoursoPlus2", fmtT.format(provision));
 }
 
 const tresoSlider = document.getElementById("tresoGardesSlider");
