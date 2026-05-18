@@ -1048,64 +1048,42 @@ if (slider) {
 }
 
 // ── Trésorerie ────────────────────────────────────────────────────────────────
-const CHARGES = {
-  CE:     226,   // CJ Caisse d'Épargne (après loyer Kilford)
-  CCF:    3007,  // CJ CCF
-  Bourso: 1161   // CJ BoursoBank (après allocations)
-};
-const SALAIRE_FEMME   = 2400;
-const PROVISION_TAUX  = 0.15;
+const TOTAL_CHARGES = 2857 + 226 + 1311; // CCF + CE + Bourso
+const SALAIRE_HARMONIE = 2400;
 
 function updateTresorerie(nbGardes) {
-  const brut     = 7443 + nbGardes * 461;
-  const netVous  = Math.round(brut * 0.92);
-  const provision = Math.round(netVous * PROVISION_TAUX);
-  const totalFoyer = netVous + SALAIRE_FEMME;
+  const brut      = 7443 + nbGardes * 461;
+  const netVous   = Math.round(brut * 0.92);
+  const provision = Math.round(netVous * 0.15);
+  const totalFoyer = netVous + SALAIRE_HARMONIE;
 
-  const ratioVous  = netVous / totalFoyer;
-  const ratioFemme = SALAIRE_FEMME / totalFoyer;
+  const ratioVous    = netVous / totalFoyer;
+  const ratioHarmonie = SALAIRE_HARMONIE / totalFoyer;
 
-  const totalCharges = CHARGES.CE + CHARGES.CCF + CHARGES.Bourso;
+  const partVous    = Math.round(TOTAL_CHARGES * ratioVous);
+  const partHarmonie = Math.round(TOTAL_CHARGES * ratioHarmonie);
 
-  // Virements par compte
-  const virVousCE     = Math.round(CHARGES.CE     * ratioVous);
-  const virFemmeCE    = Math.round(CHARGES.CE     * ratioFemme);
-  const virVousCCF    = Math.round(CHARGES.CCF    * ratioVous);
-  const virFemmeCCF   = Math.round(CHARGES.CCF    * ratioFemme);
-  const virVousBourso = Math.round(CHARGES.Bourso * ratioVous);
-  const virFemmeBourso= Math.round(CHARGES.Bourso * ratioFemme);
-
-  const totalVousVirements = virVousCE + virVousCCF + virVousBourso + provision;
-  const totalFemmeVirements = virFemmeCE + virFemmeCCF + virFemmeBourso;
+  const totalVousVirement = partVous + provision;
 
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
   // Simulateur
   const nbGardesEl = document.getElementById("tresoNbGardes");
   if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
-  setText("tresoSalaireVous",   fmtT.format(netVous));
-  setText("tresoTotalRevenus",  fmtT.format(netVous + SALAIRE_FEMME + 513 + 1419));
-  setText("tresoTotalFoyer",    Math.round(ratioVous * 100) + "% vous · " + Math.round(ratioFemme * 100) + "% femme");
+  setText("tresoSalaireVous",  "+" + fmtT.format(netVous));
+  setText("tresoTotalRevenus", fmtT.format(netVous + SALAIRE_HARMONIE + 513 + 1419));
+  setText("tresoTotalFoyer",   Math.round(ratioVous * 100) + "% vous · " + Math.round(ratioHarmonie * 100) + "% Harmonie");
+  setText("tresoTotalCCF",     fmtT.format(TOTAL_CHARGES));
 
-  // Cartes comptes
-  setText("tresoVirVousCE",      "+" + fmtT.format(virVousCE));
-  setText("tresoVirFemmeCE",     "+" + fmtT.format(virFemmeCE));
-  setText("tresoVirVousCCF",     "+" + fmtT.format(virVousCCF));
-  setText("tresoVirFemmeCCF",    "+" + fmtT.format(virFemmeCCF));
-  setText("tresoVirVousBourso",  "+" + fmtT.format(virVousBourso));
-  setText("tresoVirFemmeBourso", "+" + fmtT.format(virFemmeBourso));
-  setText("tresoVirVousBoursoPlus", "+" + fmtT.format(provision));
+  // Provision Bourso+
+  setText("tresoVirBoursoPlus", "+" + fmtT.format(provision));
 
-  // Récap
-  setText("recapVousCE",         fmtT.format(virVousCE));
-  setText("recapVousCCF",        fmtT.format(virVousCCF));
-  setText("recapVousBourso",     fmtT.format(virVousBourso));
+  // Récap virements
+  setText("recapVousCCF",        fmtT.format(partVous));
   setText("recapVousBoursoPlus", fmtT.format(provision));
-  setText("recapVousTotal",      fmtT.format(totalVousVirements));
-  setText("recapFemmeCE",        fmtT.format(virFemmeCE));
-  setText("recapFemmeCCF",       fmtT.format(virFemmeCCF));
-  setText("recapFemmeBourso",    fmtT.format(virFemmeBourso));
-  setText("recapFemmeTotal",     fmtT.format(totalFemmeVirements));
+  setText("recapVousTotal",      fmtT.format(totalVousVirement));
+  setText("recapHarmonieCCF",    fmtT.format(partHarmonie));
+  setText("recapHarmonieTotal",  fmtT.format(partHarmonie));
 }
 
 const tresoSlider = document.getElementById("tresoGardesSlider");
