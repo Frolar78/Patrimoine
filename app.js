@@ -1157,7 +1157,8 @@ function updateSimulateur(nbGardes) {
   const brut      = 7443 + nbGardes * 461;
   const net       = Math.round(brut * 0.92);
   const provision = Math.round(net * 0.15);
-  const reste = net - provision;
+  const virCCFSim = Math.round(totalCCF * (net / (net + SALAIRE_HARMONIE)));
+  const reste = net - provision - virCCFSim;
 
   const fmtS = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
@@ -1165,6 +1166,7 @@ function updateSimulateur(nbGardes) {
   document.getElementById("simBrut").textContent      = fmtS.format(brut);
   document.getElementById("simNet").textContent       = fmtS.format(net);
   document.getElementById("simProvision").textContent = "-" + fmtS.format(provision);
+  setText("simVirCCF", "-" + fmtS.format(virCCFSim));
 
   const resteEl = document.getElementById("simReste");
   if (resteEl) {
