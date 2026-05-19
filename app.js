@@ -1280,7 +1280,7 @@ function updateTresorerie(nbGardes) {
   const ratioVous     = netVous / totalFoyer;
   const ratioHarmonie = SALAIRE_HARMONIE / totalFoyer;
 
-  const partVous     = Math.round(totalCCF * ratioVous);
+  const partVous     = Math.ceil(totalCCF * ratioVous / 100) * 100;
   const partHarmonie = Math.ceil(totalCCF * ratioHarmonie / 10) * 10;
 
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
