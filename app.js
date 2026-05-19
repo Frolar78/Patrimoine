@@ -438,12 +438,13 @@ const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (la
   const pctFmt  = pctMens !== null ? (pos ? "+" : "") + pctMens.toFixed(2) + " %" : "--";
 
   // ── Allocation ────────────────────────────────────────────────────────────
-  const allocImmo = parsePercent(data.allocation_immobilier);
-  const allocPea  = parsePercent(data.allocation_pea);
-  const allocCash = parsePercent(data.allocation_cash);
+  const brutNum     = parseNum(data.patrimoine_brut);
+  const allocImmo   = parsePercent(data.allocation_immobilier);
+  const allocPea    = parsePercent(data.allocation_pea);
+  const allocCash   = parsePercent(data.allocation_cash);
   const pctBrutImmo = brutNum ? ((immoBrutNum / brutNum) * 100).toFixed(1) : "--";
-  const pctBrutPea  = brutNum ? ((peaNum     / brutNum) * 100).toFixed(1) : "--";
-  const pctBrutCash = brutNum ? ((cashNum    / brutNum) * 100).toFixed(1) : "--";
+  const pctBrutPea  = brutNum ? ((peaNum      / brutNum) * 100).toFixed(1) : "--";
+  const pctBrutCash = brutNum ? ((cashNum     / brutNum) * 100).toFixed(1) : "--";
 
   // ── % net ─────────────────────────────────────────────────────────────────
   const pctNetImmo = netNum ? ((immoNetNum / netNum) * 100).toFixed(1) + " %" : "--";
@@ -498,7 +499,7 @@ const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (la
 
   // Tableau détail
   setText("dtImmoVal",     immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
-  setText("dtImmoPctBrut", allocImmo + " %");
+  setText("dtImmoPctBrut", pctBrutImmo + " %");
   setText("dtImmoPctNet",  pctNetImmo);
   const immoEvo = parseNum(data.immo_evo_mensuelle);
 const immoEvoEl = document.getElementById("dtImmoEvo");
@@ -508,7 +509,7 @@ if (immoEvoEl) {
   immoEvoEl.classList.toggle("negative", immoEvo < 0);
 }
   setText("dtPeaVal",      data.pea_valeur || "--");
-  setText("dtPeaPctBrut",  allocPea  + " %");
+  setText("dtPeaPctBrut",  pctBrutPea  + " %");
   setText("dtPeaPctNet",   pctNetPea);
   const peaEvo = parseNum(data.pea_evo_mensuelle);
 const peaEvoEl = document.getElementById("dtPeaEvo");
@@ -518,7 +519,7 @@ if (peaEvoEl) {
   peaEvoEl.classList.toggle("negative", peaEvo < 0);
 }
   setText("dtCashVal",     data.cash_disponible || "--");
-  setText("dtCashPctBrut", allocCash + " %");
+  setText("dtCashPctBrut", pctBrutCash + " %");
   setText("dtCashPctNet",  pctNetCash);
   const cashEvo = parseNum(data.cash_evo_mensuelle);
 const cashEvoEl = document.getElementById("dtCashEvo");
