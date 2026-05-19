@@ -1157,7 +1157,7 @@ function updateSimulateur(nbGardes) {
   const brut      = 7443 + nbGardes * 461;
   const net       = Math.round(brut * 0.92);
   const provision = Math.round(net * 0.15);
-  const virCCFSim = Math.round(totalCCF * (net / (net + SALAIRE_HARMONIE)));
+  const virCCFSim = Math.round(4794 * (net / (net + 2500)));
   const reste = net - provision - virCCFSim;
 
   const fmtS = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
