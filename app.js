@@ -2,10 +2,6 @@
 (function() {
   const PASSWORD = "Ell@30092021"; // ← changez ici
   const SESSION_KEY = "mp_unlocked";
-
-  const lockScreen = document.getElementById("lockScreen");
-  const lockInput  = document.getElementById("lockInput");
-  const lockBtn    = document.getElementById("lockBtn");
   const lockError  = document.getElementById("lockError");
 
   // Déjà déverrouillé dans cette session
@@ -144,12 +140,19 @@ async function loadHistorique() {
     const csv = await res.text();
     const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0] && r[3]);
 
-    wealthData   = rows.map(r => parseNum(r[3]));
-    wealthLabels = rows.map(r => {
+// Un point par mois uniquement — on garde le dernier point de chaque mois
+    const parMois = {};
+    rows.forEach(r => {
       const parts = r[0].split(" ")[0].split("/");
       const d = new Date(parts[2], parts[1]-1, parts[0]);
-      return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
+      const key = d.getFullYear() + "-" + d.getMonth();
+      parMois[key] = { val: parseNum(r[3]), date: d };
     });
+    
+    wealthData   = Object.values(parMois).map(p => p.val);
+    wealthLabels = Object.values(parMois).map(p =>
+      p.date.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" })
+    );
 
     peaData_hist   = rows.map(r => parseNum(r[5] || "")).filter(v => v > 0);
     peaLabels_hist = rows
