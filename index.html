@@ -583,7 +583,111 @@
           <canvas id="peaChart"></canvas>
         </div>
       </div>
+          
+<!-- CTO Enfants -->
+      <div class="card" style="margin-top:18px;padding:24px">
+        <div class="card-header">
+          <h3>CTO Enfants</h3>
+          <span class="badge">Flat tax 30%</span>
+        </div>
 
+        <div class="pea-kpi-row" style="margin-bottom:18px">
+          <div class="card pea-kpi-card">
+            <div class="kpi-label">Valorisation totale</div>
+            <div class="kpi-value positive" id="ctoP_valeur">--</div>
+          </div>
+          <div class="card pea-kpi-card">
+            <div class="kpi-label">Total versé</div>
+            <div class="kpi-value" id="ctoP_verse">--</div>
+          </div>
+          <div class="card pea-kpi-card">
+            <div class="kpi-label">Plus-value brute</div>
+            <div class="kpi-value positive" id="ctoP_pvBrute">--</div>
+            <div class="kpi-hint positive" id="ctoP_pvNette">--</div>
+          </div>
+          <div class="card pea-kpi-card">
+            <div class="kpi-label">Performance</div>
+            <div class="kpi-value positive" id="ctoP_perf">--</div>
+          </div>
+        </div>
+
+        <div class="page-grid-2" style="margin-top:18px">
+          <div class="card asset-card">
+            <div class="pea-etf-header">
+              <h4 id="ctoP_actif1Nom">--</h4>
+              <span class="pea-etf-perf positive" id="ctoP_actif1Perf">--</span>
+            </div>
+            <div class="asset-value" id="ctoP_actif1Valeur">--</div>
+            <div class="asset-meta">
+              <div class="meta-row"><span>Part du CTO</span><span id="ctoP_actif1Pct">--</span></div>
+              <div class="meta-row"><span>Statut</span><span style="color:var(--text3)">Position clôturée</span></div>
+            </div>
+            <div class="credit-progress">
+              <div class="credit-progress-header">
+                <span>Poids dans le portefeuille</span>
+                <span id="ctoP_actif1PctBar">--</span>
+              </div>
+              <div class="credit-bar"><span id="ctoBar1" style="width:0%;background:#6366f1"></span></div>
+            </div>
+          </div>
+
+          <div class="card asset-card">
+            <div class="pea-etf-header">
+              <h4 id="ctoP_actif2Nom">--</h4>
+              <span class="pea-etf-perf positive" id="ctoP_actif2Perf">--</span>
+            </div>
+            <div class="asset-value" id="ctoP_actif2Valeur">--</div>
+            <div class="asset-meta">
+              <div class="meta-row"><span>Part du CTO</span><span id="ctoP_actif2Pct">--</span></div>
+              <div class="meta-row"><span>Statut</span><span style="color:var(--text3)">Position clôturée</span></div>
+            </div>
+            <div class="credit-progress">
+              <div class="credit-progress-header">
+                <span>Poids dans le portefeuille</span>
+                <span id="ctoP_actif2PctBar">--</span>
+              </div>
+              <div class="credit-bar"><span id="ctoBar2" style="width:0%;background:#10b981"></span></div>
+            </div>
+          </div>
+
+          <div class="card asset-card">
+            <div class="pea-etf-header">
+              <h4 id="ctoP_actif3Nom">--</h4>
+              <span class="pea-etf-perf positive" id="ctoP_actif3Perf">--</span>
+            </div>
+            <div class="asset-value" id="ctoP_actif3Valeur">--</div>
+            <div class="asset-meta">
+              <div class="meta-row"><span>Part du CTO</span><span id="ctoP_actif3Pct">--</span></div>
+              <div class="meta-row"><span>DCA actif</span><span class="positive">200 €/mois → 300 € dès août</span></div>
+            </div>
+            <div class="credit-progress">
+              <div class="credit-progress-header">
+                <span>Poids dans le portefeuille</span>
+                <span id="ctoP_actif3PctBar">--</span>
+              </div>
+              <div class="credit-bar"><span id="ctoBar3" style="width:0%;background:#f59e0b"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graphique CTO -->
+        <div style="margin-top:18px;padding:24px" class="card">
+          <div class="card-header">
+            <h3>Évolution du CTO</h3>
+          </div>
+          <div id="ctoChartWrap" class="chart-wrap">
+            <canvas id="ctoChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Note fiscale -->
+        <div style="margin-top:16px;padding:14px;background:rgba(229,62,62,.06);border:1px solid rgba(229,62,62,.2);border-radius:var(--radius-md)">
+          <div style="font-size:12px;color:var(--text2)">
+            💡 <strong>Stratégie fiscale</strong> — Donation aux enfants à leur majorité pour purger la plus-value. Flat tax 30% applicable uniquement en cas de cession avant donation.
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- ══ CASH PAGE ══ -->
