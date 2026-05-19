@@ -254,11 +254,18 @@ function initAllocChart(immo, pea, cash) {
         cutout: "74%"
       }]
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend:{ display:false } }
-    }
+        options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => ctx.label + " : " + ctx.parsed.toFixed(1) + " %"
+                  }
+                }
+              }
+            }
   });
 }
 
