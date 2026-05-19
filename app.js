@@ -134,6 +134,8 @@ let wealthData = [];
 let wealthLabels = [];
 let peaData_hist = [];
 let peaLabels_hist = [];
+let ctoData_hist = [];
+let ctoLabels_hist = [];
 
 async function loadHistorique() {
   const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=1865808494&single=true&output=csv";
@@ -158,6 +160,15 @@ async function loadHistorique() {
         return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
       });
 
+    ctoData_hist   = rows.map(r => parseNum(r[11] || "")).filter(v => v > 0);
+    ctoLabels_hist = rows
+      .filter(r => parseNum(r[11] || "") > 0)
+      .map(r => {
+        const parts = r[0].split(" ")[0].split("/");
+        const d = new Date(parts[2], parts[1]-1, parts[0]);
+        return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
+      });  
+  
   } catch(e) {
     console.warn("Historique indisponible", e);
     wealthData   = [];
