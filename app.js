@@ -680,7 +680,53 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
   const bar2 = document.getElementById("peaBar2");
   if (bar1) bar1.style.width = pct1 + "%";
   if (bar2) bar2.style.width = pct2 + "%";
+  
+// ── CTO Enfants ───────────────────────────────────────────────────────────
+  const ctoValeur  = parseNum(data.cto_valeur);
+  const ctoVerse   = parseNum(data.cto_verse);
+  const ctoPvBrute = ctoValeur - ctoVerse;
+  const ctoPvNette = ctoPvBrute * 0.70;
+  const ctoPerfVal = ctoVerse ? ((ctoValeur - ctoVerse) / ctoVerse * 100) : 0;
 
+  setText("ctoP_valeur",  ctoValeur ? fmtEur.format(ctoValeur) : "--");
+  setText("ctoP_verse",   ctoVerse  ? fmtEur.format(ctoVerse)  : "--");
+  setText("ctoP_pvBrute", ctoPvBrute ? (ctoPvBrute >= 0 ? "+" : "") + fmtEur.format(ctoPvBrute) : "--");
+  setText("ctoP_pvNette", ctoPvNette ? (ctoPvNette >= 0 ? "+" : "") + fmtEur.format(ctoPvNette) + " après flat tax" : "--");
+  setText("ctoP_perf",    ctoPerfVal ? (ctoPerfVal >= 0 ? "+" : "") + ctoPerfVal.toFixed(1) + " %" : "--");
+
+  setText("ctoP_actif1Nom",    data.cto_actif1_nom    || "--");
+  setText("ctoP_actif1Valeur", data.cto_actif1_valeur || "--");
+  setText("ctoP_actif2Nom",    data.cto_actif2_nom    || "--");
+  setText("ctoP_actif2Valeur", data.cto_actif2_valeur || "--");
+  setText("ctoP_actif3Nom",    data.cto_actif3_nom    || "--");
+  setText("ctoP_actif3Valeur", data.cto_actif3_valeur || "--");
+
+  const ctoPerf1 = parsePercent(data.cto_actif1_perf);
+  const ctoPerf2 = parsePercent(data.cto_actif2_perf);
+  const ctoPerf3 = parsePercent(data.cto_actif3_perf);
+  setText("ctoP_actif1Perf", isNaN(ctoPerf1) ? "--" : (ctoPerf1 >= 0 ? "+" : "") + ctoPerf1.toFixed(1) + " %");
+  setText("ctoP_actif2Perf", isNaN(ctoPerf2) ? "--" : (ctoPerf2 >= 0 ? "+" : "") + ctoPerf2.toFixed(1) + " %");
+  setText("ctoP_actif3Perf", isNaN(ctoPerf3) ? "--" : (ctoPerf3 >= 0 ? "+" : "") + ctoPerf3.toFixed(1) + " %");
+
+  const cto1Num = parseNum(data.cto_actif1_valeur);
+  const cto2Num = parseNum(data.cto_actif2_valeur);
+  const cto3Num = parseNum(data.cto_actif3_valeur);
+  const ctoPct1 = ctoValeur ? Math.round(cto1Num / ctoValeur * 100) : 0;
+  const ctoPct2 = ctoValeur ? Math.round(cto2Num / ctoValeur * 100) : 0;
+  const ctoPct3 = ctoValeur ? Math.round(cto3Num / ctoValeur * 100) : 0;
+  setText("ctoP_actif1Pct",    ctoPct1 + " %");
+  setText("ctoP_actif2Pct",    ctoPct2 + " %");
+  setText("ctoP_actif3Pct",    ctoPct3 + " %");
+  setText("ctoP_actif1PctBar", ctoPct1 + " %");
+  setText("ctoP_actif2PctBar", ctoPct2 + " %");
+  setText("ctoP_actif3PctBar", ctoPct3 + " %");
+  const ctoBar1 = document.getElementById("ctoBar1");
+  const ctoBar2 = document.getElementById("ctoBar2");
+  const ctoBar3 = document.getElementById("ctoBar3");
+  if (ctoBar1) ctoBar1.style.width = ctoPct1 + "%";
+  if (ctoBar2) ctoBar2.style.width = ctoPct2 + "%";
+  if (ctoBar3) ctoBar3.style.width = ctoPct3 + "%";
+  
   // Page Cash
   setText("cashP_1Nom",  data.cash1_nom); setText("cashP_1Valeur", data.cash1_valeur);
   setText("cashP_2Nom",  data.cash2_nom); setText("cashP_2Valeur", data.cash2_valeur);
@@ -820,7 +866,56 @@ async function init() {
     const badge = document.getElementById("peaChartBadge");
     if (badge) badge.style.display = "none";
   }
-
+  
+// Graphique CTO
+  if (ctoData_hist.length < 2) {
+    const ctoWrap = document.getElementById("ctoChartWrap");
+    if (ctoWrap) ctoWrap.innerHTML = `
+      <div class="chart-placeholder">
+        <span>📈</span>
+        <p>Historique en cours de construction</p>
+        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+      </div>
+    `;
+  } else {
+    const ctoCvs  = document.getElementById("ctoChart");
+    const ctoCtx  = ctoCvs.getContext("2d");
+    const ctoGrad = ctoCtx.createLinearGradient(0, 0, 0, 240);
+    ctoGrad.addColorStop(0, "rgba(245,158,11,.18)");
+    ctoGrad.addColorStop(1, "rgba(245,158,11,0)");
+    new Chart(ctoCvs, {
+      type: "line",
+      data: {
+        labels: ctoLabels_hist,
+        datasets: [{
+          label: "Valeur CTO",
+          data: ctoData_hist,
+          borderColor: "#f59e0b",
+          backgroundColor: ctoGrad,
+          fill: true,
+          tension: .42,
+          pointRadius: 4,
+          pointBackgroundColor: "#f59e0b",
+          pointBorderColor: "#fff",
+          pointBorderWidth: 2,
+          borderWidth: 2.5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
+        },
+        scales: {
+          x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
+          y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
+        }
+      }
+    });
+  }
+  
   loadSheetData();
 }
 
