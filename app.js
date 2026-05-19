@@ -769,7 +769,7 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
   });
 
   // Épargne mensuelle
-  const objectifEpargne = 2360;
+  const objectifEpargne = 1000;
   const epargneReelle   = parseNum(data.epargne_reelle_mensuelle);
   const epargneBar      = document.getElementById("cashP_epargneBar");
   const epargneHint     = document.getElementById("cashP_epargneHint");
