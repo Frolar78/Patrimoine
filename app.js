@@ -727,6 +727,19 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
   if (ctoBar2) ctoBar2.style.width = ctoPct2 + "%";
   if (ctoBar3) ctoBar3.style.width = ctoPct3 + "%";
   
+  // Mini panel CTO overview
+  setText("ctoActif1Nom",    data.cto_actif1_nom    || "--");
+  setText("ctoActif1Valeur", data.cto_actif1_valeur || "--");
+  setText("ctoActif1Perf",   isNaN(ctoPerf1) ? "--" : (ctoPerf1 >= 0 ? "+" : "") + ctoPerf1.toFixed(1) + " %");
+  setText("ctoActif2Nom",    data.cto_actif2_nom    || "--");
+  setText("ctoActif2Valeur", data.cto_actif2_valeur || "--");
+  setText("ctoActif2Perf",   isNaN(ctoPerf2) ? "--" : (ctoPerf2 >= 0 ? "+" : "") + ctoPerf2.toFixed(1) + " %");
+  setText("ctoActif3Nom",    data.cto_actif3_nom    || "--");
+  setText("ctoActif3Valeur", data.cto_actif3_valeur || "--");
+  setText("ctoActif3Perf",   isNaN(ctoPerf3) ? "--" : (ctoPerf3 >= 0 ? "+" : "") + ctoPerf3.toFixed(1) + " %");
+  setText("ctoValeurOverview", ctoValeur ? fmtEur.format(ctoValeur) : "--");
+  setText("ctoPerfOverview",   ctoPerfVal ? (ctoPerfVal >= 0 ? "+" : "") + ctoPerfVal.toFixed(1) + " %" : "--");
+  
   // Page Cash
   setText("cashP_1Nom",  data.cash1_nom); setText("cashP_1Valeur", data.cash1_valeur);
   setText("cashP_2Nom",  data.cash2_nom); setText("cashP_2Valeur", data.cash2_valeur);
