@@ -323,11 +323,11 @@
 
         </div>
 
-        <div class="card mini-panel">
+<div class="card mini-panel">
           <div class="card-header">
             <div class="panel-title-row">
               <span class="panel-icon"><i data-lucide="trending-up"></i></span>
-              <h3>PEA</h3>
+              <h3>PEA Perso</h3>
             </div>
             <button class="see-more" data-page="pea">Voir le détail →</button>
           </div>
@@ -335,6 +335,21 @@
             <div class="panel-row"><span id="peaActif1Nom">--</span><span id="peaActif1Valeur">--</span><span class="positive" id="peaActif1Perf">--</span></div>
             <div class="panel-row"><span id="peaActif2Nom">--</span><span id="peaActif2Valeur">--</span><span class="positive" id="peaActif2Perf">--</span></div>
             <div class="panel-row total">Total PEA <span id="peaValeurOverview">--</span><span class="positive" id="peaPerfOverview">--</span></div>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+            <div class="card-header" style="margin-bottom:8px">
+              <div class="panel-title-row">
+                <span class="panel-icon"><i data-lucide="piggy-bank"></i></span>
+                <h3>CTO Enfants</h3>
+              </div>
+              <button class="see-more" data-page="pea">Voir le détail →</button>
+            </div>
+            <div class="mini-panel-content">
+              <div class="panel-row"><span id="ctoActif1Nom">--</span><span id="ctoActif1Valeur">--</span><span class="positive" id="ctoActif1Perf">--</span></div>
+              <div class="panel-row"><span id="ctoActif2Nom">--</span><span id="ctoActif2Valeur">--</span><span class="positive" id="ctoActif2Perf">--</span></div>
+              <div class="panel-row"><span id="ctoActif3Nom">--</span><span id="ctoActif3Valeur">--</span><span class="positive" id="ctoActif3Perf">--</span></div>
+              <div class="panel-row total">Total CTO <span id="ctoValeurOverview">--</span><span class="positive" id="ctoPerfOverview">--</span></div>
+            </div>
           </div>
         </div>
 
@@ -511,7 +526,12 @@
 
     <!-- ══ PEA PAGE ══ -->
         <div id="peaPage" class="page">
-
+          
+      <div class="card" style="padding:24px;margin-bottom:18px">
+        <div class="card-header">
+          <h3>PEA Perso</h3>
+        </div>
+        
       <!-- KPIs PEA -->
       <div class="pea-kpi-row">
         <div class="card pea-kpi-card">
@@ -583,12 +603,12 @@
           <canvas id="peaChart"></canvas>
         </div>
       </div>
+    </div>
           
 <!-- CTO Enfants -->
       <div class="card" style="margin-top:18px;padding:24px">
         <div class="card-header">
           <h3>CTO Enfants</h3>
-          <span class="badge">Flat tax 30%</span>
         </div>
 
         <div class="pea-kpi-row" style="margin-bottom:18px">
@@ -611,6 +631,34 @@
           </div>
         </div>
 
+<!-- DCAM — pleine largeur -->
+        <div class="card asset-card" style="margin-top:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div class="pea-etf-header" style="margin-bottom:0">
+              <h4 id="ctoP_actif3Nom">--</h4>
+              <span class="pea-etf-perf positive" id="ctoP_actif3Perf">--</span>
+            </div>
+            <span style="font-size:11px;font-weight:600;color:var(--color-pea);background:rgba(16,185,129,.1);border:1px solid var(--color-pea);border-radius:999px;padding:3px 10px">DCA actif</span>
+          </div>
+          <div class="asset-value" id="ctoP_actif3Valeur">--</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <div class="asset-meta">
+              <div class="meta-row"><span>Part du CTO</span><span id="ctoP_actif3Pct">--</span></div>
+              <div class="meta-row"><span>DCA mensuel</span><span class="positive">200 € → 300 € dès août</span></div>
+            </div>
+            <div>
+              <div class="credit-progress">
+                <div class="credit-progress-header">
+                  <span>Poids dans le portefeuille</span>
+                  <span id="ctoP_actif3PctBar">--</span>
+                </div>
+                <div class="credit-bar"><span id="ctoBar3" style="width:0%;background:#f59e0b"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FMWRE + WLDC -->
         <div class="page-grid-2" style="margin-top:18px">
           <div class="card asset-card">
             <div class="pea-etf-header">
@@ -630,6 +678,26 @@
               <div class="credit-bar"><span id="ctoBar1" style="width:0%;background:#6366f1"></span></div>
             </div>
           </div>
+
+          <div class="card asset-card">
+            <div class="pea-etf-header">
+              <h4 id="ctoP_actif2Nom">--</h4>
+              <span class="pea-etf-perf positive" id="ctoP_actif2Perf">--</span>
+            </div>
+            <div class="asset-value" id="ctoP_actif2Valeur">--</div>
+            <div class="asset-meta">
+              <div class="meta-row"><span>Part du CTO</span><span id="ctoP_actif2Pct">--</span></div>
+              <div class="meta-row"><span>Statut</span><span style="color:var(--text3)">Position clôturée</span></div>
+            </div>
+            <div class="credit-progress">
+              <div class="credit-progress-header">
+                <span>Poids dans le portefeuille</span>
+                <span id="ctoP_actif2PctBar">--</span>
+              </div>
+              <div class="credit-bar"><span id="ctoBar2" style="width:0%;background:#10b981"></span></div>
+            </div>
+          </div>
+        </div>
 
           <div class="card asset-card">
             <div class="pea-etf-header">
