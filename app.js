@@ -488,7 +488,7 @@ const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (la
   setText("allocImmoText", allocImmo + " %");
   setText("allocPeaText",  allocPea  + " %");
   setText("allocCashText", allocCash + " %");
-  setText("allocImmoVal",  immoBrutNum ? fmtEur.format(immoBrutNum) : "--");
+  setText("allocImmoVal",  immoNetNum ? fmtEur.format(immoNetNum) : "--");
   setText("allocPeaVal",   data.pea_valeur      || "--");
   setText("allocCashVal",  data.cash_disponible || "--");
   initAllocChart(allocImmo, allocPea, allocCash);
