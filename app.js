@@ -441,6 +441,9 @@ const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (la
   const allocImmo = parsePercent(data.allocation_immobilier);
   const allocPea  = parsePercent(data.allocation_pea);
   const allocCash = parsePercent(data.allocation_cash);
+  const pctBrutImmo = brutNum ? ((immoBrutNum / brutNum) * 100).toFixed(1) : "--";
+  const pctBrutPea  = brutNum ? ((peaNum     / brutNum) * 100).toFixed(1) : "--";
+  const pctBrutCash = brutNum ? ((cashNum    / brutNum) * 100).toFixed(1) : "--";
 
   // ── % net ─────────────────────────────────────────────────────────────────
   const pctNetImmo = netNum ? ((immoNetNum / netNum) * 100).toFixed(1) + " %" : "--";
