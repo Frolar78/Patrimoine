@@ -1179,7 +1179,6 @@ function updateSimulateur(nbGardes) {
 const slider = document.getElementById("simGardesSlider");
 if (slider) {
   slider.addEventListener("input", () => updateSimulateur(parseInt(slider.value)));
-  updateSimulateur(0);
 }
 
 // ── Trésorerie ────────────────────────────────────────────────────────────────
@@ -1322,5 +1321,7 @@ if (tresoSlider) {
   tresoSlider.addEventListener("input", () => updateTresorerie(parseInt(tresoSlider.value)));
   updateTresorerie(0);
 }
+
+if (slider) updateSimulateur(0);
 
 lucide.createIcons();
