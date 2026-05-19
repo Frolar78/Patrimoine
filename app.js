@@ -1157,7 +1157,7 @@ function updateSimulateur(nbGardes) {
   const brut      = 7443 + nbGardes * 461;
   const net       = Math.round(brut * 0.92) - 115;
   const provision = Math.round(net * 0.15);
-  const virCCFSim = Math.round(totalCCF * (net / (net + SALAIRE_HARMONIE)));
+  const virCCFSim = Math.ceil(totalCCF * (net / (net + SALAIRE_HARMONIE)) / 100) * 100;
   const reste = net - provision - virCCFSim;
 
   const fmtS = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
@@ -1273,7 +1273,7 @@ function renderCompte(containerId, entrees, sorties, solde, virInterne) {
 
 function updateTresorerie(nbGardes) {
   const brut      = 7443 + nbGardes * 461;
-  const netVous   = Math.round(brut * 0.92);
+  const netVous   = Math.round(brut * 0.92) - 115;
   const provision = Math.round(netVous * 0.15);
   const totalFoyer = netVous + SALAIRE_HARMONIE;
 
@@ -1281,7 +1281,7 @@ function updateTresorerie(nbGardes) {
   const ratioHarmonie = SALAIRE_HARMONIE / totalFoyer;
 
   const partVous     = Math.round(totalCCF * ratioVous);
-  const partHarmonie = Math.round(totalCCF * ratioHarmonie);
+  const partHarmonie = Math.ceil(totalCCF * ratioHarmonie / 10) * 10;
 
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
