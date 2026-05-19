@@ -1155,7 +1155,7 @@ document.querySelectorAll("[data-horizon]").forEach(btn => {
 // ── Simulateur salaire ────────────────────────────────────────────────────────
 function updateSimulateur(nbGardes) {
   const brut      = 7443 + nbGardes * 461;
-  const net       = Math.round(brut * 0.92);
+  const net       = Math.round(brut * 0.92) - 115;
   const provision = Math.round(net * 0.15);
   const virCCFSim = Math.round(totalCCF * (net / (net + SALAIRE_HARMONIE)));
   const reste = net - provision - virCCFSim;
