@@ -604,6 +604,11 @@
           <h3>Évolution du PEA</h3>
           <span class="badge" id="peaChartBadge">Historique en cours</span>
         </div>
+        <div class="range-selector">
+          <button class="range-btn-pea range-btn active" data-range="12">12 mois</button>
+          <button class="range-btn-pea range-btn" data-range="24">2 ans</button>
+          <button class="range-btn-pea range-btn" data-range="all">Tout</button>
+        </div>
         <div id="peaChartWrap" class="chart-wrap">
           <canvas id="peaChart"></canvas>
         </div>
@@ -702,10 +707,15 @@
           </div>
         </div>
         
-        <!-- Graphique CTO -->
+<!-- Graphique CTO -->
         <div style="margin-top:18px;padding:24px" class="card">
           <div class="card-header">
             <h3>Évolution du CTO</h3>
+          </div>
+          <div class="range-selector">
+            <button class="range-btn-cto range-btn active" data-range="12">12 mois</button>
+            <button class="range-btn-cto range-btn" data-range="24">2 ans</button>
+            <button class="range-btn-cto range-btn" data-range="all">Tout</button>
           </div>
           <div id="ctoChartWrap" class="chart-wrap">
             <canvas id="ctoChart"></canvas>
