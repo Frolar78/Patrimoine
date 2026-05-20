@@ -132,6 +132,7 @@ let peaData_hist = [];
 let peaLabels_hist = [];
 let ctoData_hist = [];
 let ctoLabels_hist = [];
+let currentNbGardes = 0;
 
 async function loadHistorique() {
   const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=1865808494&single=true&output=csv";
@@ -966,6 +967,32 @@ document.querySelectorAll(".range-btn").forEach(btn => {
   });
 });
 
+// ── Taux d'effort ─────────────────────────────────────────────────────────────
+function updateTauxEffort() {
+  const brut    = 7443 + currentNbGardes * 461;
+  const net     = Math.round(brut * 0.92) - 115;
+  const revenusFoyer = net + SALAIRE_HARMONIE;
+  const mensualites  = 1623 + 2082;
+  const taux = (mensualites / revenusFoyer * 100);
+
+  const el = document.getElementById("tauxEffortVal");
+  const hint = document.getElementById("tauxEffortHint");
+  if (!el) return;
+
+  el.textContent = taux.toFixed(1) + " %";
+  if (taux <= 35) {
+    el.className = "kpi-value positive";
+    if (hint) { hint.textContent = "✅ Dans les normes bancaires"; hint.className = "kpi-hint positive"; }
+  } else if (taux <= 40) {
+    el.className = "kpi-value";
+    el.style.color = "var(--gold)";
+    if (hint) { hint.textContent = "⚠️ Limite (norme : 35%)"; hint.className = "kpi-hint"; hint.style.color = "var(--gold)"; }
+  } else {
+    el.className = "kpi-value negative";
+    if (hint) { hint.textContent = "🔴 Au-dessus de 35%"; hint.className = "kpi-hint negative"; }
+  }
+}
+
 // ── Tableaux d'amortissement ──────────────────────────────────────────────────
 // Kilford : taux 1.14%, 300 mois, départ sept 2021, capital initial 423451.52
 function getKilfordCapital(moisDepuisDebut) {
@@ -1286,6 +1313,8 @@ function updateTresorerie(nbGardes) {
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 
   // Simulateur haut
+  currentNbGardes = nbGardes;
+    updateTauxEffort();
   const nbGardesEl = document.getElementById("tresoNbGardes");
   if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
   setText("tresoSalaireVous",  "+" + fmtT.format(netVous));
