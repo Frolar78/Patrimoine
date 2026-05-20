@@ -781,9 +781,17 @@ main {
 .chart-placeholder small { font-size: 12px; }
 
 @media (max-width: 600px) {
+  .detail-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .data-table {
+    font-size: 11px;
+    min-width: 500px;
+  }
   .table-total td { font-size: 11px; }
-  .data-table { font-size: 11px; }
 }
+
 /* ── Credit progress bar ──────────────────────────────────────────────────── */
 .credit-progress {
   margin-top: 20px;
