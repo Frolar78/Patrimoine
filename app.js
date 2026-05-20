@@ -139,7 +139,7 @@ async function loadHistorique() {
   try {
     const res = await fetch(url);
     const csv = await res.text();
-    const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0] && r[3]);
+    const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0]);
 
 // Un point par mois uniquement — on garde le dernier point de chaque mois
     const parMois = {};
@@ -155,23 +155,33 @@ async function loadHistorique() {
       p.date.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" })
     );
 
-    peaData_hist   = rows.map(r => parseNum(r[5] || "")).filter(v => v > 0);
-    peaLabels_hist = rows
-      .filter(r => parseNum(r[5] || "") > 0)
-      .map(r => {
-        const parts = r[0].split(" ")[0].split("/");
-        const d = new Date(parts[2], parts[1]-1, parts[0]);
-        return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
-      });
+ // PEA — un point par mois
+const parMoisPea = {};
+rows.forEach(r => {
+  if (!parseNum(r[5] || "")) return;
+  const parts = r[0].split(" ")[0].split("/");
+  const d = new Date(parts[2], parts[1]-1, parts[0]);
+  const key = d.getFullYear() + "-" + d.getMonth();
+  parMoisPea[key] = { val: parseNum(r[5]), date: d };
+});
+peaData_hist   = Object.values(parMoisPea).map(p => p.val);
+peaLabels_hist = Object.values(parMoisPea).map(p =>
+  p.date.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" })
+);
 
-    ctoData_hist   = rows.map(r => parseNum(r[11] || "")).filter(v => v > 0);
-    ctoLabels_hist = rows
-      .filter(r => parseNum(r[11] || "") > 0)
-      .map(r => {
-        const parts = r[0].split(" ")[0].split("/");
-        const d = new Date(parts[2], parts[1]-1, parts[0]);
-        return d.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" });
-      });  
+// CTO — un point par mois
+const parMoisCto = {};
+rows.forEach(r => {
+  if (!parseNum(r[11] || "")) return;
+  const parts = r[0].split(" ")[0].split("/");
+  const d = new Date(parts[2], parts[1]-1, parts[0]);
+  const key = d.getFullYear() + "-" + d.getMonth();
+  parMoisCto[key] = { val: parseNum(r[11]), date: d };
+});
+ctoData_hist   = Object.values(parMoisCto).map(p => p.val);
+ctoLabels_hist = Object.values(parMoisCto).map(p =>
+  p.date.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" })
+);
   
   } catch(e) {
     console.warn("Historique indisponible", e);
@@ -182,6 +192,8 @@ async function loadHistorique() {
 
 let wealthChart;
 let currentRange = 12;
+let currentPeaRange = 12;
+let currentCtoRange = 12;
 
 function renderWealthChart(range) {
   currentRange = range;
@@ -854,48 +866,119 @@ async function init() {
   const badge = document.getElementById("peaChartBadge");
   if (badge) badge.style.display = "none";
   
-  } else {
-    const canvas = document.getElementById("peaChart");
-    const ctx    = canvas.getContext("2d");
-    const grad   = ctx.createLinearGradient(0, 0, 0, 240);
-    grad.addColorStop(0, "rgba(52,211,153,.18)");
-    grad.addColorStop(1, "rgba(52,211,153,0)");
-    new Chart(canvas, {
-      type: "line",
-      data: {
-        labels: peaLabels_hist,
-        datasets: [{
-          label: "Valeur PEA",
-          data: peaData_hist,
-          borderColor: "#34d399",
-          backgroundColor: grad,
-          fill: true,
-          tension: .42,
-          pointRadius: 4,
-          pointBackgroundColor: "#34d399",
-          pointBorderColor: "#fff",
-          pointBorderWidth: 2,
-          borderWidth: 2.5
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
-        },
-        scales: {
-          x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
-          y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
-        }
-      }
-    });
+   } else {
+    renderPeaChart(12);
     const badge = document.getElementById("peaChartBadge");
     if (badge) badge.style.display = "none";
   }
-  
-// Graphique CTO
+
+// ── Graphique PEA ─────────────────────────────────────────────────────────────
+let peaChart;
+function renderPeaChart(range) {
+  currentPeaRange = range;
+  const slice  = range === "all" ? peaData_hist  : peaData_hist.slice(-range);
+  const labels = range === "all" ? peaLabels_hist : peaLabels_hist.slice(-range);
+
+  if (peaChart) {
+    peaChart.data.labels = labels;
+    peaChart.data.datasets[0].data = slice;
+    peaChart.update();
+    return;
+  }
+
+  const canvas = document.getElementById("peaChart");
+  const ctx    = canvas.getContext("2d");
+  const grad   = ctx.createLinearGradient(0, 0, 0, 240);
+  grad.addColorStop(0, "rgba(52,211,153,.18)");
+  grad.addColorStop(1, "rgba(52,211,153,0)");
+
+  peaChart = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Valeur PEA",
+        data: slice,
+        borderColor: "#34d399",
+        backgroundColor: grad,
+        fill: true,
+        tension: .42,
+        pointRadius: 4,
+        pointBackgroundColor: "#34d399",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
+      },
+      scales: {
+        x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
+        y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
+      }
+    }
+  });
+}
+
+// ── Graphique CTO ─────────────────────────────────────────────────────────────
+let ctoChart;
+function renderCtoChart(range) {
+  currentCtoRange = range;
+  const slice  = range === "all" ? ctoData_hist  : ctoData_hist.slice(-range);
+  const labels = range === "all" ? ctoLabels_hist : ctoLabels_hist.slice(-range);
+
+  if (ctoChart) {
+    ctoChart.data.labels = labels;
+    ctoChart.data.datasets[0].data = slice;
+    ctoChart.update();
+    return;
+  }
+
+  const canvas = document.getElementById("ctoChart");
+  const ctx    = canvas.getContext("2d");
+  const grad   = ctx.createLinearGradient(0, 0, 0, 240);
+  grad.addColorStop(0, "rgba(245,158,11,.18)");
+  grad.addColorStop(1, "rgba(245,158,11,0)");
+
+  ctoChart = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Valeur CTO",
+        data: slice,
+        borderColor: "#f59e0b",
+        backgroundColor: grad,
+        fill: true,
+        tension: .42,
+        pointRadius: 4,
+        pointBackgroundColor: "#f59e0b",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
+      },
+      scales: {
+        x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
+        y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
+      }
+    }
+  });
+}
+
+  // Graphique CTO
   if (ctoData_hist.length < 2) {
     const ctoWrap = document.getElementById("ctoChartWrap");
     if (ctoWrap) ctoWrap.innerHTML = `
@@ -906,43 +989,9 @@ async function init() {
       </div>
     `;
   } else {
-    const ctoCvs  = document.getElementById("ctoChart");
-    const ctoCtx  = ctoCvs.getContext("2d");
-    const ctoGrad = ctoCtx.createLinearGradient(0, 0, 0, 240);
-    ctoGrad.addColorStop(0, "rgba(245,158,11,.18)");
-    ctoGrad.addColorStop(1, "rgba(245,158,11,0)");
-    new Chart(ctoCvs, {
-      type: "line",
-      data: {
-        labels: ctoLabels_hist,
-        datasets: [{
-          label: "Valeur CTO",
-          data: ctoData_hist,
-          borderColor: "#f59e0b",
-          backgroundColor: ctoGrad,
-          fill: true,
-          tension: .42,
-          pointRadius: 4,
-          pointBackgroundColor: "#f59e0b",
-          pointBorderColor: "#fff",
-          pointBorderWidth: 2,
-          borderWidth: 2.5
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
-        },
-        scales: {
-          x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
-          y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
-        }
-      }
-    });
+    renderCtoChart(12);
   }
+
   
   loadSheetData();
 }
@@ -1352,5 +1401,23 @@ if (tresoSlider) {
 }
 
 if (slider) updateSimulateur(0);
+
+document.querySelectorAll(".range-btn-pea").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".range-btn-pea").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const range = btn.dataset.range === "all" ? "all" : parseInt(btn.dataset.range);
+    renderPeaChart(range);
+  });
+});
+
+document.querySelectorAll(".range-btn-cto").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".range-btn-cto").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const range = btn.dataset.range === "all" ? "all" : parseInt(btn.dataset.range);
+    renderCtoChart(range);
+  });
+});
 
 lucide.createIcons();
