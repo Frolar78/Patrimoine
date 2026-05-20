@@ -839,39 +839,6 @@ renderProjection(netNum, peaNum, v1, v2, d1, d2);
   hideSkeleton();
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-async function init() {
-  await loadHistorique();
-
-  if (wealthData.length < 2) {
-    document.querySelector(".chart-wrap").innerHTML = `
-      <div class="chart-placeholder">
-        <span>📈</span>
-        <p>Historique en cours de construction</p>
-        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
-      </div>
-    `;
-  } else {
-    initWealthChart();
-  }
-
-  if (peaData_hist.length < 2) {
-    document.getElementById("peaChartWrap").innerHTML = `
-      <div class="chart-placeholder">
-        <span>📈</span>
-        <p>Historique en cours de construction</p>
-        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
-      </div>
-    `;
-  const badge = document.getElementById("peaChartBadge");
-  if (badge) badge.style.display = "none";
-  
-   } else {
-    renderPeaChart(12);
-    const badge = document.getElementById("peaChartBadge");
-    if (badge) badge.style.display = "none";
-  }
-
 // ── Graphique PEA ─────────────────────────────────────────────────────────────
 let peaChart;
 function renderPeaChart(range) {
@@ -977,6 +944,39 @@ function renderCtoChart(range) {
     }
   });
 }
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  await loadHistorique();
+
+  if (wealthData.length < 2) {
+    document.querySelector(".chart-wrap").innerHTML = `
+      <div class="chart-placeholder">
+        <span>📈</span>
+        <p>Historique en cours de construction</p>
+        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+      </div>
+    `;
+  } else {
+    initWealthChart();
+  }
+
+  if (peaData_hist.length < 2) {
+    document.getElementById("peaChartWrap").innerHTML = `
+      <div class="chart-placeholder">
+        <span>📈</span>
+        <p>Historique en cours de construction</p>
+        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+      </div>
+    `;
+  const badge = document.getElementById("peaChartBadge");
+  if (badge) badge.style.display = "none";
+  
+   } else {
+    renderPeaChart(12);
+    const badge = document.getElementById("peaChartBadge");
+    if (badge) badge.style.display = "none";
+  }
 
   // Graphique CTO
   if (ctoData_hist.length < 2) {
