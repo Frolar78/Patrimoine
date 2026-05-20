@@ -677,6 +677,22 @@ main {
   .goals-grid { grid-template-columns: 1fr; }
   .greeting h1 { font-size: 26px; }
   .data-table { font-size: 11px; }
+
+  /* KPIs Immo 5 cases — layout mobile */
+  .pea-kpi-row[style*="repeat(5"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .pea-kpi-row[style*="repeat(5"] .pea-kpi-card:nth-child(3) {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+  .pea-kpi-row[style*="repeat(5"] .pea-kpi-card:nth-child(4) { order: 4; }
+  .pea-kpi-row[style*="repeat(5"] .pea-kpi-card:nth-child(5) { order: 5; }
+
+  /* KPIs 4 cases — 2x2 */
+  .pea-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* ── Skeleton loading ─────────────────────────────────────────────────────── */
