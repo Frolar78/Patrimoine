@@ -848,7 +848,10 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
 
   // Goals
   renderGoals(data, netNum || (last ?? 0), peaNum);
-  
+
+// Tableau de chasse
+  renderTableauChasse();
+
 // Projection
 window._projArgs = [netNum, peaNum, v1, v2, d1, d2];
 renderProjection(netNum, peaNum, v1, v2, d1, d2);
@@ -1014,6 +1017,109 @@ function renderCtoChart(range) {
       }
     }
   });
+}
+
+// ── Tableau de chasse ─────────────────────────────────────────────────────────
+function renderTableauChasse() {
+  const el = document.getElementById("tableauChasse");
+  if (!el || wealthData.length < 2) return;
+
+  // Calcul des variations mensuelles
+  const variations = [];
+  for (let i = 1; i < wealthData.length; i++) {
+    if (wealthData[i] && wealthData[i-1]) {
+      variations.push({ diff: wealthData[i] - wealthData[i-1], label: wealthLabels[i] });
+    }
+  }
+
+  // Meilleur mois
+  const meilleurMois = variations.reduce((best, v) => v.diff > best.diff ? v : best, variations[0]);
+
+  // Record patrimoine
+  const recordIdx = wealthData.reduce((maxIdx, v, i) => v > wealthData[maxIdx] ? i : maxIdx, 0);
+  const recordVal = wealthData[recordIdx];
+  const recordLabel = wealthLabels[recordIdx];
+
+  // Progression totale
+  const premier = wealthData.find(v => v !== 0);
+  const dernier = wealthData[wealthData.length - 1];
+  const progression = dernier - premier;
+
+  // Mois positifs
+  const moisPositifs = variations.filter(v => v.diff > 0).length;
+  const totalMois = variations.length;
+
+  // Moyenne mensuelle
+  const moyenne = variations.reduce((sum, v) => sum + v.diff, 0) / totalMois;
+
+  const rows = [
+    {
+      icon: "trophy",
+      color: "#f0a500",
+      label: "Meilleur mois",
+      value: (meilleurMois.diff >= 0 ? "+" : "") + fmtEur.format(Math.round(meilleurMois.diff)),
+      sub: meilleurMois.label
+    },
+    {
+      icon: "crown",
+      color: "#6366f1",
+      label: "Record patrimoine net",
+      value: fmtEur.format(Math.round(recordVal)),
+      sub: recordLabel
+    },
+    {
+      icon: "rocket",
+      color: "#0e9f6e",
+      label: "Progression totale",
+      value: (progression >= 0 ? "+" : "") + fmtEur.format(Math.round(progression)),
+      sub: "depuis " + wealthLabels[0]
+    },
+    {
+      icon: "calendar-check",
+      color: "#4f6ef7",
+      label: "Mois positifs",
+      value: moisPositifs + " / " + totalMois,
+      sub: Math.round(moisPositifs / totalMois * 100) + "% du temps"
+    },
+    {
+      icon: "trending-up",
+      color: "#10b981",
+      label: "Progression moyenne",
+      value: (moyenne >= 0 ? "+" : "") + fmtEur.format(Math.round(moyenne)) + "/mois",
+      sub: "sur " + totalMois + " mois"
+    }
+  ];
+
+  el.innerHTML = rows.map((r, i) => `
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:14px 0;
+      ${i < rows.length - 1 ? "border-bottom:1px solid var(--border);" : ""}
+    ">
+      <div style="
+        width:38px;height:38px;
+        border-radius:12px;
+        background:${r.color}18;
+        border:1px solid ${r.color}44;
+        display:flex;align-items:center;justify-content:center;
+        flex-shrink:0;
+        color:${r.color};
+      ">
+        <i data-lucide="${r.icon}" style="width:18px;height:18px;stroke-width:1.8"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:2px">${r.label}</div>
+        <div style="font-size:11px;color:var(--text3)">${r.sub}</div>
+      </div>
+      <div style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);text-align:right">
+        ${r.value}
+      </div>
+    </div>
+  `).join("");
+
+  lucide.createIcons();
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
