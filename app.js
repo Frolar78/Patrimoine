@@ -132,6 +132,9 @@ let peaData_hist = [];
 let peaLabels_hist = [];
 let ctoData_hist = [];
 let ctoLabels_hist = [];
+let cashData_hist = [];
+let cashLabels_hist = [];
+let currentCashRange = 12;
 let currentNbGardes = 0;
 
 async function loadHistorique() {
@@ -182,7 +185,21 @@ ctoData_hist   = Object.values(parMoisCto).map(p => p.val);
 ctoLabels_hist = Object.values(parMoisCto).map(p =>
   p.date.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" })
 );
-  
+
+// Cash — un point par mois
+const parMoisCash = {};
+rows.forEach(r => {
+  if (!parseNum(r[6] || "")) return;
+  const parts = r[0].split(" ")[0].split("/");
+  const d = new Date(parts[2], parts[1]-1, parts[0]);
+  const key = d.getFullYear() + "-" + d.getMonth();
+  parMoisCash[key] = { val: parseNum(r[6]), date: d };
+});
+cashData_hist   = Object.values(parMoisCash).map(p => p.val);
+cashLabels_hist = Object.values(parMoisCash).map(p =>
+  p.date.toLocaleDateString("fr-FR", { month:"short", year:"2-digit" })
+);
+
   } catch(e) {
     console.warn("Historique indisponible", e);
     wealthData   = [];
@@ -892,6 +909,60 @@ function renderPeaChart(range) {
   });
 }
 
+// ── Graphique Cash ────────────────────────────────────────────────────────────
+let cashChart;
+function renderCashChart(range) {
+  currentCashRange = range;
+  const slice  = range === "all" ? cashData_hist  : cashData_hist.slice(-range);
+  const labels = range === "all" ? cashLabels_hist : cashLabels_hist.slice(-range);
+
+  if (cashChart) {
+    cashChart.data.labels = labels;
+    cashChart.data.datasets[0].data = slice;
+    cashChart.update();
+    return;
+  }
+
+  const canvas = document.getElementById("cashChart");
+  if (!canvas) return;
+  const ctx  = canvas.getContext("2d");
+  const grad = ctx.createLinearGradient(0, 0, 0, 240);
+  grad.addColorStop(0, "rgba(245,158,11,.18)");
+  grad.addColorStop(1, "rgba(245,158,11,0)");
+
+  cashChart = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Total livrets",
+        data: slice,
+        borderColor: "#f59e0b",
+        backgroundColor: grad,
+        fill: true,
+        tension: .42,
+        pointRadius: 4,
+        pointBackgroundColor: "#f59e0b",
+        pointBorderColor: "#fff",
+        pointBorderWidth: 2,
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => fmtEur.format(ctx.parsed.y) } }
+      },
+      scales: {
+        x: { grid:{ display:false }, ticks:{ color:"#9aa0b4", font:{ size:11 } } },
+        y: { grid:{ color:"rgba(0,0,0,.04)" }, ticks:{ color:"#9aa0b4", font:{ size:11 }, callback: v => fmtEur.format(v) } }
+      }
+    }
+  });
+}
+
 // ── Graphique CTO ─────────────────────────────────────────────────────────────
 let ctoChart;
 function renderCtoChart(range) {
@@ -978,6 +1049,20 @@ async function init() {
     if (badge) badge.style.display = "none";
   }
 
+  // Graphique Cash
+  if (cashData_hist.length < 2) {
+    const cashWrap = document.getElementById("cashChartWrap");
+    if (cashWrap) cashWrap.innerHTML = `
+      <div class="chart-placeholder">
+        <span>📈</span>
+        <p>Historique en cours de construction</p>
+        <small>Le graphique s'affichera dès le deuxième point enregistré</small>
+      </div>
+    `;
+  } else {
+    renderCashChart(12);
+  }
+
   // Graphique CTO
   if (ctoData_hist.length < 2) {
     const ctoWrap = document.getElementById("ctoChartWrap");
@@ -1013,6 +1098,15 @@ document.querySelectorAll(".range-btn").forEach(btn => {
     btn.classList.add("active");
     const range = btn.dataset.range === "all" ? "all" : parseInt(btn.dataset.range);
     renderWealthChart(range);
+  });
+});
+
+document.querySelectorAll(".range-btn-cash").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".range-btn-cash").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const range = btn.dataset.range === "all" ? "all" : parseInt(btn.dataset.range);
+    renderCashChart(range);
   });
 });
 
