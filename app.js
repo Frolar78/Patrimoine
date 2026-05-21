@@ -522,6 +522,10 @@ const diff = data.variation_mensuelle ? parseNum(data.variation_mensuelle) : (la
   document.getElementById("variationMensuelle")?.classList.toggle("positive",  pos);
   setText("varMensuelleKpi",    diffFmt);
   setText("varMensuellePctKpi", pctFmt);
+  document.getElementById("varMensuelleKpi")?.classList.toggle("negative", !pos);
+  document.getElementById("varMensuelleKpi")?.classList.toggle("positive",  pos);
+  document.getElementById("varMensuellePctKpi")?.classList.toggle("negative", !pos);
+  document.getElementById("varMensuellePctKpi")?.classList.toggle("positive",  pos);
   setText("variationPct",       pctFmt);
   setText("perfYtd", ytdText);
 
