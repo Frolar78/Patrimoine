@@ -675,6 +675,7 @@ main {
   .kpi-row { grid-template-columns: 1fr; }
   .page-grid-2, .page-grid-4 { grid-template-columns: 1fr; }
   .goals-grid { grid-template-columns: 1fr; }
+  #projMilestones { grid-template-columns: 1fr !important; }
   .greeting h1 { font-size: 26px; }
   .data-table { font-size: 11px; }
 
