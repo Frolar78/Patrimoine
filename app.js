@@ -1348,7 +1348,7 @@ function renderProjection(netActuel, peaActuel, immo1Actuel, immo2Actuel, dettes
   setText("projOptimiste",  fmtEur.format(scenarios[2][scenarios[2].length - 1].net));
 
   // Milestones
-  const milestones = [Math.floor(horizon * 0.25), Math.floor(horizon * 0.5), Math.floor(horizon * 0.75), horizon - 1];
+  const milestones = [Math.floor(horizon * 0.25), Math.floor(horizon * 0.5), Math.floor(horizon * 0.75)];
   const milestonesEl = document.getElementById("projMilestones");
   if (milestonesEl) {
     milestonesEl.innerHTML = milestones.map(idx => {
