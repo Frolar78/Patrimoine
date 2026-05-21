@@ -679,6 +679,8 @@ main {
   #projScenarios { grid-template-columns: 1fr !important; }
   .greeting h1 { font-size: 26px; }
   .data-table { font-size: 11px; }
+    #projScenarios { grid-template-columns: 1fr !important; }
+  #projMilestones { grid-template-columns: repeat(3, 1fr) !important; font-size: 10px; }
 
   /* KPIs Immo 5 cases — layout mobile */
   .pea-kpi-row[style*="repeat(5"] {
