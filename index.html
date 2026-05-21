@@ -813,6 +813,21 @@
         </div>
       </div>
 
+      <!-- Graphique Cash -->
+      <div class="card" style="margin-top:18px;padding:24px">
+        <div class="card-header">
+          <h3>Évolution des liquidités</h3>
+        </div>
+        <div class="range-selector">
+          <button class="range-btn-cash range-btn active" data-range="12">12 mois</button>
+          <button class="range-btn-cash range-btn" data-range="24">2 ans</button>
+          <button class="range-btn-cash range-btn" data-range="all">Tout</button>
+        </div>
+        <div id="cashChartWrap" class="chart-wrap">
+          <canvas id="cashChart"></canvas>
+        </div>
+      </div>
+
       <!-- Provision impôts -->
       <div class="card" style="margin-top:18px;padding:24px">
         <div class="card-header">
