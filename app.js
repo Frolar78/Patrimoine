@@ -325,8 +325,8 @@ function renderGoals(data, currentNet, peaVal) {
         <div class="goal-card-title">${g.label}</div>
         <div class="goal-card-value">${fmtEur.format(g.current)}</div>
         <div class="goal-card-sub">/ ${fmtEur.format(g.target)}</div>
-        <div class="goal-bar"><span style="width:${g.pct}%"></span></div>
-        <div class="goal-card-pct">${g.pct} %</div>
+        <div class="goal-bar"><span style="width:0%" data-pct="${g.pct}"></span></div>
+        <div class="goal-card-pct" data-pct="${g.pct}">0 %</div>
       </div>
     `).join("");
   }
@@ -339,11 +339,32 @@ function renderGoals(data, currentNet, peaVal) {
           <strong>${g.label}</strong>
           <span>${fmtEur.format(g.current)} / ${fmtEur.format(g.target)}</span>
         </div>
-        <div class="goal-full-bar"><span style="width:${g.pct}%"></span></div>
-        <div class="goal-full-pct">${g.pct} %</div>
+        <div class="goal-full-bar"><span style="width:0%" data-pct="${g.pct}"></span></div>
+        <div class="goal-full-pct" data-pct="${g.pct}">0 %</div>
       </div>
     `).join("");
-  }
+}
+
+  // Animation compteur et barres
+  setTimeout(() => {
+    document.querySelectorAll(".goal-bar span[data-pct], .goal-full-bar span[data-pct]").forEach(bar => {
+      const pct = parseInt(bar.dataset.pct);
+      bar.style.width = pct + "%";
+      const hue = Math.round(200 + (pct / 100) * 60);
+      bar.style.background = `linear-gradient(90deg, hsl(${hue}, 85%, 55%), hsl(${hue + 40}, 85%, 60%))`;
+    });
+
+    document.querySelectorAll(".goal-card-pct[data-pct], .goal-full-pct[data-pct]").forEach(el => {
+      const target = parseInt(el.dataset.pct);
+      let current = 0;
+      const step = Math.max(1, Math.round(target / 40));
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current + " %";
+        if (current >= target) clearInterval(timer);
+      }, 30);
+    });
+  }, 100);
 }
 
 // ── Skeleton ──────────────────────────────────────────────────────────────────
