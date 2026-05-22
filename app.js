@@ -802,6 +802,25 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
   const interetsTotal = cashVals.reduce((sum, v, i) => sum + v * taux[i], 0);
 
   setText("cashP_total", fmtEur.format(totalLivrets));
+    const cashEvoMens = parseNum(data.cash_evo_mensuelle);
+  const cashEvoPct  = totalLivrets && cashEvoMens ? (cashEvoMens / (totalLivrets - cashEvoMens) * 100) : null;
+  const cashEvoEl   = document.getElementById("cashP_evo");
+  const cashEvoPctEl = document.getElementById("cashP_evoPct");
+  const cashTotalEvoEl = document.getElementById("cashTotalEvo");
+
+  if (cashEvoEl) {
+    cashEvoEl.textContent = cashEvoMens ? (cashEvoMens >= 0 ? "+" : "") + fmtEur.format(cashEvoMens) : "--";
+    cashEvoEl.className = "kpi-sub " + (cashEvoMens >= 0 ? "positive" : "negative");
+  }
+  if (cashEvoPctEl) {
+    cashEvoPctEl.textContent = cashEvoPct !== null ? (cashEvoPct >= 0 ? "+" : "") + cashEvoPct.toFixed(1) + " %" : "--";
+    cashEvoPctEl.className = "kpi-hint " + (cashEvoPct >= 0 ? "positive" : "negative");
+  }
+  if (cashTotalEvoEl) {
+    cashTotalEvoEl.textContent = cashEvoMens ? (cashEvoMens >= 0 ? "+" : "") + fmtEur.format(cashEvoMens) : "--";
+    cashTotalEvoEl.className = cashEvoMens >= 0 ? "positive" : "negative";
+  }
+
   const cashDispoEl = document.getElementById("cashP_dispo");
   if (cashDispoEl) {
     cashDispoEl.textContent = fmtEur.format(cashDispo);
