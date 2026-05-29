@@ -1262,7 +1262,7 @@ document.querySelectorAll(".range-btn-cash").forEach(btn => {
 
 // ── Taux d'effort ─────────────────────────────────────────────────────────────
 function updateTauxEffort() {
-  const brut    = 7443 + currentNbGardes * 461;
+  const brut    = 7518 + currentNbGardes * 461;
   const net     = Math.round(brut * 0.92) - 115;
   const revenusFoyer = net + SALAIRE_HARMONIE;
   const mensualites  = 1623 + 2082;
@@ -1474,7 +1474,7 @@ document.querySelectorAll("[data-horizon]").forEach(btn => {
 
 // ── Simulateur salaire ────────────────────────────────────────────────────────
 function updateSimulateur(nbGardes) {
-  const brut      = 7443 + nbGardes * 461;
+  const brut      = 7518 + nbGardes * 461;
   const net       = Math.round(brut * 0.92) - 115;
   const provision = Math.round(net * 0.15);
   const virCCFSim = Math.ceil(totalCCF * (net / (net + SALAIRE_HARMONIE)) / 100) * 100;
@@ -1592,7 +1592,7 @@ function renderCompte(containerId, entrees, sorties, solde, virInterne) {
 }
 
 function updateTresorerie(nbGardes) {
-  const brut      = 7443 + nbGardes * 461;
+  const brut      = 7518 + nbGardes * 461;
   const netVous   = Math.round(brut * 0.92) - 115;
   const provision = Math.round(netVous * 0.15);
   const totalFoyer = netVous + SALAIRE_HARMONIE;
