@@ -1592,8 +1592,8 @@ function renderCompte(containerId, entrees, sorties, solde, virInterne) {
 }
 
 function updateTresorerie(nbGardes) {
-  const brut      = 7518 + nbGardes * 461;
-  const net = brut - 716;
+    const brut      = 7518 + nbGardes * 461;
+  const netVous = brut - 716;
   const provision = Math.round(netVous * 0.15);
   const totalFoyer = netVous + SALAIRE_HARMONIE;
 
