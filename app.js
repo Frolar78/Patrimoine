@@ -1533,7 +1533,6 @@ const TRESO = {
   // CJ BoursoBank
   Bourso: {
     entrees: [
-      { label: "Allocations (le 15)",               val: 513,  pos: true },
       { label: "Virement depuis CJ CCF (le 2)",     val: null, id: "virBourso", pos: true }
     ],
     sorties: [
@@ -1545,7 +1544,10 @@ const TRESO = {
     ]
   },
   // Perso vous
-  Perso: {
+    Perso: {
+    entrees: [
+      { label: "Allocations SPME (fin de mois)", val: 513, pos: true }
+    ],
     sorties: [
       { label: "Disney+",         val: -7   },
       { label: "Apple TV",        val: -10  },
@@ -1600,7 +1602,7 @@ function updateTresorerie(nbGardes) {
   const ratioVous     = netVous / totalFoyer;
   const ratioHarmonie = SALAIRE_HARMONIE / totalFoyer;
 
-  const partVous     = Math.ceil(totalCCF * ratioVous / 100) * 100;
+    const partVous     = Math.ceil(totalCCF * ratioVous / 100) * 100 + 513;
   const partHarmonie = Math.ceil(totalCCF * ratioHarmonie / 10) * 10;
 
   const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
@@ -1620,7 +1622,8 @@ function updateTresorerie(nbGardes) {
   renderCompte("detailCCF",   null,              TRESO.CCF.sorties,    soldeCCF,    null);
   renderCompte("detailCE",    TRESO.CE.entrees,  TRESO.CE.sorties,     soldeCE,     virCE);
   renderCompte("detailBourso",TRESO.Bourso.entrees, TRESO.Bourso.sorties, soldeBourso, virBourso);
-  renderCompte("detailPerso", null,              TRESO.Perso.sorties,  totalPerso,  null);
+  renderCompte("detailPerso", TRESO.Perso.entrees, TRESO.Perso.sorties, totalPerso, null);
+
 
   // Virements internes CJ CCF
   setText("tresoVirInterneCE",     "-" + fmtT.format(virCE));
