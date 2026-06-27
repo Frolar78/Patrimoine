@@ -700,8 +700,8 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
 
   // Barres de remboursement
   const credits = [
-    { initial: 423000, debut: new Date(2021, 6, 1), mensualites: 300, dette: d1, id: "1" },
-    { initial: 430000, debut: new Date(2026, 5, 1), mensualites: 300, dette: d2, id: "2" }
+        { initial: 423451.52, debut: new Date(2021, 8, 1), mensualites: 300, dette: d1, id: "1" },
+    { initial: 432000, debut: new Date(2026, 5, 1), mensualites: 300, dette: d2, id: "2" }
   ];
 
   credits.forEach(c => {
