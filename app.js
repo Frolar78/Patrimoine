@@ -706,7 +706,7 @@ setText("immoP_maj2", data.immo_derniere_maj || "--");
 
   credits.forEach(c => {
     const today        = new Date();
-    const moisEcoules  = Math.max(0, (today.getFullYear() - c.debut.getFullYear()) * 12 + (today.getMonth() - c.debut.getMonth()));
+    const moisEcoules  = Math.max(0, (today.getFullYear() - c.debut.getFullYear()) * 12 + (today.getMonth() - c.debut.getMonth()) + 1);
     const moisRestants = Math.max(0, c.mensualites - moisEcoules);
     const pctRembourse = Math.min(100, Math.round((c.initial - c.dette) / c.initial * 100));
     const dateEcheance = new Date(c.debut.getFullYear(), c.debut.getMonth() + c.mensualites, 1);
