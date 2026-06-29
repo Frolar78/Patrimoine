@@ -891,13 +891,26 @@
 <!-- ══ TRESORERIE PAGE ══ -->
 <div id="tresorerieePage" class="page">
 
+  <style>
+    .compte-acc { border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden; background:var(--surface2); }
+    .compte-acc summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; padding:14px 16px; user-select:none; transition:background .15s; }
+    .compte-acc summary::-webkit-details-marker { display:none; }
+    .compte-acc summary:hover { background:rgba(127,127,127,.06); }
+    .compte-acc summary::after { content:"⌄"; font-size:18px; line-height:1; color:var(--text3); margin-left:10px; transition:transform .2s; }
+    .compte-acc[open] summary::after { transform:rotate(180deg); }
+    .compte-nom { font-weight:600; font-size:14px; color:var(--text); display:flex; align-items:center; gap:10px; }
+    .compte-tag { font-size:10px; font-weight:600; color:var(--text2); background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:2px 9px; text-transform:uppercase; letter-spacing:.04em; }
+    .compte-solde { font-weight:700; font-size:15px; font-variant-numeric:tabular-nums; }
+    .compte-body { padding:4px 16px 14px; border-top:1px solid var(--border); }
+    .donut-legend { display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:14px; font-size:12px; color:var(--text2); }
+    .leg-item { display:flex; align-items:center; gap:6px; }
+    .leg-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+  </style>
+
   <!-- Simulateur gardes -->
   <div class="card" style="padding:24px;margin-bottom:18px">
-    <div class="card-header">
-      <h3>Votre salaire ce mois</h3>
-      <span class="badge" id="tresoTotalFoyer">--</span>
-    </div>
-    <div style="margin-bottom:16px">
+    <div class="card-header"><h3>Votre mois</h3></div>
+    <div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <span style="font-size:13px;color:var(--text2)">Nombre de gardes</span>
         <span style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text)" id="tresoNbGardes">0 garde</span>
@@ -907,119 +920,50 @@
         <span>0 garde</span><span>15 gardes</span>
       </div>
     </div>
-    <div class="asset-meta">
-      <div class="meta-row"><span>Votre salaire net</span><span class="positive" id="tresoSalaireVous">--</span></div>
-      <div class="meta-row"><span>Allocations SPME</span><span class="positive">+513 €</span></div>
-      <div class="meta-row"><span>Salaire Harmonie net</span><span class="positive" id="tresoSalaireHarmonie">--</span></div>
-      <div class="meta-row"><span>Loyer Kilford (le 20)</span><span class="positive">+1 419 €</span></div>
-      <div class="meta-row negative"><span>Provision Bourso+ (15%)</span><span id="tresoProvision">--</span></div>
-      <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:2px solid var(--border)">
-        <span style="font-weight:700">Total revenus foyer nets</span>
-        <span style="font-weight:700" id="tresoTotalRevenus">--</span>
-      </div>
-    </div>
   </div>
 
-  <!-- Détail des comptes -->
-  <div class="page-grid-2" style="margin-bottom:18px">
-
-    <!-- CJ CCF — compte pivot -->
-    <div class="card asset-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <h4 style="margin-bottom:0">CJ CCF</h4>
-        <span style="font-size:11px;font-weight:600;color:var(--blue);background:rgba(79,110,247,.1);border:1px solid var(--blue);border-radius:999px;padding:3px 10px">Compte pivot</span>
-      </div>
-      <div class="asset-meta" id="detailCCF"></div>
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Virements internes depuis CJ CCF</div>
-        <div class="asset-meta">
-          <div class="meta-row negative"><span>→ CJ Caisse d'Épargne (le 2)</span><span id="tresoVirInterneCE">--</span></div>
-          <div class="meta-row negative"><span>→ CJ BoursoBank (le 2)</span><span id="tresoVirInterneBourso">--</span></div>
-        </div>
-      </div>
-      <div style="margin-top:12px;padding-top:12px;border-top:2px solid var(--border)">
-        <div class="meta-row" style="border-bottom:none">
-          <span style="font-weight:700">Total à recevoir</span>
-          <span class="positive" style="font-weight:700" id="tresoTotalCCF">--</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- CJ Caisse d'Épargne -->
-    <div class="card asset-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <h4 style="margin-bottom:0">CJ Caisse d'Épargne</h4>
-        <span style="font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px">Kilford</span>
-      </div>
-      <div class="asset-meta" id="detailCE"></div>
-    </div>
-
-    <!-- CJ BoursoBank -->
-    <div class="card asset-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <h4 style="margin-bottom:0">CJ BoursoBank</h4>
-        <span style="font-size:11px;font-weight:600;color:var(--color-pea);background:rgba(16,185,129,.1);border:1px solid var(--color-pea);border-radius:999px;padding:3px 10px">Vie courante</span>
-      </div>
-      <div class="asset-meta" id="detailBourso"></div>
-    </div>
-
-    <!-- Compte perso vous -->
-    <div class="card asset-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <h4 style="margin-bottom:0">Compte perso vous</h4>
-        <span style="font-size:11px;font-weight:600;color:var(--blue);background:rgba(79,110,247,.1);border:1px solid var(--blue);border-radius:999px;padding:3px 10px">Perso</span>
-      </div>
-      <div class="asset-meta" id="detailPerso"></div>
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-        <div class="asset-meta">
-          <div class="meta-row"><span>→ Bourso+ (depuis perso CCF)</span><span class="positive" id="recapVousBoursoPlus">--</span></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Récap virements -->
-  <div class="card" style="padding:24px">
+  <!-- Synthèse du mois -->
+  <div class="card" style="padding:24px;margin-bottom:18px">
     <div class="card-header">
-      <h3>Virements à programmer</h3>
+      <h3>Synthèse du mois</h3>
+      <span class="badge" id="synthTaux">--</span>
+    </div>
+    <div class="asset-meta">
+      <div class="meta-row"><span>Revenus du foyer</span><span class="positive" id="synthRevenus">--</span></div>
+      <div class="meta-row negative"><span>Dépenses fixes</span><span id="synthDepenses">--</span></div>
+      <div class="meta-row negative"><span>Provision impôts</span><span id="synthProvision">--</span></div>
+      <div class="meta-row negative"><span>Investissements (DCA)</span><span id="synthInvest">--</span></div>
+      <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:2px solid var(--border)">
+        <span style="font-weight:700">Capacité d'épargne</span>
+        <span style="font-weight:700;color:var(--color-pea)" id="synthCapacite">--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Où part l'argent -->
+  <div class="card" style="padding:24px;margin-bottom:18px">
+    <div class="card-header"><h3>Où part l'argent</h3></div>
+    <div id="donutLegend" class="donut-legend"></div>
+    <div style="position:relative;height:240px"><canvas id="tresoDonut"></canvas></div>
+  </div>
+
+  <!-- Virements à effectuer -->
+  <div class="card" style="padding:24px;margin-bottom:18px">
+    <div class="card-header">
+      <h3>Virements à effectuer depuis CCF</h3>
       <span class="badge">Le 2 du mois</span>
     </div>
-    <div class="page-grid-2">
-      <div>
-        <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Vous → CJ CCF</div>
-        <div class="asset-meta">
-          <div class="meta-row"><span>Votre part charges communes</span><span class="positive" id="recapVousCCF">--</span></div>
-          <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:2px solid var(--border)">
-            <span style="font-weight:700">1 virement → CJ CCF</span>
-            <span style="font-weight:700;color:var(--blue)" id="recapVousTotal">--</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:12px;font-weight:600;color:var(--color-pea);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Harmonie → CJ CCF</div>
-        <div class="asset-meta">
-          <div class="meta-row"><span>Sa part charges communes</span><span class="positive" id="recapHarmonieCCF">--</span></div>
-          <div class="meta-row" style="border-bottom:none;padding-top:8px;border-top:2px solid var(--border)">
-            <span style="font-weight:700">1 virement → CJ CCF</span>
-            <span style="font-weight:700;color:var(--color-pea)" id="recapHarmonieTotal">--</span>
-          </div>
-        </div>
-      </div>
+    <div class="asset-meta">
+      <div class="meta-row"><span>→ CJ Caisse d'Épargne</span><span style="font-weight:600" id="virCE">--</span></div>
+      <div class="meta-row"><span>→ CJ BoursoBank</span><span style="font-weight:600" id="virBourso">--</span></div>
+      <div class="meta-row" style="border-bottom:none"><span>→ Compte perso</span><span style="font-weight:600" id="virPerso">--</span></div>
     </div>
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Puis depuis CJ CCF (virements internes)</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>→ CJ Caisse d'Épargne</span><span id="recapInterneCE">--</span></div>
-        <div class="meta-row"><span>→ CJ BoursoBank</span><span id="recapInterneBourso">--</span></div>
-      </div>
-    </div>
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">En parallèle — virement perso</div>
-      <div class="asset-meta">
-        <div class="meta-row"><span>Vous → Bourso+ (depuis perso CCF)</span><span class="positive" id="recapVousBoursoPlus2">--</span></div>
-      </div>
-    </div>
+  </div>
+
+  <!-- Détail par compte -->
+  <div class="card" style="padding:24px">
+    <div class="card-header"><h3>Détail par compte</h3></div>
+    <div id="comptesDetail"></div>
   </div>
 
 </div>
