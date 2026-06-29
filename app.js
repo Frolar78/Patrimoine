@@ -438,6 +438,14 @@ async function loadSheetData() {
     harmonie:  parseNum(data.salaire_harmonie)      || SAL.harmonie
   };
 
+  // Rafraîchir les vues dépendant du salaire une fois SAL chargé depuis le Sheet
+  try {
+    const _tg = document.getElementById("tresoGardesSlider");
+    updateTresorerie(_tg ? parseInt(_tg.value) || 0 : currentNbGardes);
+    const _sg = document.getElementById("simGardesSlider");
+    if (_sg) updateSimulateur(parseInt(_sg.value) || 0);
+  } catch (e) { console.warn("rerender salaire:", e); }
+
   // ── Valeurs de base ───────────────────────────────────────────────────────
   const netNum      = parseNum(data.patrimoine_net);
   const immoNetNum  = parseNum(data.immobilier_net);
