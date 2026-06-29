@@ -119,6 +119,9 @@ function switchPage(page) {
   navLinks.forEach(l => l.classList.remove("active"));
   mobileBtns.forEach(b => b.classList.remove("active"));
   document.querySelectorAll(`[data-page="${page}"]`).forEach(el => el.classList.add("active"));
+  if (page === "tresorerie") {
+    try { if (typeof donutChart !== "undefined" && donutChart) donutChart.resize(); else if (typeof renderDonut === "function") renderDonut(); } catch (e) { console.warn("donut resize:", e); }
+  }
 }
 
 [...navLinks, ...mobileBtns, ...document.querySelectorAll(".see-more")].forEach(el => {
@@ -1648,12 +1651,14 @@ function renderDonut() {
   ).join("");
 
   if (!canvas || typeof Chart === "undefined") return;
-  if (donutChart) donutChart.destroy();
-  donutChart = new Chart(canvas.getContext("2d"), {
-    type: "doughnut",
-    data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: entries.map((e, i) => DONUT_COLORS[i % DONUT_COLORS.length]), borderWidth: 2, borderColor: "#fff" }] },
-    options: { responsive: true, maintainAspectRatio: false, cutout: "62%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => " " + fmtT.format(ctx.parsed) } } } }
-  });
+  try {
+    if (donutChart) donutChart.destroy();
+    donutChart = new Chart(canvas.getContext("2d"), {
+      type: "doughnut",
+      data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: entries.map((e, i) => DONUT_COLORS[i % DONUT_COLORS.length]), borderWidth: 2, borderColor: "#fff" }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: "62%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => " " + fmtT.format(ctx.parsed) } } } }
+    });
+  } catch (e) { console.warn("renderDonut:", e); }
 }
 
 const tresoSlider = document.getElementById("tresoGardesSlider");
