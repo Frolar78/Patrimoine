@@ -137,6 +137,9 @@ let cashLabels_hist = [];
 let currentCashRange = 12;
 let currentNbGardes = 0;
 
+// Paramètres salaire — pilotés par Web_Data (valeurs par défaut = ancien code en dur)
+let SAL = { brutBase: 7518, garde: 461, charges: 716, provision: 0.15, harmonie: 2500 };
+
 async function loadHistorique() {
   const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-CBoyk52n52AhBbdKFFRTsUT3Dp1XVlg3BxL_QRZV682ToOlotYHwumcxSHH1YHuuJKyae99Ll1c3/pub?gid=1865808494&single=true&output=csv";
   try {
@@ -425,6 +428,15 @@ async function loadSheetData() {
   const data = {};
   rows.slice(1).forEach(r => { if (r[0]) data[r[0].trim()] = r[1] ?? ""; });
   console.log("Sheet:", data);
+
+  // Paramètres salaire depuis Web_Data (fallback sur valeurs par défaut)
+  SAL = {
+    brutBase:  parseNum(data.salaire_brut_base)     || SAL.brutBase,
+    garde:     parseNum(data.salaire_montant_garde) || SAL.garde,
+    charges:   parseNum(data.salaire_charges)       || SAL.charges,
+    provision: parseNum(data.salaire_taux_provision)|| SAL.provision,
+    harmonie:  parseNum(data.salaire_harmonie)      || SAL.harmonie
+  };
 
   // ── Valeurs de base ───────────────────────────────────────────────────────
   const netNum      = parseNum(data.patrimoine_net);
@@ -1262,9 +1274,9 @@ document.querySelectorAll(".range-btn-cash").forEach(btn => {
 
 // ── Taux d'effort ─────────────────────────────────────────────────────────────
 function updateTauxEffort() {
-  const brut    = 7518 + currentNbGardes * 461;
-  const net = brut - 716;
-  const revenusFoyer = net + SALAIRE_HARMONIE;
+  const brut    = SAL.brutBase + currentNbGardes * SAL.garde;
+  const net = brut - SAL.charges;
+  const revenusFoyer = net + SAL.harmonie;
   const mensualites  = 1623 + 2082;
   const taux = (mensualites / revenusFoyer * 100);
 
@@ -1474,10 +1486,10 @@ document.querySelectorAll("[data-horizon]").forEach(btn => {
 
 // ── Simulateur salaire ────────────────────────────────────────────────────────
 function updateSimulateur(nbGardes) {
-  const brut      = 7518 + nbGardes * 461;
-  const net = brut - 716;
-  const provision = Math.round(net * 0.15);
-  const virCCFSim = Math.ceil(totalCCF * (net / (net + SALAIRE_HARMONIE)) / 100) * 100;
+  const brut      = SAL.brutBase + nbGardes * SAL.garde;
+  const net = brut - SAL.charges;
+  const provision = Math.round(net * SAL.provision);
+  const virCCFSim = Math.ceil(totalCCF * (net / (net + SAL.harmonie)) / 100) * 100;
   const reste = net - provision - virCCFSim;
 
   const fmtS = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
@@ -1572,7 +1584,7 @@ const virBourso   = Math.abs(soldeBourso); // montant à virer vers Bourso
 const totalCCF    = Math.abs(soldeCCF) + virCE + virBourso;
 const totalPerso  = TRESO.Perso.sorties.reduce((s, r) => s + r.val, 0);
 
-const SALAIRE_HARMONIE = 2500;
+// SALAIRE_HARMONIE migré vers SAL.harmonie (Web_Data)
 
 function renderCompte(containerId, entrees, sorties, solde, virInterne) {
   const el = document.getElementById(containerId);
@@ -1594,13 +1606,13 @@ function renderCompte(containerId, entrees, sorties, solde, virInterne) {
 }
 
 function updateTresorerie(nbGardes) {
-    const brut      = 7518 + nbGardes * 461;
-  const netVous = brut - 716;
-  const provision = Math.round(netVous * 0.15);
-  const totalFoyer = netVous + SALAIRE_HARMONIE;
+    const brut      = SAL.brutBase + nbGardes * SAL.garde;
+  const netVous = brut - SAL.charges;
+  const provision = Math.round(netVous * SAL.provision);
+  const totalFoyer = netVous + SAL.harmonie;
 
   const ratioVous     = netVous / totalFoyer;
-  const ratioHarmonie = SALAIRE_HARMONIE / totalFoyer;
+  const ratioHarmonie = SAL.harmonie / totalFoyer;
 
     const partVous     = Math.ceil(totalCCF * ratioVous / 100) * 100 + 513;
   const partHarmonie = Math.ceil(totalCCF * ratioHarmonie / 10) * 10;
@@ -1613,9 +1625,9 @@ function updateTresorerie(nbGardes) {
   const nbGardesEl = document.getElementById("tresoNbGardes");
   if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
   setText("tresoSalaireVous",  "+" + fmtT.format(netVous));
-  setText("tresoSalaireHarmonie", "+" + fmtT.format(SALAIRE_HARMONIE));
+  setText("tresoSalaireHarmonie", "+" + fmtT.format(SAL.harmonie));
   setText("tresoProvision",    "-" + fmtT.format(provision));
-  setText("tresoTotalRevenus", fmtT.format(netVous + SALAIRE_HARMONIE + 513 + 1419 - provision));
+  setText("tresoTotalRevenus", fmtT.format(netVous + SAL.harmonie + 513 + 1419 - provision));
   setText("tresoTotalFoyer",   Math.round(ratioVous * 100) + "% vous · " + Math.round(ratioHarmonie * 100) + "% Harmonie");
 
   // Rendu comptes
