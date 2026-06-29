@@ -440,6 +440,7 @@ async function loadSheetData() {
     provision: parseNum(data.salaire_taux_provision)|| SAL.provision,
     harmonie:  parseNum(data.salaire_harmonie)      || SAL.harmonie
   };
+  COMPTE_PIVOT = (data.compte_pivot || "").trim();
 
   // Charger Flux_Mensuels puis rafraîchir les vues (SAL + FLUX prêts)
   await loadFluxMensuels();
@@ -1521,6 +1522,7 @@ if (slider) {
 
 // ── Trésorerie (Flux_Mensuels, modèle par périmètre) ───────────────────────────
 let FLUX = [];
+let COMPTE_PIVOT = "";
 let donutChart = null;
 const DONUT_COLORS = ["#2a78d6","#1baf7a","#eda100","#4a3aa7","#e34948","#e87ba4","#eb6834","#888780","#639922"];
 
@@ -1587,28 +1589,38 @@ function updateTresorerie(nbGardes) {
 
   setText("vireToi",   fmt.format(t.partToi));
   setText("vireElle",  fmt.format(t.partElle));
+  setText("vireTotal", fmt.format(t.chargeCommune));
   setText("vireRatio", Math.round(t.rToi * 100) + "% toi · " + Math.round(t.rElle * 100) + "% elle");
+  setText("pivotNom",  comptePivot() || "CCF");
 
   setText("resteToi",       fmt.format(t.resteToi));
   setText("resteToiInvest", fmt.format(t.investToi));
   setText("resteElle",      fmt.format(t.resteElle));
 
-  renderVirements(fmt, t.rToi, t.rElle);
+  renderDispatch(fmt);
   renderComptes(fmt);
   renderDonut();
 }
 
-function renderVirements(fmt, rToi, rElle) {
-  const wrap = document.getElementById("virDetail");
-  if (!wrap) return;
+function comptePivot() {
   const joints = comptesUniques(f => f.perimetre === "Commun");
+  if (COMPTE_PIVOT && joints.includes(COMPTE_PIVOT)) return COMPTE_PIVOT;
+  const ccf = joints.find(c => /ccf/i.test(c));
+  return ccf || joints[0] || "";
+}
+
+function renderDispatch(fmt) {
+  const wrap = document.getElementById("dispatchDetail");
+  if (!wrap) return;
+  const pivot = comptePivot();
+  const autres = comptesUniques(f => f.perimetre === "Commun").filter(c => c !== pivot);
   let html = "";
-  joints.forEach(acc => {
+  autres.forEach(acc => {
     const solde = soldeCompte(acc);
     const deficit = solde < 0 ? -solde : 0;
-    html += `<div class="meta-row"><span>${acc}</span><span><span style="color:var(--text3)">toi</span> ${fmt.format(deficit * rToi)} · <span style="color:var(--text3)">elle</span> ${fmt.format(deficit * rElle)}</span></div>`;
+    html += `<div class="meta-row"><span>→ ${acc}</span><span style="font-weight:600">${fmt.format(deficit)}</span></div>`;
   });
-  wrap.innerHTML = html || `<div class="meta-row"><span style="color:var(--text3)">Aucun compte commun</span><span></span></div>`;
+  wrap.innerHTML = html || `<div class="meta-row"><span style="color:var(--text3)">Rien à dispatcher</span><span></span></div>`;
 }
 
 function renderComptes(fmt) {
