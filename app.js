@@ -1641,15 +1641,12 @@ function renderComptes(fmt) {
   let html = "";
   comptesUniques().forEach(acc => {
     const lignes = FLUX.filter(f => f.compte === acc);
-    const solde = lignes.reduce((s, f) => s + f.montant, 0);
     const inner = lignes.map(r =>
       `<div class="meta-row ${r.montant < 0 ? "negative" : ""}"><span>${r.flux}${r.jour ? ' <span style="color:var(--text3)">(le ' + r.jour + ')</span>' : ''}</span><span class="${r.montant >= 0 ? "positive" : ""}">${r.montant >= 0 ? "+" : ""}${fmt.format(r.montant)}</span></div>`
     ).join("");
-    const soldeCls = solde >= 0 ? "positive" : "negative";
     html += `<details class="compte-acc">
       <summary>
         <span class="compte-nom">${acc}</span>
-        <span class="compte-solde ${soldeCls}">${solde >= 0 ? "+" : ""}${fmt.format(solde)}</span>
       </summary>
       <div class="compte-body">${inner || '<div class="meta-row"><span style="color:var(--text3)">Aucune ligne</span><span></span></div>'}</div>
     </details>`;
