@@ -1554,6 +1554,14 @@ function comptesUniques(pred) {
 }
 function soldeCompte(compte) { return FLUX.filter(f => f.compte === compte).reduce((s, f) => s + f.montant, 0); }
 
+function ownerOf(compte) {
+  const lines = FLUX.filter(f => f.compte === compte);
+  if (lines.some(f => f.perimetre === "Perso toi"))  return "toi";
+  if (lines.some(f => f.perimetre === "Perso elle")) return "elle";
+  return "joint";
+}
+function comptesJoints() { return comptesUniques().filter(c => ownerOf(c) === "joint"); }
+
 function computeTreso(nbGardes) {
   const brut   = SAL.brutBase + nbGardes * SAL.garde;
   const tonNet = brut - SAL.charges;
@@ -1564,18 +1572,22 @@ function computeTreso(nbGardes) {
   const revCommuns  = sumWhere(f => f.perimetre === "Commun" && f.montant > 0);
   const depCommunes = -sumWhere(f => f.perimetre === "Commun" && f.montant < 0);
   const chargeCommune = depCommunes - revCommuns;
-  const partToi  = Math.max(0, chargeCommune * rToi);
-  const partElle = Math.max(0, chargeCommune * rElle);
+  // revenus communs qui tombent sur un compte perso → à reverser intégralement au joint
+  const revPersoToi  = FLUX.filter(f => f.perimetre === "Commun" && f.montant > 0 && ownerOf(f.compte) === "toi").reduce((s, f) => s + f.montant, 0);
+  const revPersoElle = FLUX.filter(f => f.perimetre === "Commun" && f.montant > 0 && ownerOf(f.compte) === "elle").reduce((s, f) => s + f.montant, 0);
+  const partToi   = Math.max(0, chargeCommune * rToi) + revPersoToi;
+  const partElle  = Math.max(0, chargeCommune * rElle) + revPersoElle;
+  const totalJoint = partToi + partElle;
 
   const provision    = Math.round(tonNet * SAL.provision);
   const depPersoToi  = -sumWhere(f => f.perimetre === "Perso toi" && f.montant < 0 && f.type !== "Investissement");
   const investToi    = -sumWhere(f => f.perimetre === "Perso toi" && f.type === "Investissement");
-  const resteToi     = tonNet - partToi - depPersoToi - provision - investToi;
+  const resteToi     = tonNet + revPersoToi - partToi - depPersoToi - provision - investToi;
 
   const depPersoElle = -sumWhere(f => f.perimetre === "Perso elle" && f.montant < 0);
-  const resteElle    = sonNet - partElle - depPersoElle;
+  const resteElle    = sonNet + revPersoElle - partElle - depPersoElle;
 
-  return { brut, tonNet, sonNet, rToi, rElle, chargeCommune, partToi, partElle, provision, depPersoToi, investToi, resteToi, depPersoElle, resteElle };
+  return { brut, tonNet, sonNet, rToi, rElle, chargeCommune, totalJoint, partToi, partElle, provision, depPersoToi, investToi, resteToi, depPersoElle, resteElle };
 }
 
 function updateTresorerie(nbGardes) {
@@ -1589,7 +1601,7 @@ function updateTresorerie(nbGardes) {
 
   setText("vireToi",   fmt.format(t.partToi));
   setText("vireElle",  fmt.format(t.partElle));
-  setText("vireTotal", fmt.format(t.chargeCommune));
+  setText("vireTotal", fmt.format(t.totalJoint));
   setText("vireRatio", Math.round(t.rToi * 100) + "% toi · " + Math.round(t.rElle * 100) + "% elle");
   setText("pivotNom",  comptePivot() || "CCF");
 
@@ -1603,7 +1615,7 @@ function updateTresorerie(nbGardes) {
 }
 
 function comptePivot() {
-  const joints = comptesUniques(f => f.perimetre === "Commun");
+  const joints = comptesJoints();
   if (COMPTE_PIVOT && joints.includes(COMPTE_PIVOT)) return COMPTE_PIVOT;
   const ccf = joints.find(c => /ccf/i.test(c));
   return ccf || joints[0] || "";
@@ -1613,7 +1625,7 @@ function renderDispatch(fmt) {
   const wrap = document.getElementById("dispatchDetail");
   if (!wrap) return;
   const pivot = comptePivot();
-  const autres = comptesUniques(f => f.perimetre === "Commun").filter(c => c !== pivot);
+  const autres = comptesJoints().filter(c => c !== pivot);
   let html = "";
   autres.forEach(acc => {
     const solde = soldeCompte(acc);

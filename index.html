@@ -903,6 +903,9 @@
     .compte-acc .compte-solde.negative { color:#c0392b; background:rgba(227,73,72,.12); }
     .compte-acc .compte-solde.positive { color:#15936a; background:rgba(27,175,122,.12); }
     .compte-body { padding:4px 16px 14px; border-top:1px solid var(--border); }
+    .compte-body .meta-row { display:flex; justify-content:space-between; gap:12px; }
+    .compte-body .meta-row > span:last-child { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; flex-shrink:0; }
+    .compte-body .meta-row > span:first-child { text-align:left; }
     .donut-legend { display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:14px; font-size:12px; color:var(--text2); }
     .leg-item { display:flex; align-items:center; gap:6px; }
     .leg-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
