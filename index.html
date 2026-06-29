@@ -898,18 +898,22 @@
     .compte-acc summary:hover { background:rgba(127,127,127,.06); }
     .compte-acc summary::after { content:"⌄"; font-size:18px; line-height:1; color:var(--text3); margin-left:10px; transition:transform .2s; }
     .compte-acc[open] summary::after { transform:rotate(180deg); }
-    .compte-nom { font-weight:600; font-size:14px; color:var(--text); display:flex; align-items:center; gap:10px; }
-    .compte-tag { font-size:10px; font-weight:600; color:var(--text2); background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:2px 9px; text-transform:uppercase; letter-spacing:.04em; }
+    .compte-nom { font-weight:600; font-size:14px; color:var(--text); }
     .compte-solde { font-weight:700; font-size:15px; font-variant-numeric:tabular-nums; }
     .compte-body { padding:4px 16px 14px; border-top:1px solid var(--border); }
     .donut-legend { display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:14px; font-size:12px; color:var(--text2); }
     .leg-item { display:flex; align-items:center; gap:6px; }
     .leg-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+    .vire-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:8px; }
+    .vire-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+    .vire-box .lbl { font-size:12px; color:var(--text2); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+    .vire-box .amt { font-family:'DM Serif Display',serif; font-size:26px; color:var(--blue); }
+    .reste-box .amt { color:var(--color-pea); }
   </style>
 
   <!-- Simulateur gardes -->
   <div class="card" style="padding:24px;margin-bottom:18px">
-    <div class="card-header"><h3>Votre mois</h3></div>
+    <div class="card-header"><h3>Votre mois</h3><span class="badge" id="vireRatio">--</span></div>
     <div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <span style="font-size:13px;color:var(--text2)">Nombre de gardes</span>
@@ -922,21 +926,28 @@
     </div>
   </div>
 
-  <!-- Synthèse du mois -->
+  <!-- Qui vire combien au joint -->
   <div class="card" style="padding:24px;margin-bottom:18px">
-    <div class="card-header">
-      <h3>Synthèse du mois</h3>
-      <span class="badge" id="synthTaux">--</span>
+    <div class="card-header"><h3>À virer sur les comptes joints</h3></div>
+    <div class="vire-grid">
+      <div class="vire-box"><div class="lbl">Ta part</div><div class="amt" id="vireToi">--</div></div>
+      <div class="vire-box"><div class="lbl">Sa part</div><div class="amt" id="vireElle">--</div></div>
     </div>
-    <div class="asset-meta">
-      <div class="meta-row"><span>Revenus du foyer</span><span class="positive" id="synthRevenus">--</span></div>
-      <div class="meta-row negative"><span>Dépenses fixes</span><span id="synthDepenses">--</span></div>
-      <div class="meta-row negative"><span>Provision impôts</span><span id="synthProvision">--</span></div>
-      <div class="meta-row negative"><span>Investissements (DCA)</span><span id="synthInvest">--</span></div>
-      <div class="meta-row" style="border-bottom:none;padding-top:10px;border-top:2px solid var(--border)">
-        <span style="font-weight:700">Capacité d'épargne</span>
-        <span style="font-weight:700;color:var(--color-pea)" id="synthCapacite">--</span>
+    <div style="margin-top:10px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Détail par compte joint</div>
+      <div class="asset-meta" id="virDetail"></div>
+    </div>
+  </div>
+
+  <!-- Reste à vivre -->
+  <div class="card" style="padding:24px;margin-bottom:18px">
+    <div class="card-header"><h3>Reste à vivre</h3><span class="badge">Plaisir · épargne</span></div>
+    <div class="vire-grid">
+      <div class="vire-box reste-box">
+        <div class="lbl">Toi</div><div class="amt" id="resteToi">--</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">dont <span id="resteToiInvest">--</span> investis</div>
       </div>
+      <div class="vire-box reste-box"><div class="lbl">Elle</div><div class="amt" id="resteElle">--</div></div>
     </div>
   </div>
 
@@ -945,19 +956,6 @@
     <div class="card-header"><h3>Où part l'argent</h3></div>
     <div id="donutLegend" class="donut-legend"></div>
     <div style="position:relative;height:240px"><canvas id="tresoDonut"></canvas></div>
-  </div>
-
-  <!-- Virements à effectuer -->
-  <div class="card" style="padding:24px;margin-bottom:18px">
-    <div class="card-header">
-      <h3>Virements à effectuer depuis CCF</h3>
-      <span class="badge">Le 2 du mois</span>
-    </div>
-    <div class="asset-meta">
-      <div class="meta-row"><span>→ CJ Caisse d'Épargne</span><span style="font-weight:600" id="virCE">--</span></div>
-      <div class="meta-row"><span>→ CJ BoursoBank</span><span style="font-weight:600" id="virBourso">--</span></div>
-      <div class="meta-row" style="border-bottom:none"><span>→ Compte perso</span><span style="font-weight:600" id="virPerso">--</span></div>
-    </div>
   </div>
 
   <!-- Détail par compte -->

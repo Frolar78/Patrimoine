@@ -1498,25 +1498,19 @@ document.querySelectorAll("[data-horizon]").forEach(btn => {
 
 // ── Simulateur salaire ────────────────────────────────────────────────────────
 function updateSimulateur(nbGardes) {
-  const brut      = SAL.brutBase + nbGardes * SAL.garde;
-  const net = brut - SAL.charges;
-  const provision = Math.round(net * SAL.provision);
-  const virCCFSim = Math.ceil(totalCCF * (net / (net + SAL.harmonie)) / 100) * 100;
-  const reste = net - provision - virCCFSim;
-
+  const t = computeTreso(nbGardes);
   const fmtS = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
-
-  document.getElementById("simNbGardes").textContent  = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
-  document.getElementById("simBrut").textContent      = fmtS.format(brut);
-  document.getElementById("simNet").textContent       = fmtS.format(net);
-  document.getElementById("simProvision").textContent = "-" + fmtS.format(provision);
-  setText("simVirCCF", "-" + fmtS.format(virCCFSim));
-
+  const el = document.getElementById("simNbGardes");
+  if (el) el.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
+  setText("simBrut",      fmtS.format(t.brut));
+  setText("simNet",       fmtS.format(t.tonNet));
+  setText("simProvision", "-" + fmtS.format(t.provision));
+  setText("simVirCCF",    "-" + fmtS.format(t.partToi));
   const resteEl = document.getElementById("simReste");
   if (resteEl) {
-    resteEl.textContent = (reste >= 0 ? "+" : "") + fmtS.format(reste);
-    resteEl.classList.toggle("positive", reste >= 0);
-    resteEl.classList.toggle("negative", reste < 0);
+    resteEl.textContent = (t.resteToi >= 0 ? "+" : "") + fmtS.format(t.resteToi);
+    resteEl.classList.toggle("positive", t.resteToi >= 0);
+    resteEl.classList.toggle("negative", t.resteToi < 0);
   }
 }
 
@@ -1525,19 +1519,9 @@ if (slider) {
   slider.addEventListener("input", () => updateSimulateur(parseInt(slider.value)));
 }
 
-// ── Trésorerie (pilotée par Flux_Mensuels) ─────────────────────────────────────
+// ── Trésorerie (Flux_Mensuels, modèle par périmètre) ───────────────────────────
 let FLUX = [];
-let TRESO = { CE:{entrees:[],sorties:[]}, CCF:{entrees:[],sorties:[]}, Bourso:{entrees:[],sorties:[]}, Perso:{entrees:[],sorties:[]} };
-let soldeCE = 0, soldeCCF = 0, soldeBourso = 0, soldePerso = 0;
-let virCE = 0, virBourso = 0, virPerso = 0, totalCCF = 0;
 let donutChart = null;
-
-const COMPTES = [
-  { id:"CCF",    nom:"CJ CCF",               tag:"Compte pivot" },
-  { id:"CE",     nom:"CJ Caisse d'Épargne",  tag:"Kilford" },
-  { id:"Bourso", nom:"CJ BoursoBank",        tag:"Vie courante" },
-  { id:"Perso",  nom:"Compte perso",         tag:"Perso" }
-];
 const DONUT_COLORS = ["#2a78d6","#1baf7a","#eda100","#4a3aa7","#e34948","#e87ba4","#eb6834","#888780","#639922"];
 
 async function loadFluxMensuels() {
@@ -1547,88 +1531,101 @@ async function loadFluxMensuels() {
     const csv = await res.text();
     const rows = parseCSV(csv.trim()).slice(1).filter(r => r[0]);
     FLUX = rows.map(r => ({
-      compte:  (r[0] || "").trim(),
-      flux:    (r[1] || "").trim(),
-      type:    (r[2] || "").trim(),
-      cat:     (r[3] || "").trim() || "Divers",
-      montant: parseNum(r[4]),
-      jour:    (r[5] || "").trim()
-    })).filter(f => f.compte && f.montant);
-    buildTreso();
+      perimetre: (r[0] || "").trim(),
+      compte:    (r[1] || "").trim(),
+      flux:      (r[2] || "").trim(),
+      type:      (r[3] || "").trim(),
+      cat:       (r[4] || "").trim() || "Divers",
+      montant:   parseNum(r[5]),
+      jour:      (r[6] || "").trim()
+    })).filter(f => f.perimetre && f.montant);
   } catch (e) {
     console.warn("loadFluxMensuels:", e);
   }
 }
 
-function buildTreso() {
-  TRESO = { CE:{entrees:[],sorties:[]}, CCF:{entrees:[],sorties:[]}, Bourso:{entrees:[],sorties:[]}, Perso:{entrees:[],sorties:[]} };
-  FLUX.forEach(f => {
-    const acc = TRESO[f.compte];
-    if (!acc) return;
-    const row = { label: f.flux + (f.jour ? " (le " + f.jour + ")" : ""), val: f.montant };
-    if (f.montant >= 0) acc.entrees.push(row); else acc.sorties.push(row);
-  });
-  const sumAcc = c => [...TRESO[c].entrees, ...TRESO[c].sorties].reduce((s, r) => s + r.val, 0);
-  soldeCE = sumAcc("CE"); soldeCCF = sumAcc("CCF"); soldeBourso = sumAcc("Bourso"); soldePerso = sumAcc("Perso");
-  virCE     = soldeCE     < 0 ? -soldeCE     : 0;
-  virBourso = soldeBourso < 0 ? -soldeBourso : 0;
-  virPerso  = soldePerso  < 0 ? -soldePerso  : 0;
-  totalCCF  = Math.abs(soldeCCF) + virCE + virBourso + virPerso;
+function sumWhere(pred) { return FLUX.filter(pred).reduce((s, f) => s + f.montant, 0); }
+function comptesUniques(pred) {
+  const out = [];
+  FLUX.forEach(f => { if ((!pred || pred(f)) && f.compte && !out.includes(f.compte)) out.push(f.compte); });
+  return out;
 }
+function soldeCompte(compte) { return FLUX.filter(f => f.compte === compte).reduce((s, f) => s + f.montant, 0); }
 
-function soldeDe(id) {
-  return id === "CE" ? soldeCE : id === "CCF" ? soldeCCF : id === "Bourso" ? soldeBourso : soldePerso;
+function computeTreso(nbGardes) {
+  const brut   = SAL.brutBase + nbGardes * SAL.garde;
+  const tonNet = brut - SAL.charges;
+  const sonNet = SAL.harmonie;
+  const tot    = (tonNet + sonNet) || 1;
+  const rToi   = tonNet / tot, rElle = sonNet / tot;
+
+  const revCommuns  = sumWhere(f => f.perimetre === "Commun" && f.montant > 0);
+  const depCommunes = -sumWhere(f => f.perimetre === "Commun" && f.montant < 0);
+  const chargeCommune = depCommunes - revCommuns;
+  const partToi  = Math.max(0, chargeCommune * rToi);
+  const partElle = Math.max(0, chargeCommune * rElle);
+
+  const provision    = Math.round(tonNet * SAL.provision);
+  const depPersoToi  = -sumWhere(f => f.perimetre === "Perso toi" && f.montant < 0 && f.type !== "Investissement");
+  const investToi    = -sumWhere(f => f.perimetre === "Perso toi" && f.type === "Investissement");
+  const resteToi     = tonNet - partToi - depPersoToi - provision - investToi;
+
+  const depPersoElle = -sumWhere(f => f.perimetre === "Perso elle" && f.montant < 0);
+  const resteElle    = sonNet - partElle - depPersoElle;
+
+  return { brut, tonNet, sonNet, rToi, rElle, chargeCommune, partToi, partElle, provision, depPersoToi, investToi, resteToi, depPersoElle, resteElle };
 }
 
 function updateTresorerie(nbGardes) {
   currentNbGardes = nbGardes;
-  const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
-
-  const brut      = SAL.brutBase + nbGardes * SAL.garde;
-  const netVous   = brut - SAL.charges;
-  const provision = Math.round(netVous * SAL.provision);
-  const revFlux   = FLUX.filter(f => f.montant > 0).reduce((s, f) => s + f.montant, 0);
-  const revenus   = netVous + SAL.harmonie + revFlux;
-  const invest    = Math.abs(FLUX.filter(f => f.type === "Investissement").reduce((s, f) => s + f.montant, 0));
-  const depFixes  = Math.abs(FLUX.filter(f => f.montant < 0 && f.type !== "Investissement").reduce((s, f) => s + f.montant, 0));
-  const capacite  = revenus - depFixes - provision - invest;
-  const taux      = revenus > 0 ? Math.round((capacite + invest) / revenus * 100) : 0;
+  const fmt = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+  const t = computeTreso(nbGardes);
 
   const nbGardesEl = document.getElementById("tresoNbGardes");
   if (nbGardesEl) nbGardesEl.textContent = nbGardes + (nbGardes > 1 ? " gardes" : " garde");
   updateTauxEffort();
 
-  setText("synthRevenus",   "+" + fmtT.format(revenus));
-  setText("synthDepenses",  "-" + fmtT.format(depFixes));
-  setText("synthProvision", "-" + fmtT.format(provision));
-  setText("synthInvest",    "-" + fmtT.format(invest));
-  setText("synthCapacite",  fmtT.format(capacite));
-  setText("synthTaux",      taux + " %");
+  setText("vireToi",   fmt.format(t.partToi));
+  setText("vireElle",  fmt.format(t.partElle));
+  setText("vireRatio", Math.round(t.rToi * 100) + "% toi · " + Math.round(t.rElle * 100) + "% elle");
 
-  setText("virCE",     fmtT.format(virCE));
-  setText("virBourso", fmtT.format(virBourso));
-  setText("virPerso",  fmtT.format(virPerso));
+  setText("resteToi",       fmt.format(t.resteToi));
+  setText("resteToiInvest", fmt.format(t.investToi));
+  setText("resteElle",      fmt.format(t.resteElle));
 
-  renderComptes(fmtT);
+  renderVirements(fmt, t.rToi, t.rElle);
+  renderComptes(fmt);
   renderDonut();
 }
 
-function renderComptes(fmtT) {
+function renderVirements(fmt, rToi, rElle) {
+  const wrap = document.getElementById("virDetail");
+  if (!wrap) return;
+  const joints = comptesUniques(f => f.perimetre === "Commun");
+  let html = "";
+  joints.forEach(acc => {
+    const solde = soldeCompte(acc);
+    const deficit = solde < 0 ? -solde : 0;
+    html += `<div class="meta-row"><span>${acc}</span><span><span style="color:var(--text3)">toi</span> ${fmt.format(deficit * rToi)} · <span style="color:var(--text3)">elle</span> ${fmt.format(deficit * rElle)}</span></div>`;
+  });
+  wrap.innerHTML = html || `<div class="meta-row"><span style="color:var(--text3)">Aucun compte commun</span><span></span></div>`;
+}
+
+function renderComptes(fmt) {
   const wrap = document.getElementById("comptesDetail");
   if (!wrap) return;
   let html = "";
-  COMPTES.forEach(c => {
-    const acc = TRESO[c.id] || { entrees:[], sorties:[] };
-    const solde = soldeDe(c.id);
-    const lignes = [...acc.entrees, ...acc.sorties];
+  comptesUniques().forEach(acc => {
+    const lignes = FLUX.filter(f => f.compte === acc);
+    const solde = lignes.reduce((s, f) => s + f.montant, 0);
     const inner = lignes.map(r =>
-      `<div class="meta-row ${r.val < 0 ? "negative" : ""}"><span>${r.label}</span><span class="${r.val >= 0 ? "positive" : ""}">${r.val >= 0 ? "+" : ""}${fmtT.format(r.val)}</span></div>`
+      `<div class="meta-row ${r.montant < 0 ? "negative" : ""}"><span>${r.flux}${r.jour ? ' <span style="color:var(--text3)">(le ' + r.jour + ')</span>' : ''}</span><span class="${r.montant >= 0 ? "positive" : ""}">${r.montant >= 0 ? "+" : ""}${fmt.format(r.montant)}</span></div>`
     ).join("");
     const soldeCls = solde >= 0 ? "positive" : "negative";
     html += `<details class="compte-acc">
       <summary>
-        <span class="compte-nom">${c.nom}<span class="compte-tag">${c.tag}</span></span>
-        <span class="compte-solde ${soldeCls}">${solde >= 0 ? "+" : ""}${fmtT.format(solde)}</span>
+        <span class="compte-nom">${acc}</span>
+        <span class="compte-solde ${soldeCls}">${solde >= 0 ? "+" : ""}${fmt.format(solde)}</span>
       </summary>
       <div class="compte-body">${inner || '<div class="meta-row"><span style="color:var(--text3)">Aucune ligne</span><span></span></div>'}</div>
     </details>`;
@@ -1638,25 +1635,23 @@ function renderComptes(fmtT) {
 
 function renderDonut() {
   const canvas = document.getElementById("tresoDonut");
-  const fmtT = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+  const fmt = new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
   const cats = {};
   FLUX.filter(f => f.montant < 0 && f.type !== "Investissement").forEach(f => {
     cats[f.cat] = (cats[f.cat] || 0) + Math.abs(f.montant);
   });
   const entries = Object.entries(cats).sort((a, b) => b[1] - a[1]);
-
   const leg = document.getElementById("donutLegend");
   if (leg) leg.innerHTML = entries.map((e, i) =>
-    `<span class="leg-item"><span class="leg-dot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${e[0]} ${fmtT.format(e[1])}</span>`
+    `<span class="leg-item"><span class="leg-dot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${e[0]} ${fmt.format(e[1])}</span>`
   ).join("");
-
   if (!canvas || typeof Chart === "undefined") return;
   try {
     if (donutChart) donutChart.destroy();
     donutChart = new Chart(canvas.getContext("2d"), {
       type: "doughnut",
       data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: entries.map((e, i) => DONUT_COLORS[i % DONUT_COLORS.length]), borderWidth: 2, borderColor: "#fff" }] },
-      options: { responsive: true, maintainAspectRatio: false, cutout: "62%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => " " + fmtT.format(ctx.parsed) } } } }
+      options: { responsive: true, maintainAspectRatio: false, cutout: "62%", plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => " " + fmt.format(ctx.parsed) } } } }
     });
   } catch (e) { console.warn("renderDonut:", e); }
 }
